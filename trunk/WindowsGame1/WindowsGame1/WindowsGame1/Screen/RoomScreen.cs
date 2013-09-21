@@ -11,17 +11,35 @@ namespace WindowsGame1
 {
     class RoomScreen : Screen
     {
+        #region variable decleration
         SpriteFont font;
+        #endregion
 
-         #region Load Content
+        #region Load Content
         public RoomScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("HostScreen",theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
+
+            #region RoomScreen_RegisterHandler
+            OnKeysDown += RoomScreen_OnKeysDown;
+            #endregion
         }
          #endregion
 
-         #region Update
+        #region HANDLER
+        private void RoomScreen_OnKeysDown(Keys[] keys)
+        {
+            foreach (Keys k in keys)
+            {
+                if (k == Keys.Escape)
+                    ScreenEvent.Invoke(this, new SivEventArgs(0));
+                return;
+            }
+        }
+        #endregion
+
+        #region Update
         public override void Update(GameTime theTime)
         {
             base.Update(theTime);
