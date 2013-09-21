@@ -1,0 +1,69 @@
+Content\Resource\Untitled-1.xnb
+Content\Resource\card_back.xnb
+Content\Resource\character_back.xnb
+Content\Resource\FE.xnb
+Content\Resource\FSN.xnb
+Content\Resource\FZ.xnb
+Content\Resource\team_card_bg.xnb
+Content\Resource\card1.xnb
+Content\Resource\character1.xnb
+Content\Resource\character2.xnb
+Content\Resource\controlplayer.xnb
+Content\Resource\health2.xnb
+Content\Resource\health5.xnb
+Content\Resource\health_0.xnb
+Content\Resource\health_1.xnb
+Content\Resource\health_3.xnb
+Content\Resource\health_4.xnb
+Content\Resource\074_greenglow.xnb
+Content\Resource\074_starlight.xnb
+Content\Resource\chat_input.xnb
+Content\Resource\chat_screen.xnb
+Content\Resource\character\Kariya.xnb
+Content\Resource\character\Kayneth Archibald.xnb
+Content\Resource\character\Kiritsugu.xnb
+Content\Resource\character\Kotomine Kirei.xnb
+Content\Resource\character\Ryuunosuke.xnb
+Content\Resource\character\Shirou.xnb
+Content\Resource\character\Tohsaka Tokiomi.xnb
+Content\Resource\character\Waver Velvet.xnb
+Content\Resource\character\Diarmuid.xnb
+Content\Resource\character\Gilgamesh.xnb
+Content\Resource\character\Gille de Rais.xnb
+Content\Resource\character\Hassan.xnb
+Content\Resource\character\Iskander.xnb
+Content\Resource\character\Lancelot.xnb
+Content\Resource\character\Saber.xnb
+Content\Resource\card\Alter Burst2.xnb
+Content\Resource\card\C4 bomb.xnb
+Content\Resource\card\Collaboration.xnb
+Content\Resource\card\Command Spell.xnb
+Content\Resource\card\Crystal Ball.xnb
+Content\Resource\card\Curse of Lancer.xnb
+Content\Resource\card\Distant Trampling Domination.xnb
+Content\Resource\card\Duel.xnb
+Content\Resource\card\Enkidu.xnb
+Content\Resource\card\Enuma Elish.xnb
+Content\Resource\card\Evil Intentions.xnb
+Content\Resource\card\Excalibur.xnb
+Content\Resource\card\GoB.xnb
+Content\Resource\card\Grail of Heaven.xnb
+Content\Resource\card\Knight of Honor.xnb
+Content\Resource\border_card.xnb
+Content\Resource\border_render.xnb
+Content\Resource\draw.xnb
+Content\Resource\ok.xnb
+Content\Resource\Test.xnb
+Content\Resource\hostgame.xnb
+Content\Resource\joingame.xnb
+Content\Resource\menu_background.xnb
+Content\Resource\option.xnb
+Content\Resource\quit.xnb
+Content\Resource\start.xnb
+Content\Resource\menu_background_2.xnb
+Content\Resource\caret.xnb
+Content\Resource\white_textbox.xnb
+Content\Resource\Highlighted_textbox.xnb
+Content\Resource\Scrollbar.xnb
+Content\Resource\ScrollbarBackground.xnb
+Content\SpriteFont1.xnb
