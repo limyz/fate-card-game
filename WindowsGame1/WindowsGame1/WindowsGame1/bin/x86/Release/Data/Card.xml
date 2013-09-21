@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Card>
+
+  <C4_Bomb img="C4 bomb">C4 Bomb</C4_Bomb>
+  <Alter_Burst img="Alter Burst2">Alter Burst</Alter_Burst>
+  <Collaboration img="Collaboration">Collaboration</Collaboration>
+  <Command_Spell img="Command Spell">Command Spell</Command_Spell>
+  <Crystal_Ball img="Crystal Ball">Crystal Ball</Crystal_Ball>
+  <Curse_of_Lancer img="Curse of Lancer">Curse of Lancer</Curse_of_Lancer>
+  <Distant_Trampling_Domination img="Distant Trampling Domination">Distant Trampling Domination</Distant_Trampling_Domination>
+  <Duel img="Duel">Duel</Duel>
+  <Enuma_Elish img="Enuma Elish">Enuma Elish</Enuma_Elish>
+  <Evil_Intentions img="Evil Intentions">Evil Intentions</Evil_Intentions>
+  <Excalibur img="Excalibur">Excalibur</Excalibur>
+  <GoB img="GoB">GoB</GoB>
+  <Grail_of_Heaven img="Grail of Heaven">Grail of Heaven</Grail_of_Heaven>
+  <Knight_of_Honor img="Knight of Honor">Knight of Honor</Knight_of_Honor>
+  
+</Card>
