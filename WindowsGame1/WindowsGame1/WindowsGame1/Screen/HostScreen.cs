@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
@@ -23,6 +25,10 @@ namespace WindowsGame1
         TextBox Host_name_textbox;
         TextBox Room_name_textbox;
         TextBox Number_of_player_textbox;
+        Texture2D backgroundTexture;
+        int screenWidth = 1200;
+        int screenHeight = 720;
+        Rectangle screenRectangle;
         #endregion
 
         #region load content
@@ -33,6 +39,9 @@ namespace WindowsGame1
             Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
             Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
             Texture2D caret = Content.Load<Texture2D>("Resource/caret");
+
+            backgroundTexture = Content.Load<Texture2D>("Resource/background");
+            screenRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
 
             Host_name_label = new Label("host_name_label",
                 font, "Player name"
@@ -74,6 +83,11 @@ namespace WindowsGame1
         }
         #endregion
 
+        private void DrawBackground()
+        {
+            
+        }
+
         #region HANDLER
         private void HostScreen_OnKeysDown(Keys[] keys)
         {
@@ -105,6 +119,7 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Draw(backgroundTexture, screenRectangle, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();

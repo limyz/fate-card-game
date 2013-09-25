@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Untitled-1.xnb</Output>
-      <Time>2013-09-21T20:20:12.9498678+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Untitled-1.xnb</Output>
+      <Time>2013-03-07T00:04:45.4728966+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card_back.jpg</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card_back.xnb</Output>
-      <Time>2013-09-21T20:20:05.4034362+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card_back.xnb</Output>
+      <Time>2013-03-07T00:41:33.5561917+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character_back.jpg</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character_back.xnb</Output>
-      <Time>2013-09-21T20:14:53.6726062+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character_back.xnb</Output>
+      <Time>2013-03-07T00:41:33.597194+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\FE.jpg</Source>
@@ -34,8 +34,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FE.xnb</Output>
-      <Time>2013-09-21T20:20:12.9588683+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FE.xnb</Output>
+      <Time>2013-03-07T00:41:33.6011943+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\FSN.jpg</Source>
@@ -43,8 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FSN.xnb</Output>
-      <Time>2013-09-21T20:20:05.3794348+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FSN.xnb</Output>
+      <Time>2013-03-07T00:41:33.6051945+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\FZ.jpg</Source>
@@ -52,8 +52,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FZ.xnb</Output>
-      <Time>2013-09-21T20:14:53.6806066+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FZ.xnb</Output>
+      <Time>2013-03-07T00:41:33.6201954+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\team_card_bg.jpg</Source>
@@ -61,8 +61,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\team_card_bg.xnb</Output>
-      <Time>2013-09-21T20:14:53.6896071+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\team_card_bg.xnb</Output>
+      <Time>2013-03-07T00:41:33.631196+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card1.jpg</Source>
@@ -70,8 +70,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card1.xnb</Output>
-      <Time>2013-09-21T20:14:53.6966075+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card1.xnb</Output>
+      <Time>2013-03-07T06:25:12.0915045+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character1.jpg</Source>
@@ -79,8 +79,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character1.xnb</Output>
-      <Time>2013-09-21T20:14:53.7276093+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character1.xnb</Output>
+      <Time>2013-03-07T06:25:12.0124999+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character2.jpg</Source>
@@ -88,8 +88,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character2.xnb</Output>
-      <Time>2013-09-21T20:20:05.3504331+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character2.xnb</Output>
+      <Time>2013-03-07T06:25:12.0545023+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\controlplayer.jpg</Source>
@@ -97,8 +97,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\controlplayer.xnb</Output>
-      <Time>2013-09-21T20:20:12.9628685+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\controlplayer.xnb</Output>
+      <Time>2013-03-07T06:25:12.0595026+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health2.jpg</Source>
@@ -106,8 +106,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health2.xnb</Output>
-      <Time>2013-09-21T20:20:05.3934356+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health2.xnb</Output>
+      <Time>2013-03-07T06:25:12.0815039+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health5.jpg</Source>
@@ -115,8 +115,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health5.xnb</Output>
-      <Time>2013-09-21T20:20:12.953868+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health5.xnb</Output>
+      <Time>2013-03-07T06:25:12.0865042+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health_0.jpg</Source>
@@ -124,8 +124,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_0.xnb</Output>
-      <Time>2013-09-21T20:20:05.3704343+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_0.xnb</Output>
+      <Time>2013-03-07T06:25:12.0635029+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health_1.jpg</Source>
@@ -133,8 +133,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_1.xnb</Output>
-      <Time>2013-09-21T20:20:05.3744345+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_1.xnb</Output>
+      <Time>2013-03-07T06:25:12.0685031+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health_3.jpg</Source>
@@ -142,8 +142,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_3.xnb</Output>
-      <Time>2013-09-21T20:20:05.3864352+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_3.xnb</Output>
+      <Time>2013-03-07T06:25:12.0725034+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\health_4.jpg</Source>
@@ -151,8 +151,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_4.xnb</Output>
-      <Time>2013-09-21T20:20:05.3974358+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_4.xnb</Output>
+      <Time>2013-03-07T06:25:12.0775037+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\074_greenglow.png</Source>
@@ -160,8 +160,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_greenglow.xnb</Output>
-      <Time>2013-09-21T20:14:53.6846069+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_greenglow.xnb</Output>
+      <Time>2013-03-07T06:58:53.8861445+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\074_starlight.png</Source>
@@ -169,8 +169,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_starlight.xnb</Output>
-      <Time>2013-09-21T20:14:53.7086082+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_starlight.xnb</Output>
+      <Time>2013-03-07T06:58:53.8821443+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\chat_input.jpg</Source>
@@ -178,8 +178,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_input.xnb</Output>
-      <Time>2013-09-21T20:14:53.704608+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_input.xnb</Output>
+      <Time>2013-03-07T06:59:23.8058558+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\chat_screen.jpg</Source>
@@ -187,8 +187,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_screen.xnb</Output>
-      <Time>2013-09-21T20:20:05.3544334+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_screen.xnb</Output>
+      <Time>2013-03-07T06:59:23.8138563+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Kariya.jpg</Source>
@@ -196,8 +196,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kariya.xnb</Output>
-      <Time>2013-09-21T20:14:53.7346097+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kariya.xnb</Output>
+      <Time>2013-03-07T07:23:36.5219464+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Kayneth Archibald.jpg</Source>
@@ -205,8 +205,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kayneth Archibald.xnb</Output>
-      <Time>2013-09-21T20:14:53.8306152+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kayneth Archibald.xnb</Output>
+      <Time>2013-03-07T07:23:36.5269467+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Kiritsugu.jpg</Source>
@@ -214,8 +214,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kiritsugu.xnb</Output>
-      <Time>2013-09-21T20:14:53.7876128+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kiritsugu.xnb</Output>
+      <Time>2013-03-07T07:23:36.531947+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Kotomine Kirei.jpg</Source>
@@ -223,8 +223,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kotomine Kirei.xnb</Output>
-      <Time>2013-09-21T20:14:53.8006135+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kotomine Kirei.xnb</Output>
+      <Time>2013-03-07T07:23:36.5369473+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Ryuunosuke.jpg</Source>
@@ -232,8 +232,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Ryuunosuke.xnb</Output>
-      <Time>2013-09-21T20:14:53.7946132+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Ryuunosuke.xnb</Output>
+      <Time>2013-03-07T07:23:36.5429476+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Shirou.jpg</Source>
@@ -241,8 +241,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Shirou.xnb</Output>
-      <Time>2013-09-21T20:14:53.8066138+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Shirou.xnb</Output>
+      <Time>2013-03-07T07:23:36.549948+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Tohsaka Tokiomi.jpg</Source>
@@ -250,8 +250,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Tohsaka Tokiomi.xnb</Output>
-      <Time>2013-09-21T20:14:53.7816124+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Tohsaka Tokiomi.xnb</Output>
+      <Time>2013-03-07T07:23:36.5559484+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Waver Velvet.jpg</Source>
@@ -259,8 +259,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Waver Velvet.xnb</Output>
-      <Time>2013-09-21T20:14:53.8116141+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Waver Velvet.xnb</Output>
+      <Time>2013-03-07T07:23:36.5599486+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Diarmuid.jpg</Source>
@@ -268,8 +268,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Diarmuid.xnb</Output>
-      <Time>2013-09-21T20:14:53.8376156+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Diarmuid.xnb</Output>
+      <Time>2013-03-07T07:23:36.5769496+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Gilgamesh.jpg</Source>
@@ -277,8 +277,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gilgamesh.xnb</Output>
-      <Time>2013-09-21T20:14:53.7476105+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gilgamesh.xnb</Output>
+      <Time>2013-03-07T07:23:36.5829499+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Gille de Rais.jpg</Source>
@@ -286,8 +286,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gille de Rais.xnb</Output>
-      <Time>2013-09-21T20:14:53.7606112+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gille de Rais.xnb</Output>
+      <Time>2013-03-07T07:23:36.5889502+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Hassan.jpg</Source>
@@ -295,8 +295,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Hassan.xnb</Output>
-      <Time>2013-09-21T20:14:53.8236148+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Hassan.xnb</Output>
+      <Time>2013-03-07T07:23:36.5949506+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Iskander.jpg</Source>
@@ -304,8 +304,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Iskander.xnb</Output>
-      <Time>2013-09-21T20:14:53.7416101+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Iskander.xnb</Output>
+      <Time>2013-03-07T07:23:36.6009509+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Lancelot.jpg</Source>
@@ -313,8 +313,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Lancelot.xnb</Output>
-      <Time>2013-09-21T20:14:53.7536108+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Lancelot.xnb</Output>
+      <Time>2013-03-07T07:23:36.6089514+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\character\Saber.jpg</Source>
@@ -322,8 +322,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Saber.xnb</Output>
-      <Time>2013-09-21T20:14:53.8176145+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Saber.xnb</Output>
+      <Time>2013-03-07T07:23:36.6169518+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Alter Burst2.jpg</Source>
@@ -331,8 +331,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Alter Burst2.xnb</Output>
-      <Time>2013-09-21T20:20:05.4274375+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Alter Burst2.xnb</Output>
+      <Time>2013-03-13T18:42:34.9134984+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\C4 bomb.jpg</Source>
@@ -340,8 +340,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\C4 bomb.xnb</Output>
-      <Time>2013-09-21T20:20:05.4144368+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\C4 bomb.xnb</Output>
+      <Time>2013-03-13T18:42:34.9134984+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Collaboration.jpg</Source>
@@ -349,8 +349,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Collaboration.xnb</Output>
-      <Time>2013-09-21T20:20:05.4224372+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Collaboration.xnb</Output>
+      <Time>2013-03-13T18:42:34.9134984+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Command Spell.jpg</Source>
@@ -358,8 +358,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Command Spell.xnb</Output>
-      <Time>2013-09-21T20:20:05.4594394+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Command Spell.xnb</Output>
+      <Time>2013-03-13T18:42:34.9446985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Crystal Ball.jpg</Source>
@@ -367,8 +367,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Crystal Ball.xnb</Output>
-      <Time>2013-09-21T20:20:05.4544391+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Crystal Ball.xnb</Output>
+      <Time>2013-03-13T18:42:34.9446985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Curse of Lancer.jpg</Source>
@@ -376,8 +376,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Curse of Lancer.xnb</Output>
-      <Time>2013-09-21T20:20:05.4494388+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Curse of Lancer.xnb</Output>
+      <Time>2013-03-13T18:42:34.9446985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Distant Trampling Domination.jpg</Source>
@@ -385,8 +385,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Distant Trampling Domination.xnb</Output>
-      <Time>2013-09-21T20:20:05.4094365+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Distant Trampling Domination.xnb</Output>
+      <Time>2013-03-13T18:42:34.9446985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Duel.jpg</Source>
@@ -394,8 +394,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Duel.xnb</Output>
-      <Time>2013-09-21T20:20:05.4324378+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Duel.xnb</Output>
+      <Time>2013-03-13T18:42:34.9446985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Enkidu.jpg</Source>
@@ -403,8 +403,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enkidu.xnb</Output>
-      <Time>2013-09-21T20:20:05.4724401+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enkidu.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Enuma Elish.jpg</Source>
@@ -412,8 +412,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enuma Elish.xnb</Output>
-      <Time>2013-09-21T20:20:05.436438+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enuma Elish.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Evil Intentions.jpg</Source>
@@ -421,8 +421,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Evil Intentions.xnb</Output>
-      <Time>2013-09-21T20:20:05.4444385+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Evil Intentions.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Excalibur.jpg</Source>
@@ -430,8 +430,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Excalibur.xnb</Output>
-      <Time>2013-09-21T20:20:05.4634396+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Excalibur.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\GoB.jpg</Source>
@@ -439,8 +439,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\GoB.xnb</Output>
-      <Time>2013-09-21T20:20:05.417437+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\GoB.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Grail of Heaven.jpg</Source>
@@ -448,8 +448,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Grail of Heaven.xnb</Output>
-      <Time>2013-09-21T20:20:05.4404383+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Grail of Heaven.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\card\Knight of Honor.jpg</Source>
@@ -457,8 +457,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Knight of Honor.xnb</Output>
-      <Time>2013-09-21T20:20:05.4684399+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Knight of Honor.xnb</Output>
+      <Time>2013-03-13T18:42:34.9602985+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\border_card.jpg</Source>
@@ -466,8 +466,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_card.xnb</Output>
-      <Time>2013-09-21T20:14:53.7196089+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_card.xnb</Output>
+      <Time>2013-03-13T18:43:14.6935683+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\border_render.jpg</Source>
@@ -475,8 +475,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_render.xnb</Output>
-      <Time>2013-09-21T20:14:53.6676059+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_render.xnb</Output>
+      <Time>2013-03-13T18:43:14.7091683+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\draw.png</Source>
@@ -484,8 +484,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\draw.xnb</Output>
-      <Time>2013-09-21T20:14:53.6466047+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\draw.xnb</Output>
+      <Time>2013-03-13T18:43:14.7091683+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\ok.png</Source>
@@ -493,8 +493,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ok.xnb</Output>
-      <Time>2013-09-21T20:20:05.3464329+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ok.xnb</Output>
+      <Time>2013-03-13T18:43:14.7403684+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\Test.png</Source>
@@ -502,8 +502,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Test.xnb</Output>
-      <Time>2013-09-21T20:20:05.3584336+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Test.xnb</Output>
+      <Time>2013-03-13T22:43:22.3817902+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\hostgame.png</Source>
@@ -511,8 +511,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\hostgame.xnb</Output>
-      <Time>2013-09-21T20:14:53.7236091+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\hostgame.xnb</Output>
+      <Time>2013-03-28T20:51:27.5762028+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\joingame.png</Source>
@@ -520,8 +520,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\joingame.xnb</Output>
-      <Time>2013-09-21T20:14:53.7006078+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\joingame.xnb</Output>
+      <Time>2013-03-28T20:51:27.579203+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\menu_background.jpg</Source>
@@ -529,8 +529,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background.xnb</Output>
-      <Time>2013-09-21T20:14:53.6626056+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background.xnb</Output>
+      <Time>2013-03-28T20:51:27.5362005+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\option.png</Source>
@@ -538,8 +538,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\option.xnb</Output>
-      <Time>2013-09-21T20:14:53.6766064+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\option.xnb</Output>
+      <Time>2013-03-28T20:51:27.5842033+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\quit.png</Source>
@@ -547,8 +547,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\quit.xnb</Output>
-      <Time>2013-09-21T20:20:05.383435+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\quit.xnb</Output>
+      <Time>2013-03-28T20:51:27.5872035+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\start.png</Source>
@@ -556,8 +556,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\start.xnb</Output>
-      <Time>2013-09-21T20:14:53.7126085+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\start.xnb</Output>
+      <Time>2013-03-28T20:51:27.5201996+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\menu_background_2.jpg</Source>
@@ -565,8 +565,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background_2.xnb</Output>
-      <Time>2013-09-21T20:20:05.366434+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background_2.xnb</Output>
+      <Time>2013-03-28T23:06:32.1767595+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\caret.png</Source>
@@ -574,8 +574,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\caret.xnb</Output>
-      <Time>2013-09-21T20:14:53.6536051+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\caret.xnb</Output>
+      <Time>2013-03-29T12:06:35.9717834+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\white_textbox.png</Source>
@@ -583,8 +583,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\white_textbox.xnb</Output>
-      <Time>2013-09-21T20:14:53.7166087+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\white_textbox.xnb</Output>
+      <Time>2013-03-29T12:06:35.9697833+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\Highlighted_textbox.png</Source>
@@ -592,8 +592,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Highlighted_textbox.xnb</Output>
-      <Time>2013-09-21T20:14:53.6506049+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Highlighted_textbox.xnb</Output>
+      <Time>2013-03-29T20:20:43.2519832+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\Scrollbar.png</Source>
@@ -601,8 +601,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Scrollbar.xnb</Output>
-      <Time>2013-09-21T20:20:05.3904354+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Scrollbar.xnb</Output>
+      <Time>2013-04-20T05:47:13.0791576+07:00</Time>
     </Item>
     <Item>
       <Source>Resource\ScrollbarBackground.png</Source>
@@ -610,8 +610,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ScrollbarBackground.xnb</Output>
-      <Time>2013-09-21T20:14:53.6926073+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ScrollbarBackground.xnb</Output>
+      <Time>2013-04-06T03:01:34.897036+07:00</Time>
     </Item>
     <Item>
       <Source>SpriteFont1.spritefont</Source>
@@ -619,8 +619,26 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\SpriteFont1.xnb</Output>
-      <Time>2013-09-21T20:20:13.5048995+07:00</Time>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\SpriteFont1.xnb</Output>
+      <Time>2013-04-20T06:20:33.8185934+07:00</Time>
+    </Item>
+    <Item>
+      <Source>Resource\avatar_default.jpg</Source>
+      <Name>Resource\avatar_default</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\avatar_default.xnb</Output>
+      <Time>2013-09-26T04:27:49.064244+07:00</Time>
+    </Item>
+    <Item>
+      <Source>Resource\background.jpg</Source>
+      <Name>Resource\background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\background.xnb</Output>
+      <Time>2013-09-26T04:35:07.202304+07:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -628,39 +646,39 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Release</BuildConfiguration>
       <CompressContent>true</CompressContent>
-      <RootDirectory>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1Content\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1Content\obj\x86\Release\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\</OutputDirectory>
+      <RootDirectory>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1Content\</RootDirectory>
+      <LoggerRootDirectory>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\</LoggerRootDirectory>
+      <IntermediateDirectory>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1Content\obj\x86\Release\</IntermediateDirectory>
+      <OutputDirectory>E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
-        <Key>C:\Program Files\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
         <Value>2010-08-23T12:41:18+07:00</Value>
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2013-03-06T17:16:26.5044875+07:00</Value>
+        <Value>2013-09-20T22:20:09.8708497+07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

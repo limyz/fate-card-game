@@ -156,3 +156,84 @@ E:\project\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.D
 E:\project\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.csproj.GenerateResource.Cache
 E:\project\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.exe
 E:\project\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.pdb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Data\Character.xml
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Data\Card.xml
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Untitled-1.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card_back.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character_back.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FE.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FSN.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\FZ.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\team_card_bg.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card1.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character1.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character2.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\controlplayer.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health2.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health5.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_0.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_1.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_3.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\health_4.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_greenglow.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\074_starlight.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_input.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\chat_screen.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kariya.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kayneth Archibald.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kiritsugu.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Kotomine Kirei.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Ryuunosuke.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Shirou.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Tohsaka Tokiomi.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Waver Velvet.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Diarmuid.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gilgamesh.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Gille de Rais.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Hassan.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Iskander.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Lancelot.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\character\Saber.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Alter Burst2.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\C4 bomb.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Collaboration.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Command Spell.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Crystal Ball.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Curse of Lancer.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Distant Trampling Domination.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Duel.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enkidu.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Enuma Elish.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Evil Intentions.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Excalibur.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\GoB.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Grail of Heaven.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\card\Knight of Honor.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_card.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\border_render.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\draw.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ok.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Test.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\hostgame.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\joingame.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\option.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\quit.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\start.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\menu_background_2.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\caret.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\white_textbox.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Highlighted_textbox.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\Scrollbar.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ScrollbarBackground.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\SpriteFont1.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\WindowsGame1.exe
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\WindowsGame1.pdb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.csprojResolveAssemblyReference.cache
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\Microsoft.Xna.Framework.RuntimeProfile.txt
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.Debug.resources
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.csproj.GenerateResource.Cache
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.exe
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.pdb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\avatar_default.xnb
+E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\background.xnb
