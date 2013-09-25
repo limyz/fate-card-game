@@ -66,13 +66,19 @@ namespace WindowsGame1
         {
             play_animation_state = true;
             play_animation();
-        }
+        }       
+        #endregion
+
+        #region Update's funtion
         private void play_animation()
         {
-            if (avatar_img.rec.X == 255)
+            Rectangle temp = avatar_img.rec.move(255, avatar_img.rec.Y, 3, 0);
+            if (temp.X == 255)
                 play_animation_state = false;
             else
-                avatar_img.rec.X += 2;
+            {
+                avatar_img.rec = temp; 
+            }           
         }
         #endregion
 

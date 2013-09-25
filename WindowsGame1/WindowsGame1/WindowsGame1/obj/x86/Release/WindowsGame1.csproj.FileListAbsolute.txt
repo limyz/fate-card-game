@@ -237,3 +237,5 @@ E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\Wi
 E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Release\WindowsGame1.pdb
 E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\avatar_default.xnb
 E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\background.xnb
+C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\avatar_default.xnb
+C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\background.xnb
