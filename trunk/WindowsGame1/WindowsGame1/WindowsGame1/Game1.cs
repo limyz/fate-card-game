@@ -44,6 +44,32 @@ public static class My_Extension
         }
         //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
     }
+
+    public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
+    {
+        if(rec.X == new_x && rec.Y == new_y)
+        {
+            return rec;
+        }
+        if (rec.X < new_x)
+        {
+            rec.X += Math.Min(new_x - rec.X, speed_x);
+        }
+        else if(rec.X > new_x)
+        {
+            rec.X -= Math.Min(rec.X - new_x, speed_x);
+        }
+
+        if (rec.Y < new_y)
+        {
+            rec.Y += Math.Min(new_y - rec.Y, speed_y);
+        }
+        else if (rec.Y > new_y)
+        {
+            rec.Y -= Math.Min(rec.Y - new_y, speed_y);
+        }
+        return rec;
+    }
 }
 #endregion
 
