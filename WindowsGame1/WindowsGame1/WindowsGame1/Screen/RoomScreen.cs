@@ -65,7 +65,6 @@ namespace WindowsGame1
         private void avatar_clicked(object sender, FormEventData e)
         {
             play_animation_state = true;
-            play_animation();
         }       
         #endregion
 
