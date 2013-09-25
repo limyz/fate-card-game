@@ -315,7 +315,7 @@ namespace WindowsGame1
         }
         #endregion
 
-        #region Upadte
+        #region Update
         public override void Update(GameTime theTime)
         {
             base.Update(theTime);

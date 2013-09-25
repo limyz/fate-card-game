@@ -67,3 +67,5 @@ Content\Resource\Highlighted_textbox.xnb
 Content\Resource\Scrollbar.xnb
 Content\Resource\ScrollbarBackground.xnb
 Content\SpriteFont1.xnb
+Content\Resource\avatar_default.xnb
+Content\Resource\background.xnb
