@@ -52,7 +52,7 @@ namespace WindowsGame1
         }
         #endregion
 
-        #region HANDLER
+        #region Handler
         private void RoomScreen_OnKeysDown(Keys[] keys)
         {
             foreach (Keys k in keys)
@@ -68,7 +68,7 @@ namespace WindowsGame1
         }       
         #endregion
 
-        #region Update's funtion
+        #region Update's function
         private void play_animation()
         {
             Rectangle temp = avatar_img.rec.move(255, avatar_img.rec.Y, 3, 0);
@@ -76,8 +76,8 @@ namespace WindowsGame1
                 play_animation_state = false;
             else
             {
-                avatar_img.rec = temp; 
-            }           
+                avatar_img.rec = temp;
+            }
         }
         #endregion
 
