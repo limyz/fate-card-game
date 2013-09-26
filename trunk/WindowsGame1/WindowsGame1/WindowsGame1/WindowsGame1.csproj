@@ -128,6 +128,7 @@
     <Compile Include="Form\ImageButton.cs" />
     <Compile Include="Screen\InGameScreen.cs" />
     <Compile Include="Form\Label.cs" />
+    <Compile Include="Screen\JoinScreen.cs" />
     <Compile Include="Screen\MenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

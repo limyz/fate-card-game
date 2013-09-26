@@ -70,6 +70,32 @@ public static class My_Extension
         }
         return rec;
     }
+
+    public static void move_rec(ref Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
+    {
+        if (rec.X == new_x && rec.Y == new_y)
+        {
+            return;
+        }
+        if (rec.X < new_x)
+        {
+            rec.X += Math.Min(new_x - rec.X, speed_x);
+        }
+        else if (rec.X > new_x)
+        {
+            rec.X -= Math.Min(rec.X - new_x, speed_x);
+        }
+
+        if (rec.Y < new_y)
+        {
+            rec.Y += Math.Min(new_y - rec.Y, speed_y);
+        }
+        else if (rec.Y > new_y)
+        {
+            rec.Y -= Math.Min(rec.Y - new_y, speed_y);
+        }
+        return;
+    }
 }
 #endregion
 
@@ -114,6 +140,7 @@ namespace WindowsGame1
         InGameScreen mInGameScreen;
         HostScreen mHostScreen;
         RoomScreen mRoomScreen;
+        JoinScreen mJoinScreen;
 
         public Screen mCurrentScreen;
         public Debug debugger = new Debug();
@@ -378,6 +405,8 @@ namespace WindowsGame1
             mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent), this);
             mHostScreen = new HostScreen(graphics, this.Content, new SivEventHandler(HostScreenEvent), this);
             mRoomScreen = new RoomScreen(graphics, this.Content, new SivEventHandler(RoomScreenEvent), this);
+            mJoinScreen = new JoinScreen(graphics, this.Content, new SivEventHandler(JoinScreenEvent), this);
+
             mCurrentScreen = mMenuScreen;
 
             //update_input_state();            
@@ -394,6 +423,10 @@ namespace WindowsGame1
             {
                 mCurrentScreen = mHostScreen;
             }
+            else if (e.Command_code == 3)
+            {
+                mCurrentScreen = mJoinScreen;
+            }
         }
         public void InGameEvent(object obj, SivEventArgs e)
         {
@@ -408,12 +441,19 @@ namespace WindowsGame1
             {
                 mCurrentScreen = mMenuScreen;
             }
-            if (e.Command_code == 3)
+            if (e.Command_code == 4)
             {
                 mCurrentScreen = mRoomScreen; ;
             }
         }
         public void RoomScreenEvent(object obj, SivEventArgs e)
+        {
+            if (e.Command_code == 0)
+            {
+                mCurrentScreen = mMenuScreen;
+            }
+        }
+        public void JoinScreenEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 0)
             {
