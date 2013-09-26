@@ -1,3 +1,0 @@
-C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1Content\obj\x86\Release\WindowsGame1Content.contentprojResolveAssemblyReference.cache
-E:\project\WindowsGame1\WindowsGame1\WindowsGame1Content\obj\x86\Release\WindowsGame1Content.contentprojResolveAssemblyReference.cache
-E:\project\GameProject\WindowsGame1\WindowsGame1\WindowsGame1Content\obj\x86\Release\WindowsGame1Content.contentprojResolveAssemblyReference.cache
