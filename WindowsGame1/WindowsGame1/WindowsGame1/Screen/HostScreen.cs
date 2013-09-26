@@ -25,10 +25,9 @@ namespace WindowsGame1
         TextBox Host_name_textbox;
         TextBox Room_name_textbox;
         TextBox Number_of_player_textbox;
-        Texture2D backgroundTexture;
-        int screenWidth = 1200;
-        int screenHeight = 720;
-        Rectangle screenRectangle;
+        Texture2D backgroundTexture, background_saber, dialog;
+        Rectangle screenRectangle, saberRec, dialogRec;
+
         #endregion
 
         #region load content
@@ -41,40 +40,44 @@ namespace WindowsGame1
             Texture2D caret = Content.Load<Texture2D>("Resource/caret");
 
             backgroundTexture = Content.Load<Texture2D>("Resource/background");
-            screenRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
+            background_saber = Content.Load<Texture2D>("Resource/saber_trans");
+            dialog = Content.Load<Texture2D>("Resource/dialog_menu"); 
+            screenRectangle = new Rectangle(0, 0, main_game.window_width, main_game.window_height);
+            saberRec = new Rectangle(-50,0,700,735);
+            dialogRec = new Rectangle(400, 120, 400, 300);
 
             Host_name_label = new Label("host_name_label",
                 font, "Player name"
-                , 10, 10, 150, Color.White, this);
+                , 470, 200, 150, Color.White, this);
 
             Host_name_textbox = new TextBox("Host_name_textbox"
                 , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(105, 10, 100, 20), this);
+                , font, new Rectangle(620, 200, 100, 20), this);
 
-            Room_name_label = new Label("room_name_label"
+            Room_name_label = new Label("Room_name_label"
                 , font, "Room name"
-                , 10, 40, 150, Color.White, this);
+                , 470, 230, 150, Color.White, this);
 
             Room_name_textbox = new TextBox("Room_name_textbox"
                 , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(105, 40, 100, 20), this);
+                , font, new Rectangle(620, 230, 100, 20), this);
 
             Number_of_player_label = new Label("Number_of_player_label"
                 , font, "Number of Player"
-                , 10, 70, 150, Color.White, this);
+                , 470, 260, 150, Color.White, this);
 
             Number_of_player_textbox = new TextBox("Number_of_player_textbox"
                 , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(140, 70, 100, 20), this);
+                , font, new Rectangle(620, 260, 100, 20), this);
 
             OK_button = new ImageButton("OK_button"
-                , Content.Load<Texture2D>("Resource/ok")
-                , new Rectangle(10, 110, 150, 50), this);
+                , Content.Load<Texture2D>("Resource/ok_button")
+                , new Rectangle(480, 300, 120, 42), this);
             OK_button.OnClick += Ok_button_clicked;
 
-            Canel_button = new ImageButton("Cancel_butoon"
-                , Content.Load<Texture2D>("Resource/quit")
-                , new Rectangle(160, 120, 150, 25), this);
+            Canel_button = new ImageButton("Cancel_button"
+                , Content.Load<Texture2D>("Resource/back_button")
+                , new Rectangle(600, 300, 120, 42), this);
             Canel_button.OnClick += Cancel_button_clicked;
 
             #region HostScreen_RegisterHandler
@@ -82,11 +85,6 @@ namespace WindowsGame1
             #endregion
         }
         #endregion
-
-        private void DrawBackground()
-        {
-            
-        }
 
         #region HANDLER
         private void HostScreen_OnKeysDown(Keys[] keys)
@@ -120,6 +118,8 @@ namespace WindowsGame1
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(backgroundTexture, screenRectangle, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+            spriteBatch.Draw(background_saber, saberRec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+            spriteBatch.Draw(dialog, dialogRec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.9f);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
