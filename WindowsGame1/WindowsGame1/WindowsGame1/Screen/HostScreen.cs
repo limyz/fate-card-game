@@ -34,7 +34,7 @@ namespace WindowsGame1
         public HostScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("HostScreen",theEvent, parent)
         {
-            font = Content.Load<SpriteFont>("SpriteFont1");
+            font = Content.Load<SpriteFont>("Resource/font/TNRoman_12_Bold");
             Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
             Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
             Texture2D caret = Content.Load<Texture2D>("Resource/caret");

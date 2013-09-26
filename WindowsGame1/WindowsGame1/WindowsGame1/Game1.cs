@@ -40,14 +40,14 @@ public static class My_Extension
         for (int i = 0; i < list.Count; i++)
         {
             int rd = rand.Next(i, list.Count);
-            list.move<T>(rd,i);
+            list.move<T>(rd, i);
         }
         //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
     }
 
     public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
     {
-        if(rec.X == new_x && rec.Y == new_y)
+        if (rec.X == new_x && rec.Y == new_y)
         {
             return rec;
         }
@@ -55,7 +55,7 @@ public static class My_Extension
         {
             rec.X += Math.Min(new_x - rec.X, speed_x);
         }
-        else if(rec.X > new_x)
+        else if (rec.X > new_x)
         {
             rec.X -= Math.Min(rec.X - new_x, speed_x);
         }
@@ -94,7 +94,7 @@ public delegate void MessageEventHandler(object sender, string message);
 public delegate void SivEventHandler2(object sender, object data);
 
 public delegate void MouseScrollEventHandler(int value_change);
-public delegate void MouseEventHandler(MouseState mouseState,MouseState lastMouseState);
+public delegate void MouseEventHandler(MouseState mouseState, MouseState lastMouseState);
 public delegate void KeyboardEventHandler(Keys[] keys);
 public delegate void EventRaiserDelegate();
 public delegate void UpdateDelegate(GameTime gametime);
@@ -109,7 +109,7 @@ namespace WindowsGame1
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
-    {        
+    {
         MenuScreen mMenuScreen;
         InGameScreen mInGameScreen;
         HostScreen mHostScreen;
@@ -119,11 +119,11 @@ namespace WindowsGame1
         public Debug debugger = new Debug();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);        
+        public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
         public Texture2D white_texture;
         //global variable
         public int window_width = 1200;
-        public int window_height = 720;        
+        public int window_height = 720;
         //end global variable
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -137,10 +137,10 @@ namespace WindowsGame1
         public EventRaiserDelegate Event_Raiser_Delegate;
         public KeyboardTextDispatcher keyboard_text_dispatcher;
 
-        #region Event raiser function        
+        #region Event raiser function
         private void On_Click_Dispatcher()
         {
-            if (last_mouse_state.LeftButton == ButtonState.Released 
+            if (last_mouse_state.LeftButton == ButtonState.Released
                 && mouse_state.LeftButton == ButtonState.Pressed)
             {
                 //MessageBox(new IntPtr(0), "mouseClick", "", 0);
@@ -227,8 +227,8 @@ namespace WindowsGame1
         }
         private void On_Mouse_Scroll_Dispatcher()
         {
-            int change=mouse_state.ScrollWheelValue - last_mouse_state.ScrollWheelValue;
-            if (change!=0)
+            int change = mouse_state.ScrollWheelValue - last_mouse_state.ScrollWheelValue;
+            if (change != 0)
             {
                 if (mCurrentScreen.OnMouseScroll != null)
                     mCurrentScreen.OnMouseScroll.Invoke(change);
@@ -342,7 +342,7 @@ namespace WindowsGame1
 
             graphics.PreferredBackBufferHeight = window_height;
             graphics.PreferredBackBufferWidth = window_width;
-            graphics.ApplyChanges();            
+            graphics.ApplyChanges();
             this.IsMouseVisible = true;
             keyboard_text_dispatcher = new KeyboardTextDispatcher(this.Window);
 
@@ -370,12 +370,12 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
             white_texture = new Texture2D(graphics.GraphicsDevice, 1, 1);
-            white_texture.SetData(new[] { Color.White });            
-            
-            mMenuScreen = new MenuScreen(graphics,this.Content, new SivEventHandler(MenuScreenEvent),this);
-            mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent),this);
+            white_texture.SetData(new[] { Color.White });
+
+            mMenuScreen = new MenuScreen(graphics, this.Content, new SivEventHandler(MenuScreenEvent), this);
+            mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent), this);
             mHostScreen = new HostScreen(graphics, this.Content, new SivEventHandler(HostScreenEvent), this);
             mRoomScreen = new RoomScreen(graphics, this.Content, new SivEventHandler(RoomScreenEvent), this);
             mCurrentScreen = mMenuScreen;
@@ -400,7 +400,7 @@ namespace WindowsGame1
             if (e.Command_code == 0)
             {
                 mCurrentScreen = mMenuScreen;
-            }            
+            }
         }
         public void HostScreenEvent(object obj, SivEventArgs e)
         {
@@ -420,7 +420,7 @@ namespace WindowsGame1
                 mCurrentScreen = mMenuScreen;
             }
         }
-        #endregion        
+        #endregion
 
         protected override void UnloadContent()
         {
@@ -440,17 +440,17 @@ namespace WindowsGame1
             if (key_press(Keys.OemTilde))
             {
                 debugger.Show();
-            }            
+            }
             mCurrentScreen.Update(gameTime);
-            
+
             base.Update(gameTime);
-        }          
+        }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
 
-            mCurrentScreen.Draw(graphics,spriteBatch,gameTime);
+            mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
 
             base.Draw(gameTime);
         }
