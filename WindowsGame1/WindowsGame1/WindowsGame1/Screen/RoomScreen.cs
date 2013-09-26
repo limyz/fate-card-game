@@ -71,7 +71,7 @@ namespace WindowsGame1
         #region Update's function
         private void play_animation()
         {
-            Rectangle temp = avatar_img.rec.move(255, avatar_img.rec.Y, 3, 0);
+            Rectangle temp = avatar_img.rec.move(255, avatar_img.rec.Y, 2, 0);
             if (temp.X == 255)
                 play_animation_state = false;
             else
