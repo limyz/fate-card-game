@@ -68,8 +68,8 @@ Content\Resource\Scrollbar.xnb
 Content\Resource\ScrollbarBackground.xnb
 Content\Resource\avatar_default.xnb
 Content\Resource\background.xnb
+Content\SpriteFont1.xnb
 Content\Resource\saber_trans.xnb
 Content\Resource\ok_button.xnb
 Content\Resource\back_button.xnb
 Content\Resource\dialog_menu.xnb
-Content\SpriteFont1.xnb
