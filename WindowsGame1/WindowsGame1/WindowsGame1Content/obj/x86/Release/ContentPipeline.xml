@@ -640,6 +640,42 @@
       <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\SpriteFont1.xnb</Output>
       <Time>2013-09-21T20:20:13.5048995+07:00</Time>
     </Item>
+    <Item>
+      <Source>Resource\saber_trans.png</Source>
+      <Name>Resource\saber_trans</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\saber_trans.xnb</Output>
+      <Time>2013-09-26T07:13:03.5682449+07:00</Time>
+    </Item>
+    <Item>
+      <Source>Resource\ok_button.png</Source>
+      <Name>Resource\ok_button</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\ok_button.xnb</Output>
+      <Time>2013-09-26T07:13:03.5562442+07:00</Time>
+    </Item>
+    <Item>
+      <Source>Resource\back_button.png</Source>
+      <Name>Resource\back_button</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\back_button.xnb</Output>
+      <Time>2013-09-26T07:13:03.5632446+07:00</Time>
+    </Item>
+    <Item>
+      <Source>Resource\dialog_menu.png</Source>
+      <Name>Resource\dialog_menu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\HELLO\Desktop\Soft\Programming\C#\Game\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Release\Content\Resource\dialog_menu.xnb</Output>
+      <Time>2013-09-26T07:13:03.5602445+07:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <TargetPlatform>Windows</TargetPlatform>
