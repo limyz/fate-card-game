@@ -66,6 +66,6 @@ namespace WindowsGame1
             {
                 spriteBatch.Draw(texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
             }
-        }     
+        }
     }
 }

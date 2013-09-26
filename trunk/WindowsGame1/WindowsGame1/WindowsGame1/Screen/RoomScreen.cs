@@ -19,6 +19,7 @@ namespace WindowsGame1
         Texture2D border_texture;
         ImageButton avatar_img;
         Boolean play_animation_state = false;
+        float new_x = 0, new_y = 0;
         #endregion
 
         #region Load Content
@@ -65,20 +66,30 @@ namespace WindowsGame1
         private void avatar_clicked(object sender, FormEventData e)
         {
             play_animation_state = true;
-        }       
+        }
         #endregion
 
         #region Update's function
         private void play_animation()
         {
-            Rectangle temp = avatar_img.rec.move(255, avatar_img.rec.Y, 4, 0);
-            if (temp.X == 255)
+            float x = 255;
+            float y = 270;
+            float speed_x = (x - 45) / 100;
+            float speed_y = (y - 40) / 100;
+
+            System.Console.WriteLine(speed_x);
+            System.Console.WriteLine(speed_y);
+
+            Rectangle temp = avatar_img.rec.move(Convert.ToInt32(x), Convert.ToInt32(y), Convert.ToInt32(speed_x), Convert.ToInt32(speed_y));
+            //Rectangle temp = avatar_img.rec.move(x, y, speed_x, speed_y);
+            if (new_x == x && new_y == y)
                 play_animation_state = false;
             else
             {
                 avatar_img.rec = temp;
             }
         }
+
         #endregion
 
         #region Update
@@ -97,7 +108,7 @@ namespace WindowsGame1
             spriteBatch.Draw(border_texture, div1, Color.White);
             foreach (Rectangle rec in div_char)
             {
-                spriteBatch.Draw(border_texture, rec, Color.White);
+                spriteBatch.Draw(border_texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
             }
             avatar_img.Draw(spriteBatch, gameTime);
             spriteBatch.Draw(border_texture, chat_box, Color.White);
