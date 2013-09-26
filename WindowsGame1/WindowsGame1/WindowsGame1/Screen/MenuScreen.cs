@@ -63,6 +63,10 @@ namespace WindowsGame1
                 ScreenEvent.Invoke(this, new SivEventArgs(2));
                 return;
             }
+            else if (sender as ImageButton == join_button)
+            {
+                ScreenEvent.Invoke(this, new SivEventArgs(3));
+            }
             else if (sender as ImageButton == quit_button)
             {
                 main_game.Exit();

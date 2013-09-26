@@ -19,7 +19,6 @@ namespace WindowsGame1
         Texture2D border_texture;
         ImageButton avatar_img;
         Boolean play_animation_state = false;
-        float new_x = 0, new_y = 0;
         #endregion
 
         #region Load Content
@@ -65,28 +64,23 @@ namespace WindowsGame1
         }
         private void avatar_clicked(object sender, FormEventData e)
         {
+            int test = (270 - avatar_img.rec.Y) + (avatar_img.rec.X - 255);
+            avatar_img.rec.Y += test;
             play_animation_state = true;
         }
         #endregion
 
         #region Update's function
-        private void play_animation()
+        private void play_animation(ref Rectangle rec)
         {
-            float x = 255;
-            float y = 270;
-            float speed_x = (x - 45) / 100;
-            float speed_y = (y - 40) / 100;
-
-            System.Console.WriteLine(speed_x);
-            System.Console.WriteLine(speed_y);
-
-            Rectangle temp = avatar_img.rec.move(Convert.ToInt32(x), Convert.ToInt32(y), Convert.ToInt32(speed_x), Convert.ToInt32(speed_y));
-            //Rectangle temp = avatar_img.rec.move(x, y, speed_x, speed_y);
-            if (new_x == x && new_y == y)
+            int x = 255;
+            int y = 270;
+            int speed = 2;
+            if (rec.X == x && rec.Y == y)
                 play_animation_state = false;
             else
             {
-                avatar_img.rec = temp;
+                My_Extension.move_rec(ref rec, x, y, speed, speed);
             }
         }
 
@@ -95,7 +89,7 @@ namespace WindowsGame1
         #region Update
         public override void Update(GameTime theTime)
         {
-            if (play_animation_state) play_animation();
+            if (play_animation_state) play_animation(ref avatar_img.rec);
             base.Update(theTime);
         }
         #endregion
