@@ -145,9 +145,12 @@ namespace WindowsGame1
         public Screen mCurrentScreen;
         public Debug debugger = new Debug();
 
+        //static variable
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
-        public Texture2D white_texture;
+        public static Texture2D white_texture;
+        //end static variable
+
         //global variable
         public int window_width = 1200;
         public int window_height = 720;

@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\Border.cs" />
     <Compile Include="Form\Textbox\EventTextInput.cs" />
     <Compile Include="Debug.cs">
       <SubType>Form</SubType>
