@@ -13,6 +13,9 @@ namespace WindowsGame1
     {
         #region variable decleration
         SpriteFont font;
+        Border test_border;
+        Rectangle test_rec = new Rectangle(150, 100, 200, 200);
+        ImageButton test_img;
         #endregion
 
         #region load content
@@ -21,6 +24,8 @@ namespace WindowsGame1
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
 
+            test_img = new ImageButton("blahblah", Content.Load<Texture2D>("Resource/Test"), test_rec, this);                ;
+            test_border = new Border("test_border", Color.Blue, 3, test_rec, this);
 
             #region JoinScreen_RegisterHandler
             OnKeysDown += JoinScreen_OnKeysDown;
@@ -50,7 +55,7 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin();
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
