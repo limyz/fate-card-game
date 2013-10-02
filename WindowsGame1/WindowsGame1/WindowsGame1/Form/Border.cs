@@ -39,7 +39,7 @@ namespace WindowsGame1
         }
         private void Draw_Vertical_Line(SpriteBatch sb, int x)
         {
-            sb.Draw(texture, new Rectangle(x, rec.Y, Width, rec.Width), color);
+            sb.Draw(texture, new Rectangle(x, rec.Y, Width, rec.Height), color);
         }
         #endregion
 
