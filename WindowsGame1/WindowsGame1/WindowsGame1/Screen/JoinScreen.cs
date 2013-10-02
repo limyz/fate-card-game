@@ -24,7 +24,7 @@ namespace WindowsGame1
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
 
-            test_img = new ImageButton("blahblah", Content.Load<Texture2D>("Resource/Test"), test_rec, this);                ;
+            test_img = new ImageButton("blahblah", Content.Load<Texture2D>("Resource/Test"), test_rec, this);
             test_border = new Border("test_border", Color.Blue, 3, test_rec, this);
 
             #region JoinScreen_RegisterHandler

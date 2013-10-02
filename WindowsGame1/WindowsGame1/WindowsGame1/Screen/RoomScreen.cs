@@ -14,6 +14,7 @@ namespace WindowsGame1
         #region variable decleration
         SpriteFont font;
         Texture2D test_img;
+        Border test_border, div1_border, chat_box_border, div_info_border;
         Rectangle div1, chat_box, div_info;
         Rectangle[] div_char = new Rectangle[8];
         Texture2D border_texture;
@@ -39,6 +40,10 @@ namespace WindowsGame1
 
             chat_box = new Rectangle(20, 550, 950, 150);
             div_info = new Rectangle(950, 20, 200, 500);
+
+            div1_border = new Border("div1", Color.DarkRed, 2, div1, this);
+            chat_box_border = new Border("chat_box", Color.DarkRed, 2, chat_box, this);
+            div_info_border = new Border("div_info", Color.DarkRed, 2, div_info, this);
 
             border_texture = Content.Load<Texture2D>("Resource/Untitled-1");
             test_img = Content.Load<Texture2D>("Resource/avatar_default");
@@ -99,14 +104,14 @@ namespace WindowsGame1
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(border_texture, div1, Color.White);
-            foreach (Rectangle rec in div_char)
+            //spriteBatch.Draw(border_texture, div1, Color.White);
+            /*foreach (Rectangle rec in div_char)
             {
                 spriteBatch.Draw(border_texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
-            }
-            avatar_img.Draw(spriteBatch, gameTime);
-            spriteBatch.Draw(border_texture, chat_box, Color.White);
-            spriteBatch.Draw(border_texture, div_info, Color.White);
+            }*/
+            //avatar_img.Draw(spriteBatch, gameTime);
+            //spriteBatch.Draw(border_texture, chat_box, Color.White);
+            //spriteBatch.Draw(border_texture, div_info, Color.White);
             //spriteBatch.Draw(test_img, div_char[0], Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
