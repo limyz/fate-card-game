@@ -13,13 +13,15 @@ namespace WindowsGame1
     {
         #region variable decleration
         SpriteFont font;
-        Texture2D test_img;
-        Border test_border, div1_border, chat_box_border, div_info_border;
-        Rectangle div1, chat_box, div_info;
+        Texture2D test_img, backgroundTexture, quit_img, start_img;
+        Border div_border, chat_box_border, div_info_border;
+        Border[] div_char_border = new Border[8];
+        Rectangle div, chat_box, div_info, startRec, quitRec;
         Rectangle[] div_char = new Rectangle[8];
-        Texture2D border_texture;
-        ImageButton avatar_img;
+        Background backGround;
+        ImageButton avatar_img, start, quit;
         Boolean play_animation_state = false;
+        Color borderColor = Color.MediumAquamarine;
         #endregion
 
         #region Load Content
@@ -27,7 +29,7 @@ namespace WindowsGame1
             : base("HostScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
-            div1 = new Rectangle(20, 20, 900, 500);
+            div = new Rectangle(20, 20, 900, 500);
 
             div_char[0] = new Rectangle(45, 40, 200, 200);
             div_char[1] = new Rectangle(255, 40, 200, 200);
@@ -40,16 +42,31 @@ namespace WindowsGame1
 
             chat_box = new Rectangle(20, 550, 950, 150);
             div_info = new Rectangle(950, 20, 200, 500);
+            startRec = new Rectangle(980,540, 180, 70);
+             quitRec = new Rectangle(980,620, 180, 70);
 
-            div1_border = new Border("div1", Color.DarkRed, 2, div1, this);
-            chat_box_border = new Border("chat_box", Color.DarkRed, 2, chat_box, this);
-            div_info_border = new Border("div_info", Color.DarkRed, 2, div_info, this);
+            div_border = new Border("player_border", borderColor, 2, div, this);
+            chat_box_border = new Border("chat_box", borderColor, 2, chat_box, this);
+            div_info_border = new Border("div_info", borderColor, 2, div_info, this);
 
-            border_texture = Content.Load<Texture2D>("Resource/Untitled-1");
+            backgroundTexture = Content.Load<Texture2D>("Resource/background");
+            backGround = new Background(this, backgroundTexture);
+
+            for (int i = 0; i < div_char.Length; i++)
+            {
+                String name = "div_char" + i;
+                div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
+            }
+
             test_img = Content.Load<Texture2D>("Resource/avatar_default");
+            start_img = Content.Load<Texture2D>("Resource/start_button");
+            quit_img = Content.Load<Texture2D>("Resource/quit_button");
 
             avatar_img = new ImageButton("Player", test_img, div_char[0], this);
             avatar_img.OnClick += avatar_clicked;
+
+            start = new ImageButton("Start", start_img, startRec, this);
+            start = new ImageButton("Start", quit_img, quitRec, this);
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -104,6 +121,7 @@ namespace WindowsGame1
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
+            backGround.DrawBG(spriteBatch);
             //spriteBatch.Draw(border_texture, div1, Color.White);
             /*foreach (Rectangle rec in div_char)
             {

@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace WindowsGame1
 {
     class Border : SivForm
-    {   
+    {
         private Texture2D texture;
         private Color _color;
         public Color color

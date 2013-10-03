@@ -116,11 +116,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\Background.cs" />
     <Compile Include="Form\Border.cs" />
     <Compile Include="Form\Textbox\EventTextInput.cs" />
-    <Compile Include="Debug.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Debug.cs" />
     <Compile Include="Debug.Designer.cs">
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
