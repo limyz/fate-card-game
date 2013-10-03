@@ -462,6 +462,10 @@ namespace WindowsGame1
             {
                 mCurrentScreen = mMenuScreen;
             }
+            if (e.Command_code == 2)
+            {
+                mCurrentScreen = mHostScreen;
+            }
         }
         #endregion
 

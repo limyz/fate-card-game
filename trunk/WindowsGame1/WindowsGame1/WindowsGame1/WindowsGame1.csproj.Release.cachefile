@@ -72,13 +72,14 @@ Content\Resource\saber_trans.xnb
 Content\Resource\ok_button.xnb
 Content\Resource\back_button.xnb
 Content\Resource\dialog_menu.xnb
-<<<<<<< .mine
 Content\SpriteFont1.xnb
 Content\Resource\font\Arial_12_Bold.xnb
 Content\Resource\font\TNRoman_12_Bold.xnb
-=======
-Content\Resource\font\Arial_12_Bold.xnb
-Content\Resource\font\TNRoman_12_Bold.xnb
->>>>>>> .r20
+Content\Resource\gamelist.xnb
+Content\Resource\SaberLily_Trans.xnb
+Content\Resource\ready.xnb
+Content\Resource\quit_button.xnb
+Content\Resource\start_button.xnb
+Content\Resource\host_button.xnb
 Data\Character.xml
 Data\Card.xml
