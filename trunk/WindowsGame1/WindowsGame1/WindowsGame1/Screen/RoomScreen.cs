@@ -66,7 +66,7 @@ namespace WindowsGame1
             avatar_img.OnClick += avatar_clicked;
 
             start = new ImageButton("Start", start_img, startRec, this);
-            start = new ImageButton("Start", quit_img, quitRec, this);
+            quit = new ImageButton("Quit", quit_img, quitRec, this);
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
