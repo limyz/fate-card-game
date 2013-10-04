@@ -14,9 +14,8 @@ namespace WindowsGame1
         #region variable decleration
         SpriteFont font;
         Background bg;
-        Texture2D bg_img, background_saber, gameList;
-        Rectangle saberRec, gameListRec;
         ImageButton back_button, ok_button, host_button;
+        Image saber, gameList;
         #endregion
 
         #region load content
@@ -24,24 +23,32 @@ namespace WindowsGame1
             : base("JoinScreen",theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
+            bg = new Background(Content.Load<Texture2D>("Resource/background"),this);
 
-            bg_img = Content.Load<Texture2D>("Resource/background");
-            background_saber = Content.Load<Texture2D>("Resource/SaberLily_Trans");
-            gameList = Content.Load<Texture2D>("Resource/gamelist");
+            saber = new Image("saber"
+                , Content.Load<Texture2D>("Resource/SaberLily_Trans")
+                , new Rectangle(720, 110, 480, 615), 0.99f, this);
 
-            gameListRec = new Rectangle(50, 50, 700, 650);
-            saberRec = new Rectangle(720, 110, 480, 615);
-            bg = new Background(this, bg_img);
+            gameList = new Image("gameList"
+                , Content.Load<Texture2D>("Resource/gamelist")
+                , new Rectangle(50, 50, 700, 650), 0.97f, this);
 
-            ok_button = new ImageButton("Ok", Content.Load<Texture2D>("Resource/ok_button"), new Rectangle(170, 650, 120, 42), this);
-            host_button = new ImageButton("Host", Content.Load<Texture2D>("Resource/host_button"), new Rectangle(320, 650, 120, 42), this);
-            back_button = new ImageButton("Back", Content.Load<Texture2D>("Resource/back_button"), new Rectangle(470, 650, 120, 42), this);
+            ok_button = new ImageButton("Ok"
+                , Content.Load<Texture2D>("Resource/ok_button")
+                , new Rectangle(170, 650, 120, 42), this);
 
+            host_button = new ImageButton("Host"
+                , Content.Load<Texture2D>("Resource/host_button")
+                , new Rectangle(320, 650, 120, 42), this);
+            host_button.OnClick += HostClicked;
+
+            back_button = new ImageButton("Back"
+                , Content.Load<Texture2D>("Resource/back_button")
+                , new Rectangle(470, 650, 120, 42), this);
+            back_button.OnClick += BackClicked;
 
             #region JoinScreen_RegisterHandler
-            OnKeysDown += JoinScreen_OnKeysDown;
-            back_button.OnClick += BackAction;
-            host_button.OnClick += HostAction;
+            OnKeysDown += JoinScreen_OnKeysDown;                       
             #endregion
         }
         #endregion
@@ -56,12 +63,12 @@ namespace WindowsGame1
                 return;
             }
         }
-        private void BackAction(object sender, FormEventData e)
+        private void BackClicked(object sender, FormEventData e)
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
             return;
         }
-        private void HostAction(object sender, FormEventData e)
+        private void HostClicked(object sender, FormEventData e)
         {
             ScreenEvent.Invoke(this, new SivEventArgs(2));
             return;
@@ -78,11 +85,8 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend); 
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
-            bg.DrawBG(spriteBatch);
-            spriteBatch.Draw(background_saber, saberRec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
-            spriteBatch.Draw(gameList, gameListRec, Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }

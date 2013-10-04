@@ -13,14 +13,13 @@ namespace WindowsGame1
     {
         #region variable decleration
         SpriteFont font;
-        Texture2D test_img, backgroundTexture, quit_img, start_img;
         Border div_border, chat_box_border, div_info_border;
         Border[] div_char_border = new Border[8];
-        Rectangle div, chat_box, div_info, startRec, quitRec;
         Rectangle[] div_char = new Rectangle[8];
         Background backGround;
-        ImageButton avatar_img, start, quit;
-        Boolean play_animation_state = false;
+        ImageButton start, quit;
+        Image avatar_img;
+        bool play_animation_state = false;
         Color borderColor = Color.MediumAquamarine;
         #endregion
 
@@ -29,7 +28,6 @@ namespace WindowsGame1
             : base("HostScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
-            div = new Rectangle(20, 20, 900, 500);
 
             div_char[0] = new Rectangle(45, 40, 200, 200);
             div_char[1] = new Rectangle(255, 40, 200, 200);
@@ -40,17 +38,14 @@ namespace WindowsGame1
             div_char[6] = new Rectangle(465, 270, 200, 200);
             div_char[7] = new Rectangle(675, 270, 200, 200);
 
-            chat_box = new Rectangle(20, 550, 950, 150);
-            div_info = new Rectangle(950, 20, 200, 500);
-            startRec = new Rectangle(980,540, 180, 70);
-             quitRec = new Rectangle(980,620, 180, 70);
+            div_border = new Border("player_border", borderColor, 2
+                , new Rectangle(20, 20, 900, 500), this);
+            chat_box_border = new Border("chat_box", borderColor, 2
+                , new Rectangle(20, 550, 950, 150), this);
+            div_info_border = new Border("div_info", borderColor, 2
+                , new Rectangle(950, 20, 200, 500), this);
 
-            div_border = new Border("player_border", borderColor, 2, div, this);
-            chat_box_border = new Border("chat_box", borderColor, 2, chat_box, this);
-            div_info_border = new Border("div_info", borderColor, 2, div_info, this);
-
-            backgroundTexture = Content.Load<Texture2D>("Resource/background");
-            backGround = new Background(this, backgroundTexture);
+            backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
             for (int i = 0; i < div_char.Length; i++)
             {
@@ -58,15 +53,16 @@ namespace WindowsGame1
                 div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
             }
 
-            test_img = Content.Load<Texture2D>("Resource/avatar_default");
-            start_img = Content.Load<Texture2D>("Resource/start_button");
-            quit_img = Content.Load<Texture2D>("Resource/quit_button");
-
-            avatar_img = new ImageButton("Player", test_img, div_char[0], this);
+            avatar_img = new Image("Player", Content.Load<Texture2D>("Resource/avatar_default")
+                , div_char[0], 0.5f, this);
             avatar_img.OnClick += avatar_clicked;
 
-            start = new ImageButton("Start", start_img, startRec, this);
-            quit = new ImageButton("Quit", quit_img, quitRec, this);
+            start = new ImageButton("Start" , Content.Load<Texture2D>("Resource/start_button")
+                , new Rectangle(980,540, 180, 70), this);
+
+            quit = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
+                , new Rectangle(980, 620, 180, 70), this);
+            quit.OnClick += quit_button_clicked;
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -83,6 +79,10 @@ namespace WindowsGame1
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 return;
             }
+        }
+        private void quit_button_clicked(object sender, FormEventData e)
+        {
+            ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
         private void avatar_clicked(object sender, FormEventData e)
         {
@@ -121,16 +121,6 @@ namespace WindowsGame1
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
-            backGround.DrawBG(spriteBatch);
-            //spriteBatch.Draw(border_texture, div1, Color.White);
-            /*foreach (Rectangle rec in div_char)
-            {
-                spriteBatch.Draw(border_texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
-            }*/
-            //avatar_img.Draw(spriteBatch, gameTime);
-            //spriteBatch.Draw(border_texture, chat_box, Color.White);
-            //spriteBatch.Draw(border_texture, div_info, Color.White);
-            //spriteBatch.Draw(test_img, div_char[0], Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }

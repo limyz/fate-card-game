@@ -8,25 +8,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WindowsGame1
 {
-    class Background
+    class Background : SivForm
     {
         private Texture2D backgroundTexture;
-        private Rectangle screenRectangle;
-        //private RoomScreen roomScreen;
-        //public Game1 main_game;
 
-        public Background(Screen parent, Texture2D background_img)
+        public Background(Texture2D background_img, Screen parent)
+            :base("background",parent,typeof(Background)
+            ,new Rectangle(0, 0, parent.main_game.window_width, parent.main_game.window_height))
         {
             backgroundTexture = background_img;
-            screenRectangle = new Rectangle(0, 0, parent.main_game.window_width, parent.main_game.window_height);
         }
 
-        public void DrawBG(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            //spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, screenRectangle, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
-            //base.Draw(graphics, spriteBatch, gameTime);
-            //spriteBatch.End();
-        }
+            spriteBatch.Draw(backgroundTexture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+        }        
     }
 }

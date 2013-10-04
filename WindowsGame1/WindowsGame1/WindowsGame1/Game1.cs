@@ -444,7 +444,7 @@ namespace WindowsGame1
             {
                 mCurrentScreen = mMenuScreen;
             }
-            if (e.Command_code == 4)
+            else if (e.Command_code == 4)
             {
                 mCurrentScreen = mRoomScreen; ;
             }
@@ -462,7 +462,7 @@ namespace WindowsGame1
             {
                 mCurrentScreen = mMenuScreen;
             }
-            if (e.Command_code == 2)
+            else if (e.Command_code == 2)
             {
                 mCurrentScreen = mHostScreen;
             }
