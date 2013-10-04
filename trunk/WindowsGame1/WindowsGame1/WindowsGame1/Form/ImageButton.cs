@@ -36,9 +36,6 @@ namespace WindowsGame1
             imageButton_RegisterHandler();
         }
 
-        public override void Update(GameTime gameTime)
-        {
-        }
         #region FormEventHandler
         private void imageButton_RegisterHandler()
         {
