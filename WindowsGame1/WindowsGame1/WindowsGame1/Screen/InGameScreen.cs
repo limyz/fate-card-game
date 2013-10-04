@@ -95,8 +95,7 @@ namespace WindowsGame1
         int hand_witdh = 535;
         int padding = 5;
 
-        SpriteFont font;
-        Texture2D test_img;                        
+        SpriteFont font;                       
         Random rand = new Random();
 
         int opponent_number = 5;

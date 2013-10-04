@@ -15,8 +15,6 @@ namespace WindowsGame1
         SpriteFont font;
         Background bg;
         Texture2D bg_img, background_saber, gameList;
-        Border test_border;
-        Rectangle test_rec = new Rectangle(150, 100, 200, 200);
         Rectangle saberRec, gameListRec;
         ImageButton back_button, ok_button, host_button;
         #endregion
