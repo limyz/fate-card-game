@@ -19,7 +19,6 @@ namespace WindowsGame1
         Background backGround;
         ImageButton start, quit;
         Image avatar_img;
-        bool play_animation_state = false;
         Color borderColor = Color.MediumAquamarine;
         #endregion
 
@@ -84,6 +83,8 @@ namespace WindowsGame1
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
+
+        bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
         {
             int test = (270 - avatar_img.rec.Y) + (avatar_img.rec.X - 255);
