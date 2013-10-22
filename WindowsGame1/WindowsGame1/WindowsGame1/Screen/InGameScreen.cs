@@ -23,7 +23,8 @@ namespace WindowsGame1
 
         string userName="";
 
-        const int port = 54545;
+        const int send_port = 51001;
+        const int receive_port = 51001;
         string broadcastAddress = "255.255.255.255";
 
         UdpClient receivingClient;
@@ -58,8 +59,8 @@ namespace WindowsGame1
         {
             //NAT.ForwardPort(port, ProtocolType.Udp, "blah blah");
             //NAT.Discover();
-            
-            receivingClient = new UdpClient(port);
+
+            receivingClient = new UdpClient(receive_port);
 
             ThreadStart start = new ThreadStart(Receiver);
             receivingThread = new Thread(start);
@@ -69,14 +70,14 @@ namespace WindowsGame1
 
         private void Receiver()
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, receive_port);
             AddMessage messageDelegate = MessageReceived;
 
             while (true)
             {
                 byte[] data = receivingClient.Receive(ref endPoint);
                 string message = Encoding.Unicode.GetString(data);
-                messageDelegate.Invoke(message);
+                messageDelegate.Invoke(endPoint.Address.ToString()+":"+endPoint.Port+">>"+message);
                 //Invoke(messageDelegate, message);
             }
         }
@@ -395,7 +396,7 @@ namespace WindowsGame1
                 byte[] data = Encoding.Unicode.GetBytes(toSend);
                 textbox_chat_show.Text += toSend + "\r\n";
                 //Game1.MessageBox(new IntPtr(0), broadcastAddress, "", 0);
-                sendingClient.Send(data, data.Length, broadcastAddress, port);
+                sendingClient.Send(data, data.Length, broadcastAddress, send_port);
                 chat_textbox.Text = "";
             }
         }
