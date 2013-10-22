@@ -7,8 +7,8 @@ namespace WindowsGame1
     {
         /// <summary>
         /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
+        /// </summary>        
+        [MTAThread]
         static void Main(string[] args)
         {
             using (Game1 game = new Game1())

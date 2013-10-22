@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace WindowsGame1
 {
@@ -25,10 +26,10 @@ namespace WindowsGame1
 
         public void Register_For_Debug(SivForm sv)
         {
-            if(sv.original_type == typeof(TextBox))
+            if (sv.original_type == typeof(TextBox))
             {
-            Textbox_List.Add((TextBox)sv);
-            listBox1.Items.Add(sv.name);
+                Textbox_List.Add((TextBox)sv);
+                listBox1.Items.Add(sv.name);
             }
 
             else if (sv.original_type == typeof(ImageButton))
@@ -148,7 +149,7 @@ namespace WindowsGame1
             Green_textBox3.Text = l._color.G.ToString();
             Blue_textBox3.Text = l._color.B.ToString();
             Alpha_textBox3.Text = l._color.A.ToString();
-        }  
+        }
 
         private void Apply_button3_Click(object sender, EventArgs e)
         {
@@ -239,7 +240,7 @@ namespace WindowsGame1
             Green_textBox4.Text = b.color.G.ToString();
             Blue_textBox4.Text = b.color.B.ToString();
             Alpha_textBox4.Text = b.color.A.ToString();
-        }      
+        }
         #endregion
 
         private void Debug_FormClosing(object sender, FormClosingEventArgs e)
@@ -250,25 +251,34 @@ namespace WindowsGame1
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Thread thread = new Thread(SaveAllToText);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+        }
+
+        [STAThread]
+        private void SaveAllToText()
+        {
             saveFileDialog1.FileName = "output.txt";
             try
             {
-                if(saveFileDialog1.ShowDialog()==DialogResult.OK)
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     using (StreamWriter sw = new StreamWriter(saveFileDialog1.FileName))
                     {
-                        sw.WriteLine("-------------------------------------------------------"); 
+                        sw.WriteLine("-------------------------------------------------------");
                         sw.WriteLine("TextBox");
-                        sw.WriteLine("-------------------------------------------------------");                        
+                        sw.WriteLine("-------------------------------------------------------");
                         for (int i = 0; i < Textbox_List.Count; i++)
                         {
-                            sw.WriteLine("\t"+listBox1.Items[i]+":");
+                            sw.WriteLine("\t" + listBox1.Items[i] + ":");
                             sw.WriteLine("\tParent Screen:" + Textbox_List[i].parent.name);
                             sw.WriteLine("\tRectangle:" + Textbox_List[i].rec.ToString());
                             sw.WriteLine("\tScrollable:" + Textbox_List[i].scrollable);
                             sw.WriteLine("\t-----------------");
                         }
-                        sw.WriteLine("-------------------------------------------------------"); 
+                        sw.WriteLine("-------------------------------------------------------");
                         sw.WriteLine("ImageButton");
                         sw.WriteLine("-------------------------------------------------------");
                         for (int i = 0; i < ImageButton_List.Count; i++)
@@ -308,6 +318,6 @@ namespace WindowsGame1
             {
                 MessageBox.Show(ex.Message);
             }
-        }             
+        }
     }
 }
