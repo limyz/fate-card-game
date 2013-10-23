@@ -108,8 +108,20 @@ public class SivEventArgs : EventArgs
         command_code = c;
     }
 
-    private decimal command_code;
+    public SivEventArgs(decimal c, object d)
+    {       
+        command_code = c;
+        data = d;
+    }
 
+    private object data;
+    public object Data
+    {
+        get { return data; }
+        set { data = value; }
+    }
+
+    private decimal command_code;
     public decimal Command_code
     {
         get { return command_code; }

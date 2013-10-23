@@ -25,8 +25,6 @@ namespace WindowsGame1
         TextBox Number_of_player_textbox;
         Background bg;
         Image saber, dialog;
-        /*Texture2D backgroundTexture, background_saber, dialog;
-        Rectangle screenRectangle, saberRec, dialogRec;*/
 
         #endregion
 
@@ -99,7 +97,10 @@ namespace WindowsGame1
         }
         public void Ok_button_clicked(object sender, FormEventData e)
         {
-            ScreenEvent.Invoke(this, new SivEventArgs(4));
+            Room r = new Room(
+                new Player(Host_name_textbox.Text, "0.0.0.0")
+                , Room_name_textbox.Text, int.Parse(Number_of_player_textbox.Text));
+            ScreenEvent.Invoke(this, new SivEventArgs(4,r));
         }
         public void Cancel_button_clicked(object sender, FormEventData e)
         {
