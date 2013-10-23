@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\Room.cs" />
     <Compile Include="Form\Background.cs" />
     <Compile Include="Form\Border.cs" />
     <Compile Include="Form\Image.cs" />
@@ -127,6 +128,7 @@
       <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\SivForm.cs" />
+    <Compile Include="Class\Player.cs" />
     <Compile Include="Screen\HostScreen.cs" />
     <Compile Include="Form\ImageButton.cs" />
     <Compile Include="Screen\InGameScreen.cs" />

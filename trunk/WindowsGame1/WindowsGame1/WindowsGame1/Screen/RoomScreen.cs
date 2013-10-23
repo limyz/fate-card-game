@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
+using System.Net;
+using System.Net.Sockets;
+
 namespace WindowsGame1
 {
     class RoomScreen : Screen
@@ -20,6 +23,8 @@ namespace WindowsGame1
         ImageButton start, quit;
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
+        UdpClient sendingClient;
+        Room room;
         #endregion
 
         #region Load Content
@@ -27,6 +32,9 @@ namespace WindowsGame1
             : base("HostScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
+
+            sendingClient = new UdpClient();
+            sendingClient.EnableBroadcast = true;
 
             div_char[0] = new Rectangle(45, 40, 200, 200);
             div_char[1] = new Rectangle(255, 40, 200, 200);
@@ -54,7 +62,7 @@ namespace WindowsGame1
 
             avatar_img = new Image("Player", Content.Load<Texture2D>("Resource/avatar_default")
                 , div_char[0], 0.5f, this);
-            avatar_img.OnClick += avatar_clicked;
+            //avatar_img.OnClick += avatar_clicked;
 
             start = new ImageButton("Start" , Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980,540, 180, 70), this);
@@ -113,6 +121,7 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             if (play_animation_state) play_animation(ref avatar_img.rec);
+
             base.Update(theTime);
         }
         #endregion
