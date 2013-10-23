@@ -43,10 +43,10 @@ namespace WindowsGame1
             {
                 Address = "255.255.255.255";
             }
-            else if (textbox_IP.Text == "all")
+            /*else if (textbox_IP.Text == "all")
             {
                 Address = IPAddress.Broadcast.ToString();
-            }
+            }*/
             else
             {
                 Address = textbox_IP.Text.Replace("\r\n", "");
@@ -61,9 +61,6 @@ namespace WindowsGame1
 
         private void InitializeReceiver()
         {
-            //NAT.ForwardPort(port, ProtocolType.Udp, "blah blah");
-            //NAT.Discover();
-
             receivingClient = new UdpClient(receive_port);
             receivingClient.EnableBroadcast = true;
 
@@ -82,7 +79,8 @@ namespace WindowsGame1
             {
                 byte[] data = receivingClient.Receive(ref endPoint);
                 string message = Encoding.Unicode.GetString(data);
-                messageDelegate.Invoke(endPoint.Address.ToString()+":"+endPoint.Port+">>"+message);
+                //messageDelegate.Invoke(endPoint.Address.ToString()+":"+endPoint.Port+">>"+message);
+                messageDelegate.Invoke(message);
                 //Invoke(messageDelegate, message);
             }
         }
@@ -394,7 +392,6 @@ namespace WindowsGame1
         {
             SetIP();
             SetUsername();
-            //InitializeSender();
             if (!string.IsNullOrEmpty(chat_textbox.Text))
             {
                 string toSend = userName + ": " + chat_textbox.Text;
