@@ -25,7 +25,7 @@ namespace WindowsGame1
 
         const int send_port = 51001;
         const int receive_port = 51001;
-        string broadcastAddress = "255.255.255.255";
+        string Address = "255.255.255.255";
 
         UdpClient receivingClient;
         UdpClient sendingClient;
@@ -41,11 +41,15 @@ namespace WindowsGame1
         {
             if (string.IsNullOrEmpty(textbox_IP.Text))
             {
-                broadcastAddress = "255.255.255.255";
+                Address = "255.255.255.255";
+            }
+            else if (textbox_IP.Text == "all")
+            {
+                Address = IPAddress.Broadcast.ToString();
             }
             else
             {
-                broadcastAddress = textbox_IP.Text.Replace("\r\n", "");
+                Address = textbox_IP.Text.Replace("\r\n", "");
             }
         }
         
@@ -61,6 +65,7 @@ namespace WindowsGame1
             //NAT.Discover();
 
             receivingClient = new UdpClient(receive_port);
+            receivingClient.EnableBroadcast = true;
 
             ThreadStart start = new ThreadStart(Receiver);
             receivingThread = new Thread(start);
@@ -396,7 +401,7 @@ namespace WindowsGame1
                 byte[] data = Encoding.Unicode.GetBytes(toSend);
                 textbox_chat_show.Text += toSend + "\r\n";
                 //Game1.MessageBox(new IntPtr(0), broadcastAddress, "", 0);
-                sendingClient.Send(data, data.Length, broadcastAddress, send_port);
+                sendingClient.Send(data, data.Length, Address, send_port);
                 chat_textbox.Text = "";
             }
         }
