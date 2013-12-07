@@ -372,9 +372,16 @@ namespace WindowsGame1
 
         private void draw_card()
         {
-            hand_list.Add(card_list[0]);
-            card_list.RemoveAt(0);
-            hand_area_list.Add(new Rectangle(175 + (card_widht + padding) * hand_area_list.Count, 570, card_widht, card_height));
+            try
+            {
+                hand_list.Add(card_list[0]);
+                card_list.RemoveAt(0);
+                hand_area_list.Add(new Rectangle(175 + (card_widht + padding) * hand_area_list.Count, 570, card_widht, card_height));
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
         }
         #endregion
 

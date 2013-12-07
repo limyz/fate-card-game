@@ -458,7 +458,8 @@ namespace WindowsGame1
             }
             else if (e.Command_code == 4)
             {
-                mCurrentScreen = mRoomScreen; ;
+                mRoomScreen.room = (Room)e.Data;
+                mCurrentScreen = mRoomScreen;
             }
         }
         public void RoomScreenEvent(object obj, SivEventArgs e)

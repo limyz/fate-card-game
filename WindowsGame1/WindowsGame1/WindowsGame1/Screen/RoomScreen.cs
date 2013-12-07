@@ -24,7 +24,7 @@ namespace WindowsGame1
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
         UdpClient sendingClient;
-        Room room;
+        public Room room;
         #endregion
 
         #region Load Content
@@ -66,10 +66,11 @@ namespace WindowsGame1
 
             start = new ImageButton("Start" , Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980,540, 180, 70), this);
+            start.OnClick += Start_button_clicked;
 
             quit = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
                 , new Rectangle(980, 620, 180, 70), this);
-            quit.OnClick += quit_button_clicked;
+            quit.OnClick += Quit_button_clicked;
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -87,7 +88,11 @@ namespace WindowsGame1
                 return;
             }
         }
-        private void quit_button_clicked(object sender, FormEventData e)
+        private void Start_button_clicked(object sender, FormEventData e)
+        {
+            avatar_img.Delete();
+        }
+        private void Quit_button_clicked(object sender, FormEventData e)
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
