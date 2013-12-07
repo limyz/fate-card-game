@@ -90,6 +90,16 @@ namespace WindowsGame1
         }
         private void Start_button_clicked(object sender, FormEventData e)
         {
+            String s = "Owner index: "+room.owner_index+"\n";
+            s += "Player List Count: "+room.Player_List.Count+"\n";
+            s += "Room name: "+room.Room_name+"\n";
+            s += "Number of Player: "+room.Number_of_Player+"\n";
+            s += "Player List:\n";
+            foreach(Player p in room.Player_List)
+            {
+                s += "+ "+p.Player_name+" - "+p.Address+"\n";
+            }
+            Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
             avatar_img.Delete();
         }
         private void Quit_button_clicked(object sender, FormEventData e)
