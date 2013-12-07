@@ -66,6 +66,20 @@ namespace WindowsGame1
             parent.main_game.debugger.Register_For_Debug(this);
         }
 
+        public void Delete(){
+            parent.FormsUpdate -= Update;
+            parent.FormsDraw -= Draw;
+            parent.FormsUpdate += Remove_From_Forms_List;           
+        }
+
+        public void Remove_From_Forms_List(GameTime gameTime)
+        {
+            //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "before", 0);
+            parent.Form_list.Remove(this);
+            parent.FormsUpdate -= Remove_From_Forms_List;
+            //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "after", 0);
+        }
+
         public virtual void Update(GameTime gameTime)
         {
         }

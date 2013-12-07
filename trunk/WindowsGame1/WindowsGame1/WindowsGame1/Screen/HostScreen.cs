@@ -97,10 +97,17 @@ namespace WindowsGame1
         }
         public void Ok_button_clicked(object sender, FormEventData e)
         {
-            Room r = new Room(
-                new Player(Host_name_textbox.Text, "0.0.0.0")
-                , Room_name_textbox.Text, int.Parse(Number_of_player_textbox.Text));
-            ScreenEvent.Invoke(this, new SivEventArgs(4,r));
+            try
+            {
+                Room r = new Room(
+                    new Player(Host_name_textbox.Text, "0.0.0.0")
+                    , Room_name_textbox.Text, int.Parse(Number_of_player_textbox.Text));
+                ScreenEvent.Invoke(this, new SivEventArgs(4, r));
+            }
+            catch(Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
         }
         public void Cancel_button_clicked(object sender, FormEventData e)
         {
