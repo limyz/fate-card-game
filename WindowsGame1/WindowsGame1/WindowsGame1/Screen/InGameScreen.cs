@@ -404,7 +404,6 @@ namespace WindowsGame1
                 string toSend = userName + ": " + chat_textbox.Text;
                 byte[] data = Encoding.Unicode.GetBytes(toSend);
                 textbox_chat_show.Text += toSend + "\r\n";
-                //Game1.MessageBox(new IntPtr(0), broadcastAddress, "", 0);
                 sendingClient.Send(data, data.Length, Address, send_port);
                 chat_textbox.Text = "";
             }
