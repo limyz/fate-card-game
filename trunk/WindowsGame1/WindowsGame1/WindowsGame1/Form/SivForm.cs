@@ -72,7 +72,7 @@ namespace WindowsGame1
             parent.FormsUpdate += Remove_From_Forms_List;           
         }
 
-        public void Remove_From_Forms_List(GameTime gameTime)
+        private void Remove_From_Forms_List(GameTime gameTime)
         {
             //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "before", 0);
             parent.Form_list.Remove(this);

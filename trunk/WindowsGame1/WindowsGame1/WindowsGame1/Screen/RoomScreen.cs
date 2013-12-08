@@ -107,17 +107,17 @@ namespace WindowsGame1
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
 
-        bool play_animation_state = false;
+        /*bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
         {
             int test = (270 - avatar_img.rec.Y) + (avatar_img.rec.X - 255);
             avatar_img.rec.Y += test;
             play_animation_state = true;
-        }
+        }*/
         #endregion
 
         #region Update's function
-        private void play_animation(ref Rectangle rec)
+        /*private void play_animation(ref Rectangle rec)
         {
             int x = 255;
             int y = 270;
@@ -128,15 +128,14 @@ namespace WindowsGame1
             {
                 My_Extension.move_rec(ref rec, x, y, speed, speed);
             }
-        }
+        }*/
 
         #endregion
 
         #region Update
         public override void Update(GameTime theTime)
         {
-            if (play_animation_state) play_animation(ref avatar_img.rec);
-
+            //if (play_animation_state) play_animation(ref avatar_img.rec);
             base.Update(theTime);
         }
         #endregion
