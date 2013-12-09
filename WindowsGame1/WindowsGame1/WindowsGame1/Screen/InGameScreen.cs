@@ -53,7 +53,7 @@ namespace WindowsGame1
             }
         }
         
-        private void InitializeSender()
+        public void InitializeSender()
         {            
             sendingClient = new UdpClient();
             sendingClient.EnableBroadcast = true;
@@ -86,10 +86,15 @@ namespace WindowsGame1
         }
 
         private void MessageReceived(string message)
-        {
+        {  
             textbox_chat_show.Text += (message + "\r\n");
         }
-
+        public void End_Chat()
+        {
+            receivingThread.Abort();
+            sendingClient.Close();
+            receivingClient.Close();
+        }
 
         #endregion
 
@@ -259,9 +264,6 @@ namespace WindowsGame1
             textbox_chat_show.scrollable = true;
             textbox_chat_show.OnClick = null;              
 
-            InitializeSender();
-            //InitializeReceiver();
-
             #region inGameScreen_RegisterHandler
             OnKeysDown += InGameScreen_OnKeysDown;
             #endregion
@@ -392,7 +394,7 @@ namespace WindowsGame1
             {
                 if (k == Keys.Escape)
                 {
-                    receivingThread.Abort();
+                    
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
                 return;

@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace WindowsGame1
 {
     public class JoinScreen : Screen
@@ -16,6 +22,51 @@ namespace WindowsGame1
         Background bg;
         ImageButton back_button, ok_button, host_button;
         Image saber, gameList;
+        #endregion
+
+        #region receiver Thread
+        UdpClient receivingClient;
+        Thread receivingThread;
+
+        public void InitializeReceiver()
+        {
+            receivingClient = new UdpClient(51001);
+            receivingClient.EnableBroadcast = true;
+
+            ThreadStart start = new ThreadStart(Receiver);
+            receivingThread = new Thread(start);
+            receivingThread.IsBackground = true;
+            receivingThread.Start();
+        }
+
+        private void Receiver()
+        {
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 51001);
+
+            while (true)
+            {
+                byte[] data = receivingClient.Receive(ref endPoint);
+                BinaryFormatter bin = new BinaryFormatter();
+                MemoryStream mem = new MemoryStream(data);
+                Room room = (Room)bin.Deserialize(mem);
+
+                String s = "Owner index: " + room.owner_index + "\n";
+                s += "Player List Count: " + room.Player_List.Count + "\n";
+                s += "Room name: " + room.Room_name + "\n";
+                s += "Number of Player: " + room.Number_of_Player + "\n";
+                s += "Player List:\n";
+                foreach (Player p in room.Player_List)
+                {
+                    s += "+ " + p.Player_name + " - " + p.Address + "\n";
+                }
+                Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
+            }
+        }
+        public void End_Receive()
+        {
+            receivingThread.Abort();
+            receivingClient.Close();
+        }
         #endregion
 
         #region load content

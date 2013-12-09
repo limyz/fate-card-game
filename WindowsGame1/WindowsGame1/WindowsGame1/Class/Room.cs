@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WindowsGame1
 {
+    [Serializable]
     public class Room
     {
         List<Player> player_List = new List<Player>();
