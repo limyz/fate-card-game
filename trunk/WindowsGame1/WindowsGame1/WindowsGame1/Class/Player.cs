@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WindowsGame1
 {
+    [Serializable]
     public class Player
     {
         string player_name;

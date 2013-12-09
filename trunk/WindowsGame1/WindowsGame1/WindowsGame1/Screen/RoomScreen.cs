@@ -28,14 +28,14 @@ namespace WindowsGame1
         ImageButton start_button, quit_button;
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
-        UdpClient sendingClient;
         public Room room;
-        int numberOfPlayer = 0;
+        public int numberOfPlayer = 0;
         #endregion
 
         #region broadcast Thread
+        UdpClient sendingClient;
         Thread broadcastingThread;
-        public static byte[] ReadFully(Stream input)
+        /*public static byte[] ReadFully(Stream input)
         {
             input.Position = 0;
             byte[] buffer = new byte[16 * 1024];
@@ -48,25 +48,34 @@ namespace WindowsGame1
                 }
                 return ms.ToArray();
             }
-        }
+        }*/
         private void Broadcaster()
         {
             while (true)
             {
-                Stream stream = new MemoryStream();
+                MemoryStream stream = new MemoryStream();
                 BinaryFormatter bformatter = new BinaryFormatter();
                 bformatter.Serialize(stream, room);
-                //string toSend = userName + ": " + chat_textbox.Text;
-                byte[] data = ReadFully(stream);
+                byte[] data = stream.ToArray();
                 sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
+
+                Thread.Sleep(500);
             }
         }
         public void start_broadcast()
         {
+            sendingClient = new UdpClient();
+            sendingClient.EnableBroadcast = true;
+
             ThreadStart ts = new ThreadStart(Broadcaster);
             broadcastingThread = new Thread(ts);
             broadcastingThread.IsBackground = true;
             broadcastingThread.Start();
+        }
+        public void End_Broadcast()
+        {
+            broadcastingThread.Abort();
+            sendingClient.Close();
         }
         #endregion
 
@@ -75,10 +84,7 @@ namespace WindowsGame1
             : base("HostScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
-            arialFontBold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");
-
-            sendingClient = new UdpClient();
-            sendingClient.EnableBroadcast = true;
+            arialFontBold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");            
 
             div_char[0] = new Rectangle(55, 40, 180, 180);
             div_char[1] = new Rectangle(265, 40, 180, 180);
@@ -152,9 +158,7 @@ namespace WindowsGame1
             foreach (Keys k in keys)
             {
                 if (k == Keys.Escape)
-                {
-                    numberOfPlayer = 0;
-                    broadcastingThread.Abort();
+                {                    
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
                 return;
@@ -176,9 +180,7 @@ namespace WindowsGame1
         }
 
         private void Quit_button_clicked(object sender, FormEventData e)
-        {
-            numberOfPlayer = 0;
-            broadcastingThread.Abort();
+        {           
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
 

@@ -428,10 +428,12 @@ namespace WindowsGame1
         }
 
         #region Screens's Event
+        //code = 0
         public void MenuScreenEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 1)
             {
+                mInGameScreen.InitializeSender();
                 mInGameScreen.InitializeReceiver();
                 mCurrentScreen = mInGameScreen;
             }
@@ -441,16 +443,20 @@ namespace WindowsGame1
             }
             else if (e.Command_code == 3)
             {
+                mJoinScreen.InitializeReceiver();
                 mCurrentScreen = mJoinScreen;
             }
         }
+        //code = 1
         public void InGameEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 0)
             {
+                mInGameScreen.End_Chat();
                 mCurrentScreen = mMenuScreen;
             }
         }
+        //code = 2
         public void HostScreenEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 0)
@@ -464,21 +470,27 @@ namespace WindowsGame1
                 mCurrentScreen = mRoomScreen;
             }
         }
+        //code = 4
         public void RoomScreenEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 0)
             {
+                mRoomScreen.numberOfPlayer = 0;
+                mRoomScreen.End_Broadcast();
                 mCurrentScreen = mMenuScreen;
             }
         }
+        //code = 3
         public void JoinScreenEvent(object obj, SivEventArgs e)
         {
             if (e.Command_code == 0)
             {
+                mJoinScreen.End_Receive();
                 mCurrentScreen = mMenuScreen;
             }
             else if (e.Command_code == 2)
             {
+                mJoinScreen.End_Receive();
                 mCurrentScreen = mHostScreen;
             }
         }
