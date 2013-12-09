@@ -25,7 +25,7 @@ namespace WindowsGame1
 
         public Room(Player player, string Room_name, int Number_of_Player)
         {
-            this.player_List.Add(player);
+            this.Player_List.Add(player);
             this.Room_name = Room_name;
             this.Number_of_Player = Number_of_Player;
             this.owner_index = 0;
