@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WindowsGame1
 {
-    class MenuScreen : Screen
+    public class MenuScreen : Screen
     {
         #region variable decleration
         Rectangle bg_rec;

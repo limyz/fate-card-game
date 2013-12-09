@@ -148,11 +148,11 @@ namespace WindowsGame1
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        MenuScreen mMenuScreen;
-        InGameScreen mInGameScreen;
-        HostScreen mHostScreen;
-        RoomScreen mRoomScreen;
-        JoinScreen mJoinScreen;
+        public MenuScreen mMenuScreen;
+        public InGameScreen mInGameScreen;
+        public HostScreen mHostScreen;
+        public RoomScreen mRoomScreen;
+        public JoinScreen mJoinScreen;
 
         public Screen mCurrentScreen;
         public Debug debugger = new Debug();
@@ -432,6 +432,7 @@ namespace WindowsGame1
         {
             if (e.Command_code == 1)
             {
+                mInGameScreen.InitializeReceiver();
                 mCurrentScreen = mInGameScreen;
             }
             else if (e.Command_code == 2)
@@ -459,6 +460,7 @@ namespace WindowsGame1
             else if (e.Command_code == 4)
             {
                 mRoomScreen.room = (Room)e.Data;
+                mRoomScreen.start_broadcast();
                 mCurrentScreen = mRoomScreen;
             }
         }

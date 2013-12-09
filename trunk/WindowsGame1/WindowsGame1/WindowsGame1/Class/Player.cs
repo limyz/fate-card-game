@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WindowsGame1
 {
-    class Player
+    public class Player
     {
         string player_name;
         string address;

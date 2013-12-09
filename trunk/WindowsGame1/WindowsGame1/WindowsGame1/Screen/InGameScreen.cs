@@ -16,7 +16,7 @@ using EventTextInput;
 
 namespace WindowsGame1
 {
-    class InGameScreen : Screen
+    public class InGameScreen : Screen
     {
         #region chat_stuff
         delegate void AddMessage(string message);
@@ -59,7 +59,7 @@ namespace WindowsGame1
             sendingClient.EnableBroadcast = true;
         }
 
-        private void InitializeReceiver()
+        public void InitializeReceiver()
         {
             receivingClient = new UdpClient(receive_port);
             receivingClient.EnableBroadcast = true;
@@ -260,7 +260,7 @@ namespace WindowsGame1
             textbox_chat_show.OnClick = null;              
 
             InitializeSender();
-            InitializeReceiver();
+            //InitializeReceiver();
 
             #region inGameScreen_RegisterHandler
             OnKeysDown += InGameScreen_OnKeysDown;
@@ -391,7 +391,10 @@ namespace WindowsGame1
             foreach (Keys k in keys)
             {
                 if (k == Keys.Escape)
+                {
+                    receivingThread.Abort();
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
+                }
                 return;
             }
         }

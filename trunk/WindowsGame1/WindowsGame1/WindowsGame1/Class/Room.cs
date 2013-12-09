@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WindowsGame1
 {
-    class Room
+    public class Room
     {
         List<Player> player_List = new List<Player>();
         public List<Player> Player_List
