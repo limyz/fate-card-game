@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WindowsGame1
 {
-    class JoinScreen : Screen
+    public class JoinScreen : Screen
     {
         #region variable decleration
         SpriteFont font;

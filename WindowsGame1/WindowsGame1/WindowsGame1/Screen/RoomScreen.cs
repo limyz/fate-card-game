@@ -7,12 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace WindowsGame1
 {
-    class RoomScreen : Screen
+    public class RoomScreen : Screen
     {
         #region variable decleration
         SpriteFont font, arialFontBold;
@@ -22,12 +25,49 @@ namespace WindowsGame1
         Label[] playerName = new Label[8];
         Label roomInfo, infoLabel;
         Background backGround;
-        ImageButton start, quit;
+        ImageButton start_button, quit_button;
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
         UdpClient sendingClient;
         public Room room;
         int numberOfPlayer = 0;
+        #endregion
+
+        #region broadcast Thread
+        Thread broadcastingThread;
+        public static byte[] ReadFully(Stream input)
+        {
+            input.Position = 0;
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+        private void Broadcaster()
+        {
+            while (true)
+            {
+                Stream stream = new MemoryStream();
+                BinaryFormatter bformatter = new BinaryFormatter();
+                bformatter.Serialize(stream, room);
+                //string toSend = userName + ": " + chat_textbox.Text;
+                byte[] data = ReadFully(stream);
+                sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
+            }
+        }
+        public void start_broadcast()
+        {
+            ThreadStart ts = new ThreadStart(Broadcaster);
+            broadcastingThread = new Thread(ts);
+            broadcastingThread.IsBackground = true;
+            broadcastingThread.Start();
+        }
         #endregion
 
         #region Load Content
@@ -92,13 +132,13 @@ namespace WindowsGame1
             infoLabel = new Label("Info Label", arialFontBold, "Room Information", 970, 50, 300, Color.White, this);
             roomInfo = new Label("Room Info", font, "", 970, 80, 300, Color.White, this);
 
-            start = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
+            start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980, 540, 180, 70), this);
-            start.OnClick += Start_button_clicked;
+            start_button.OnClick += Start_button_clicked;
 
-            quit = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
+            quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
                 , new Rectangle(980, 620, 180, 70), this);
-            quit.OnClick += Quit_button_clicked;
+            quit_button.OnClick += Quit_button_clicked;
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -114,6 +154,7 @@ namespace WindowsGame1
                 if (k == Keys.Escape)
                 {
                     numberOfPlayer = 0;
+                    broadcastingThread.Abort();
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
                 return;
@@ -137,6 +178,7 @@ namespace WindowsGame1
         private void Quit_button_clicked(object sender, FormEventData e)
         {
             numberOfPlayer = 0;
+            broadcastingThread.Abort();
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
 
