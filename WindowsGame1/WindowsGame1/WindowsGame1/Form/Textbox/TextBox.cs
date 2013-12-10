@@ -77,7 +77,7 @@ namespace WindowsGame1
                 }
             }
         }
-        bool _readonly;
+        bool _readonly = false;
         public bool ReadOnly
         {
             get
@@ -89,9 +89,9 @@ namespace WindowsGame1
                 _readonly = value;
                 if (_readonly)
                 {
-                    this.OnClick = null;
-                    this.OnMouseEnter = null;
-                    this.OnMouseLeave = null;
+                    this.OnClick -= new FormEventHandler(textbox_clicked);
+                    this.OnMouseEnter -= new FormEventHandler(textbox_OnMouseEnter);
+                    this.OnMouseLeave -= new FormEventHandler(textbox_OnMouseLeave);
                 }
                 else
                 {
@@ -118,8 +118,7 @@ namespace WindowsGame1
             _scrollbarTexture = scrollbarTexture;
             _font = font;           
             hscrollbar_width = rec.Width;
-            this.parent = parent;
-            _readonly = false;
+            this.parent = parent;  
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
@@ -136,7 +135,6 @@ namespace WindowsGame1
             _caretTexture = caretTexture;
             _font = font;
             this.parent = parent;
-            _readonly = false;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
