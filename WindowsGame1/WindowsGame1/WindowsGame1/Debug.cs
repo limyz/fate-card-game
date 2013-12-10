@@ -144,7 +144,7 @@ namespace WindowsGame1
             X_textBox3.Text = l.rec.X.ToString();
             Y_textBox3.Text = l.rec.Y.ToString();
             Width_textBox3.Text = l.rec.Width.ToString();
-            Text_textBox3.Text = l.text;
+            Text_textBox3.Text = l.Text;
             Red_textBox3.Text = l._color.R.ToString();
             Green_textBox3.Text = l._color.G.ToString();
             Blue_textBox3.Text = l._color.B.ToString();
@@ -160,7 +160,7 @@ namespace WindowsGame1
                 l.rec.X = int.Parse(X_textBox3.Text);
                 l.rec.Y = int.Parse(Y_textBox3.Text);
                 l.rec.Width = int.Parse(Width_textBox3.Text);
-                l.text = Text_textBox3.Text;
+                l.Text = Text_textBox3.Text;
                 l._color.R = Convert.ToByte(Red_textBox3.Text);
                 l._color.G = Convert.ToByte(Green_textBox3.Text);
                 l._color.B = Convert.ToByte(Blue_textBox3.Text);
@@ -179,7 +179,7 @@ namespace WindowsGame1
             X_textBox3.Text = l.rec.X.ToString();
             Y_textBox3.Text = l.rec.Y.ToString();
             Width_textBox3.Text = l.rec.Width.ToString();
-            Text_textBox3.Text = l.text;
+            Text_textBox3.Text = l.Text;
             Red_textBox3.Text = l._color.R.ToString();
             Green_textBox3.Text = l._color.G.ToString();
             Blue_textBox3.Text = l._color.B.ToString();

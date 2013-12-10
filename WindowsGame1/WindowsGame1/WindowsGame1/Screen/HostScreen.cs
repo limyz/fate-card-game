@@ -52,6 +52,7 @@ namespace WindowsGame1
             Host_name_textbox = new TextBox("Host_name_textbox"
                 , white_textbox, highlighted_textbox, caret
                 , font, new Rectangle(620, 200, 100, 20), this);
+            Host_name_textbox.Text = "AltimaZ";
 
             Room_name_label = new Label("Room_name_label"
                 , font, "Room name"
@@ -60,6 +61,7 @@ namespace WindowsGame1
             Room_name_textbox = new TextBox("Room_name_textbox"
                 , white_textbox, highlighted_textbox, caret
                 , font, new Rectangle(620, 230, 100, 20), this);
+            Room_name_textbox.Text = "Room Test";
 
             Number_of_player_label = new Label("Number_of_player_label"
                 , font, "Number of Player"
@@ -68,6 +70,7 @@ namespace WindowsGame1
             Number_of_player_textbox = new TextBox("Number_of_player_textbox"
                 , white_textbox, highlighted_textbox, caret
                 , font, new Rectangle(620, 260, 100, 20), this);
+            Number_of_player_textbox.Text = "3";
 
             OK_button = new ImageButton("OK_button"
                 , Content.Load<Texture2D>("Resource/ok_button")

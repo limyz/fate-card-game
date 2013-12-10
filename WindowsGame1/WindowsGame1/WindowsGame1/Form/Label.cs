@@ -11,7 +11,7 @@ namespace WindowsGame1
     public class Label : SivForm
     {
         private string _text;
-        public string text
+        public string Text
         {
             get
             {
@@ -42,12 +42,12 @@ namespace WindowsGame1
         public SpriteFont _font;
         public Color _color;
 
-        public Label(string name, SpriteFont font, string Text, int x, int y, int width, Color color
+        public Label(string name, SpriteFont font, string text, int x, int y, int width, Color color
             , Screen parent)
             : base(name, parent, typeof(Label), new Rectangle(x, y, width, font.LineSpacing))
         {
             _font = font;
-            text = Text;
+            Text = text;
             _color = color;
         }
 

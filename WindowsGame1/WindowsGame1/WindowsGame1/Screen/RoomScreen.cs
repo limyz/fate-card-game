@@ -18,7 +18,7 @@ namespace WindowsGame1
     public class RoomScreen : Screen
     {
         #region variable decleration
-        SpriteFont font, arialFontBold;
+        SpriteFont font, arial14Bold, arial12Bold;
         Border div_border, chat_box_border, div_info_border;
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
@@ -62,7 +62,7 @@ namespace WindowsGame1
                 Thread.Sleep(500);
             }
         }
-        public void start_broadcast()
+        public void Start_Broadcast()
         {
             sendingClient = new UdpClient();
             sendingClient.EnableBroadcast = true;
@@ -84,7 +84,8 @@ namespace WindowsGame1
             : base("HostScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
-            arialFontBold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");            
+            arial12Bold = Content.Load<SpriteFont>("Resource/font/Arial_12_Bold");
+            arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");            
 
             div_char[0] = new Rectangle(55, 40, 180, 180);
             div_char[1] = new Rectangle(265, 40, 180, 180);
@@ -110,32 +111,21 @@ namespace WindowsGame1
                 div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
                 if (i < 4)
                 {
-                    playerName[i] = new Label("playerNameLabel"+i, font, ""
-                    , 110 + (i * 210), 230, 150, Color.White, this);
+                    playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
+                    , 110 + (i * 210), 230, 180, Color.White, this);
                 }
                 else
                 {
-                    playerName[i] = new Label("playerNameLabel" + i, font, ""
-                    , 110 + ((i - 4) * 210), 460, 150, Color.White, this);
+                    playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
+                    , 110 + ((i - 4) * 210), 460, 180, Color.White, this);
                 }
-                //String playerNameStr = "Player " + (i + 1);
-                //if (i < 4)
-                //{
-                //    playerName[i] = new Label(playerNameStr, font, playerNameStr
-                //    , 110 + (i * 210), 230, 150, Color.White, this);
-                //}
-                //else
-                //{
-                //    playerName[i] = new Label(playerNameStr, font, playerNameStr
-                //    , 110 + ((i - 4) * 210), 460, 150, Color.White, this);
-                //}
             }
 
             avatar_img = new Image("Player 1", Content.Load<Texture2D>("Resource/avatar_default")
                 , div_char[0], 0.5f, this);
             //avatar_img.OnClick += avatar_clicked;
 
-            infoLabel = new Label("Info Label", arialFontBold, "Room Information", 970, 50, 300, Color.White, this);
+            infoLabel = new Label("Info Label", arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
             roomInfo = new Label("Room Info", font, "", 970, 80, 300, Color.White, this);
 
             start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
@@ -207,33 +197,33 @@ namespace WindowsGame1
             }
         }*/
 
+        private void playerNumberChange()
+        {
+            String s = "Owner index: " + room.owner_index + "\n";
+            s += "Player List Count: " + room.Player_List.Count + "\n";
+            s += "Room name: " + room.Room_name + "\n";
+            s += "Number of Player: " + room.Number_of_Player + "\n";
+            s += "Player List:\n";
+            foreach (Player p in room.Player_List)
+            {
+                s += "+ " + p.Player_name + " - " + p.Address + "\n";
+            }
+            roomInfo.Text = s;
+
+            for (int i = 0; i < room.Player_List.Count; i++)
+            {
+                String playerNameStr = room.Player_List[i].Player_name;
+                playerName[i].Text = playerNameStr;
+            }
+            numberOfPlayer = room.Player_List.Count;
+        }
         #endregion
 
         #region Update
         public override void Update(GameTime theTime)
         {
             //if (play_animation_state) play_animation(ref avatar_img.rec);            
-            if (room.Player_List.Count != numberOfPlayer)
-            {
-                String s = "Owner index: " + room.owner_index + "\n";
-                s += "Player List Count: " + room.Player_List.Count + "\n";
-                s += "Room name: " + room.Room_name + "\n";
-                s += "Number of Player: " + room.Number_of_Player + "\n";
-                s += "Player List:\n";              
-                foreach (Player p in room.Player_List)
-                {
-                    s += "+ " + p.Player_name + " - " + p.Address + "\n";
-                }
-                roomInfo.text = s;
-
-                for (int i = 0; i < room.Player_List.Count; i++)
-                {
-                    String playerNameStr = room.Player_List[i].Player_name;
-                    playerName[i].text = playerNameStr;
-                }  
-              
-                numberOfPlayer = room.Player_List.Count;
-            }
+            if (room.Player_List.Count != numberOfPlayer) playerNumberChange();
             base.Update(theTime);
         }
         #endregion
