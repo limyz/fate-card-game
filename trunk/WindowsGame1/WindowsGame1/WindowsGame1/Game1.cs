@@ -148,6 +148,7 @@ namespace WindowsGame1
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        #region Variable Decleration
         public MenuScreen mMenuScreen;
         public InGameScreen mInGameScreen;
         public HostScreen mHostScreen;
@@ -162,11 +163,9 @@ namespace WindowsGame1
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
         public static Texture2D white_texture;
         //end static variable
-
-        //global variable
+        
         public int window_width = 1200;
         public int window_height = 720;
-        //end global variable
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -178,6 +177,7 @@ namespace WindowsGame1
 
         public EventRaiserDelegate Event_Raiser_Delegate;
         public KeyboardTextDispatcher keyboard_text_dispatcher;
+        #endregion
 
         #region Event raiser function
         private void On_Click_Dispatcher()
@@ -335,6 +335,7 @@ namespace WindowsGame1
                     mCurrentScreen.OnKeysUp.Invoke(t.ToArray());
         }
         #endregion
+
         #region input's functions
         public void update_input_state()
         {
@@ -431,16 +432,19 @@ namespace WindowsGame1
         //code = 0
         public void MenuScreenEvent(object obj, SivEventArgs e)
         {
+            //Menu to Ingame
             if (e.Command_code == 1)
             {
                 mInGameScreen.InitializeSender();
                 mInGameScreen.InitializeReceiver();
                 mCurrentScreen = mInGameScreen;
             }
+            //Menu to Host Screen
             else if (e.Command_code == 2)
             {
                 mCurrentScreen = mHostScreen;
             }
+            //Menu to Join Screen
             else if (e.Command_code == 3)
             {
                 mJoinScreen.InitializeReceiver();
@@ -450,6 +454,7 @@ namespace WindowsGame1
         //code = 1
         public void InGameEvent(object obj, SivEventArgs e)
         {
+            //Ingame to Menu
             if (e.Command_code == 0)
             {
                 mInGameScreen.End_Chat();
@@ -459,20 +464,23 @@ namespace WindowsGame1
         //code = 2
         public void HostScreenEvent(object obj, SivEventArgs e)
         {
+            //HostScreen to Menu
             if (e.Command_code == 0)
             {
                 mCurrentScreen = mMenuScreen;
             }
+            //HostScreen to RoomScreen
             else if (e.Command_code == 4)
             {
                 mRoomScreen.room = (Room)e.Data;
-                mRoomScreen.start_broadcast();
+                mRoomScreen.Start_Broadcast();
                 mCurrentScreen = mRoomScreen;
             }
         }
         //code = 4
         public void RoomScreenEvent(object obj, SivEventArgs e)
         {
+            //RoomScreen to Menu
             if (e.Command_code == 0)
             {
                 mRoomScreen.numberOfPlayer = 0;
@@ -483,11 +491,13 @@ namespace WindowsGame1
         //code = 3
         public void JoinScreenEvent(object obj, SivEventArgs e)
         {
+            //JoinScreen to Menu
             if (e.Command_code == 0)
             {
                 mJoinScreen.End_Receive();
                 mCurrentScreen = mMenuScreen;
             }
+            //JoinScreen to HostScreen
             else if (e.Command_code == 2)
             {
                 mJoinScreen.End_Receive();
