@@ -19,7 +19,7 @@ namespace WindowsGame1
     {
         #region variable decleration
         SpriteFont font, arial14Bold, arial12Bold;
-        Border div_border, chat_box_border, div_info_border;
+        Border div_border, chat_box_border, chat_input_border, div_info_border;
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
         Label[] playerName = new Label[8];
@@ -28,6 +28,7 @@ namespace WindowsGame1
         ImageButton start_button, quit_button;
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
+        TextBox chat;
         public Room room;
         public int numberOfPlayer = 0;
         #endregion
@@ -83,6 +84,9 @@ namespace WindowsGame1
         public RoomScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("HostScreen", theEvent, parent)
         {
+            Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
+            Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
+            Texture2D caret = Content.Load<Texture2D>("Resource/caret");
             font = Content.Load<SpriteFont>("SpriteFont1");
             arial12Bold = Content.Load<SpriteFont>("Resource/font/Arial_12_Bold");
             arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");            
@@ -97,11 +101,18 @@ namespace WindowsGame1
             div_char[7] = new Rectangle(685, 270, 180, 180);
 
             div_border = new Border("player_border", borderColor, 2
-                , new Rectangle(20, 20, 900, 500), this);
-            chat_box_border = new Border("chat_box", borderColor, 2
-                , new Rectangle(20, 550, 950, 150), this);
+               , new Rectangle(20, 20, 900, 480), this);
+            chat_box_border = new Border("chat_screen", borderColor, 2
+                , new Rectangle(20, 520, 950, 130), this);
+            chat_input_border = new Border("chat_input", borderColor, 2
+                , new Rectangle(20, 660, 950, 40), this);
             div_info_border = new Border("div_info", borderColor, 2
-                , new Rectangle(950, 20, 200, 500), this);
+                , new Rectangle(20, 660, 950, 40), this);
+
+            //chat = new TextBox("Room_name_textbox"
+            //    , white_textbox, highlighted_textbox, caret
+            //    , font, new Rectangle(620, 230, 100, 20), this);
+            //chat.Text = "Room Test";
 
             backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
@@ -112,12 +123,14 @@ namespace WindowsGame1
                 if (i < 4)
                 {
                     playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
-                    , 110 + (i * 210), 230, 180, Color.White, this);
+                    , 55 + (i * 210), 230, 180, Color.White, this);
+                    playerName[i].center_align = true;
                 }
                 else
                 {
                     playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
-                    , 110 + ((i - 4) * 210), 460, 180, Color.White, this);
+                    , 55 + ((i - 4) * 210), 460, 180, Color.White, this);
+                    playerName[i].center_align = true;
                 }
             }
 
