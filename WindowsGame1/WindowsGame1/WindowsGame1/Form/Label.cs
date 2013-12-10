@@ -41,6 +41,7 @@ namespace WindowsGame1
         }    
         public SpriteFont _font;
         public Color _color;
+        public bool center_align = false;
 
         public Label(string name, SpriteFont font, string text, int x, int y, int width, Color color
             , Screen parent)
@@ -53,7 +54,15 @@ namespace WindowsGame1
 
         public override void Draw(SpriteBatch sb, GameTime gt)
         {
-            sb.DrawString(_font, _text, new Vector2(rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            if (center_align)
+            {
+                float offset_x = ((float)rec.Width - _font.MeasureString(Text).X)/2;
+                sb.DrawString(_font, _text, new Vector2(offset_x+rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            }
+            else
+            {
+                sb.DrawString(_font, _text, new Vector2(rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+            }
         }
     }
 }
