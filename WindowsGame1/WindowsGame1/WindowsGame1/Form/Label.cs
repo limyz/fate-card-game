@@ -56,8 +56,8 @@ namespace WindowsGame1
         {
             if (center_align)
             {
-                float offset_x = ((float)rec.Width - _font.MeasureString(Text).X)/2;
-                sb.DrawString(_font, _text, new Vector2(offset_x+rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+                float offset_x = ((float)rec.Width - _font.MeasureString(Text).X) / 2;
+                sb.DrawString(_font, _text, new Vector2(offset_x + rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             }
             else
             {

@@ -107,12 +107,7 @@ namespace WindowsGame1
             chat_input_border = new Border("chat_input", borderColor, 2
                 , new Rectangle(20, 660, 950, 40), this);
             div_info_border = new Border("div_info", borderColor, 2
-                , new Rectangle(20, 660, 950, 40), this);
-
-            //chat = new TextBox("Room_name_textbox"
-            //    , white_textbox, highlighted_textbox, caret
-            //    , font, new Rectangle(620, 230, 100, 20), this);
-            //chat.Text = "Room Test";
+                , new Rectangle(20, 660, 950, 40), this);           
 
             backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
@@ -148,6 +143,11 @@ namespace WindowsGame1
             quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
                 , new Rectangle(980, 620, 180, 70), this);
             quit_button.OnClick += Quit_button_clicked;
+
+            chat = new TextBox("Room_name_textbox"
+                , white_textbox, highlighted_textbox, caret
+                , font, new Rectangle(620, 230, 100, 20), this);
+            chat.Text = "Room Test";
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
