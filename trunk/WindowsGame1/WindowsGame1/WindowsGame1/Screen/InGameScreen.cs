@@ -23,8 +23,8 @@ namespace WindowsGame1
 
         string userName="";
 
-        const int send_port = 51001;
-        const int receive_port = 51001;
+        const int send_port = 51000;
+        const int receive_port = 51000;
         string Address = "255.255.255.255";
 
         UdpClient receivingClient;

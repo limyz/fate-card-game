@@ -59,7 +59,7 @@ namespace WindowsGame1
                 {
                     s += "+ " + p.Player_name + " - " + p.Address + "\n";
                 }
-                Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
+                Game1.MessageBox(new IntPtr(0), s, endPoint.Address.ToString() + ":" + endPoint.Port, 0);
             }
         }
         public void End_Receive()
