@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Form\SivForm.cs" />
     <Compile Include="Class\Player.cs" />
+    <Compile Include="Form\Div.cs" />
     <Compile Include="Screen\HostScreen.cs" />
     <Compile Include="Form\ImageButton.cs" />
     <Compile Include="Screen\InGameScreen.cs" />
