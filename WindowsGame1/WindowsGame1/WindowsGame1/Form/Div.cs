@@ -14,18 +14,20 @@ namespace WindowsGame1
         public float draw_order = 0.5f;
         public Color color;
 
-        public Div(string name, Rectangle rec
+        public Div(string name, Rectangle rec, Color color
             , float draw_order, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {
             this.texture = Game1.white_texture;
+            this.color = color;
             this.draw_order = draw_order;
             this.parent = parent;
         }
-        public Div(string name, Rectangle rec, Screen parent)
+        public Div(string name, Rectangle rec, Color color, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {
             this.texture = Game1.white_texture;
+            this.color = color;
             this.parent = parent;
         }
 
