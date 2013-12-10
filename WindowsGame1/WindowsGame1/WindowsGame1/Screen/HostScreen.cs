@@ -14,15 +14,9 @@ namespace WindowsGame1
     {
         #region variable decleration
         SpriteFont font;
-
-        ImageButton OK_button;
-        ImageButton Canel_button;
-        Label Host_name_label;
-        Label Room_name_label;
-        Label Number_of_player_label;
-        TextBox Host_name_textbox;
-        TextBox Room_name_textbox;
-        TextBox Number_of_player_textbox;
+        ImageButton OK_button, Canel_button;
+        Label Host_name_label, Number_of_player_label, Room_name_label;
+        TextBox Host_name_textbox, Room_name_textbox, Number_of_player_textbox;
         Background bg;
         Image saber, dialog;
 
@@ -100,6 +94,16 @@ namespace WindowsGame1
         }
         public void Ok_button_clicked(object sender, FormEventData e)
         {
+            if (Host_name_textbox.Text.Length > 12)
+            {
+                Game1.MessageBox(new IntPtr(0), "Player Name cannot more than 12 characters", "Player Name Invalid", 0);
+                return;
+            }
+            if (Room_name_textbox.Text.Length > 12)
+            {
+                Game1.MessageBox(new IntPtr(0), "Room Name cannot more than 12 characters", "Player Name Invalid", 0);
+                return;
+            }
             try
             {
                 Room r = new Room(
