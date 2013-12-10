@@ -16,7 +16,7 @@ namespace WindowsGame1
 
         public Div(string name, Rectangle rec, Color color
             , float draw_order, Screen parent)
-            : base(name, parent, typeof(Image), rec)
+            : base(name, parent, typeof(Div), rec)
         {
             this.texture = Game1.white_texture;
             this.color = color;
