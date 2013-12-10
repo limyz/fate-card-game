@@ -8,23 +8,30 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WindowsGame1
 {
-    class Image : SivForm
+    class Div : SivForm
     {
         public Texture2D texture;
         public float draw_order = 0.5f;
+        public Color color;
 
-        public Image(string name, Texture2D texture, Rectangle rec
+        public Div(string name, Rectangle rec
             , float draw_order, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {
-            this.texture = texture;
+            this.texture = Game1.white_texture;
             this.draw_order = draw_order;
+            this.parent = parent;
+        }
+        public Div(string name, Rectangle rec, Screen parent)
+            : base(name, parent, typeof(Image), rec)
+        {
+            this.texture = Game1.white_texture;
             this.parent = parent;
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
+            spriteBatch.Draw(texture, rec, null, color, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
         }
     }
 }

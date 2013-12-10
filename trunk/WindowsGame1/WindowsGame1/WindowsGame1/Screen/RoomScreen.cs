@@ -82,7 +82,7 @@ namespace WindowsGame1
 
         #region Load Content
         public RoomScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
-            : base("HostScreen", theEvent, parent)
+            : base("RoomScreen", theEvent, parent)
         {
             Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
             Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
