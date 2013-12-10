@@ -23,12 +23,13 @@ namespace WindowsGame1
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
         Label[] playerName = new Label[8];
-        Label roomInfo, infoLabel;
+        Label roomInfoContent, roomInfoTitle;
         Background backGround;
         ImageButton start_button, quit_button;
         Image avatar_img;
         Color borderColor = Color.MediumAquamarine;
-        TextBox chat;
+        TextBox chat, chatDisplay, roomInfo;
+        Div roomInfoDiv;
         public Room room;
         public int numberOfPlayer = 0;
         #endregion
@@ -105,9 +106,9 @@ namespace WindowsGame1
             chat_box_border = new Border("chat_screen", borderColor, 2
                 , new Rectangle(20, 520, 950, 130), this);
             chat_input_border = new Border("chat_input", borderColor, 2
-                , new Rectangle(20, 660, 950, 40), this);
+                , new Rectangle(20, 660, 950, 24), this);
             div_info_border = new Border("div_info", borderColor, 2
-                , new Rectangle(20, 660, 950, 40), this);           
+                , new Rectangle(930, 20, 250, 480), this);
 
             backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
@@ -131,10 +132,6 @@ namespace WindowsGame1
 
             avatar_img = new Image("Player 1", Content.Load<Texture2D>("Resource/avatar_default")
                 , div_char[0], 0.5f, this);
-            //avatar_img.OnClick += avatar_clicked;
-
-            infoLabel = new Label("Info Label", arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
-            roomInfo = new Label("Room Info", font, "", 970, 80, 300, Color.White, this);
 
             start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980, 540, 180, 70), this);
@@ -144,10 +141,23 @@ namespace WindowsGame1
                 , new Rectangle(980, 620, 180, 70), this);
             quit_button.OnClick += Quit_button_clicked;
 
-            chat = new TextBox("Room_name_textbox"
+            chat = new TextBox("Chat Input"
                 , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(620, 230, 100, 20), this);
-            chat.Text = "Room Test";
+                , font, new Rectangle(22, 662, 946, 20), this);
+
+            chatDisplay = new TextBox("Chat Display"
+                , white_textbox, highlighted_textbox, caret
+                , font, new Rectangle(22, 522, 946, 126), this);
+            chatDisplay.ReadOnly = true;
+
+            //roomInfo = new TextBox("Room Info"
+            //    , white_textbox, highlighted_textbox, caret
+            //    , font, new Rectangle(932, 22, 246, 476), this);
+            //roomInfo.ReadOnly = true;
+            roomInfoDiv = new Div("Room Info", new Rectangle(932, 22, 246, 476), Color.DarkRed, this);
+            roomInfoContent = new Label("Room Info", font, "", 960, 80, 300, Color.White, this);
+            roomInfoTitle = new Label("Info Label", arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
+            
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -221,7 +231,7 @@ namespace WindowsGame1
             {
                 s += "+ " + p.Player_name + " - " + p.Address + "\n";
             }
-            roomInfo.Text = s;
+            roomInfoContent.Text = s;
 
             for (int i = 0; i < room.Player_List.Count; i++)
             {

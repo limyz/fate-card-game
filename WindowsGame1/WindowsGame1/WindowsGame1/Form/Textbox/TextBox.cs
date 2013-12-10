@@ -77,6 +77,33 @@ namespace WindowsGame1
                 }
             }
         }
+        bool _readonly;
+        public bool ReadOnly
+        {
+            get
+            {
+                return _readonly;
+            }
+            set
+            {
+                _readonly = value;
+                if (_readonly)
+                {
+                    this.OnClick = null;
+                    this.OnMouseEnter = null;
+                    this.OnMouseLeave = null;
+                }
+                else
+                {
+                    this.OnClick -= new FormEventHandler(textbox_clicked);
+                    this.OnMouseEnter -= new FormEventHandler(textbox_OnMouseEnter);
+                    this.OnMouseLeave -= new FormEventHandler(textbox_OnMouseLeave);
+                    this.OnClick += new FormEventHandler(textbox_clicked);
+                    this.OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
+                    this.OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
+                }
+            }
+        }
 
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
             , Texture2D caretTexture, Texture2D scrollbarBackground
@@ -92,6 +119,7 @@ namespace WindowsGame1
             _font = font;           
             hscrollbar_width = rec.Width;
             this.parent = parent;
+            _readonly = false;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
@@ -108,6 +136,7 @@ namespace WindowsGame1
             _caretTexture = caretTexture;
             _font = font;
             this.parent = parent;
+            _readonly = false;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);

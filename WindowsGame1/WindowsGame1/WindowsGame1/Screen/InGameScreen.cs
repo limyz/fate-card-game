@@ -262,7 +262,8 @@ namespace WindowsGame1
                 , scrollbarBackground, scrollbar, font
                 , new Rectangle(979, 10, 219, 312), this);
             textbox_chat_show.scrollable = true;
-            textbox_chat_show.OnClick = null;              
+            //textbox_chat_show.OnClick = null;     
+            textbox_chat_show.ReadOnly = true;
 
             #region inGameScreen_RegisterHandler
             OnKeysDown += InGameScreen_OnKeysDown;
