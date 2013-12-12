@@ -514,29 +514,34 @@ namespace WindowsGame1
 
         protected override void Update(GameTime gameTime)
         {
-            update_input_state();
-            Event_Raiser_Delegate.Invoke();
-            /*if (Screen.keyboard_state.GetPressedKeys().Length > 0)
+            if (this.IsActive)
             {
-                MessageBox(new IntPtr(0), keyboard_state.GetPressedKeys()[0].ToString(), "", 0);
-            }*/
-            //check keys enum
-            if (key_press(Keys.OemTilde))
-            {
-                debugger.Show();
-            }
-            mCurrentScreen.Update(gameTime);
+                update_input_state();
+                Event_Raiser_Delegate.Invoke();
+                /*if (Screen.keyboard_state.GetPressedKeys().Length > 0)
+                {
+                    MessageBox(new IntPtr(0), keyboard_state.GetPressedKeys()[0].ToString(), "", 0);
+                }*/
+                //check keys enum
+                if (key_press(Keys.OemTilde))
+                {
+                    debugger.Show();
+                }
+                mCurrentScreen.Update(gameTime);
 
-            base.Update(gameTime);
+                base.Update(gameTime);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            if (this.IsActive)
+            {               
+                mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
 
-            mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
-
-            base.Draw(gameTime);
+                base.Draw(gameTime);
+            }
         }
     }
 }
