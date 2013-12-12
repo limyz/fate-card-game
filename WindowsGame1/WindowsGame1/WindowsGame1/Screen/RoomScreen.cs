@@ -61,7 +61,7 @@ namespace WindowsGame1
                 byte[] data = stream.ToArray();
                 sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
         public void Start_Broadcast()
@@ -190,6 +190,7 @@ namespace WindowsGame1
             }
             Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
             avatar_img.Delete();
+            avatar_img = null;
         }
 
         private void Quit_button_clicked(object sender, FormEventData e)

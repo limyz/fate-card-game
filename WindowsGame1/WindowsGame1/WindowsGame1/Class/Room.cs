@@ -30,6 +30,7 @@ namespace WindowsGame1
             this.Room_name = Room_name;
             this.Number_of_Player = Number_of_Player;
             this.owner_index = 0;
+            this.Player_List.Capacity = Number_of_Player;
         }
     }
 }

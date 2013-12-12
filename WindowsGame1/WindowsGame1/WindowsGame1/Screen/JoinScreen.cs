@@ -22,6 +22,11 @@ namespace WindowsGame1
         Background bg;
         ImageButton back_button, ok_button, host_button;
         Image saber, gameList;
+
+        List<Room> List_Room = new List<Room>();
+        List<DateTime> List_Room_Recieve_Time = new List<DateTime>();
+        Label test;
+        List<Label> List_Room_Info = new List<Label>();
         #endregion
 
         #region receiver Thread
@@ -39,6 +44,22 @@ namespace WindowsGame1
             receivingThread.Start();
         }
 
+        private void Check_Room_Existed(Room room, IPEndPoint endPoint)
+        {
+            for (int i = 0; i < List_Room.Count; i++)
+            {
+                if (List_Room[i].Player_List[List_Room[i].owner_index].Address == endPoint.Address.ToString())
+                {
+                    room.Player_List[room.owner_index].Address = endPoint.Address.ToString();
+                    List_Room[i] = room;
+                    List_Room_Recieve_Time[i] = DateTime.Now;
+                    return;
+                }
+            }
+            room.Player_List[room.owner_index].Address = endPoint.Address.ToString();
+            List_Room.Add(room);
+            List_Room_Recieve_Time.Add(DateTime.Now);
+        }
         private void Receiver()
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 51001);
@@ -50,7 +71,12 @@ namespace WindowsGame1
                 MemoryStream mem = new MemoryStream(data);
                 Room room = (Room)bin.Deserialize(mem);
 
-                String s = "Owner index: " + room.owner_index + "\n";
+                this.Check_Room_Existed(room, endPoint);
+                //No need to renew the endpoint because the udpclient receive from any 
+                //source without caring for the ip address of the endpoint. TESTED.
+                //endPoint = new IPEndPoint(IPAddress.Any, 51001);  
+
+                /*String s = "Owner index: " + room.owner_index + "\n";
                 s += "Player List Count: " + room.Player_List.Count + "\n";
                 s += "Room name: " + room.Room_name + "\n";
                 s += "Number of Player: " + room.Number_of_Player + "\n";
@@ -59,7 +85,7 @@ namespace WindowsGame1
                 {
                     s += "+ " + p.Player_name + " - " + p.Address + "\n";
                 }
-                Game1.MessageBox(new IntPtr(0), s, endPoint.Address.ToString() + ":" + endPoint.Port, 0);
+                Game1.MessageBox(new IntPtr(0), s, endPoint.Address.ToString() + ":" + endPoint.Port, 0);*/
             }
         }
         public void End_Receive()
@@ -98,6 +124,8 @@ namespace WindowsGame1
                 , new Rectangle(470, 650, 120, 42), this);
             back_button.OnClick += BackClicked;
 
+            test = new Label("", font, "", 80, 165, 680, Color.White, this);
+
             #region JoinScreen_RegisterHandler
             OnKeysDown += JoinScreen_OnKeysDown;                       
             #endregion
@@ -128,7 +156,24 @@ namespace WindowsGame1
 
         #region update
         public override void Update(GameTime theTime)
-        {
+        {                 
+            for (int i = 0; i < List_Room_Recieve_Time.Count; i++)
+            {
+                if ((DateTime.Now - List_Room_Recieve_Time[i]) > new TimeSpan(0,0,3))
+                {
+                    List_Room.RemoveAt(i);
+                    List_Room_Recieve_Time.RemoveAt(i);
+                    i--;
+                }
+            }
+            String s = "";
+            foreach (Room r in List_Room)
+            {
+                s += r.Room_name + " (" + r.Player_List.Count + "/" + r.Number_of_Player;
+                s += ") - " + r.Player_List[r.owner_index].Address + "\n";
+            }
+            test.Text = s;
+
             base.Update(theTime);
         }
         #endregion
