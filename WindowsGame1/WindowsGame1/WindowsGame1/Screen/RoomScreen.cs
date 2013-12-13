@@ -26,10 +26,11 @@ namespace WindowsGame1
         Label roomInfoContent, roomInfoTitle;
         Background backGround;
         ImageButton start_button, quit_button;
-        Image avatar_img;
+        List<Image> avatar_img = new List<Image>();
         Color borderColor = Color.MediumAquamarine;
-        TextBox chat, chatDisplay, roomInfo;
+        TextBox chat, chatDisplay;
         Div roomInfoDiv;
+        Texture2D avatarDefault, caret, highlighted_textbox, white_textbox;
         public Room room;
         public int numberOfPlayer = 0;
         #endregion
@@ -85,12 +86,13 @@ namespace WindowsGame1
         public RoomScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("RoomScreen", theEvent, parent)
         {
-            Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
-            Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
-            Texture2D caret = Content.Load<Texture2D>("Resource/caret");
+            white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
+            highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
+            caret = Content.Load<Texture2D>("Resource/caret");
+            avatarDefault = Content.Load<Texture2D>("Resource/avatar_default");
             font = Content.Load<SpriteFont>("SpriteFont1");
             arial12Bold = Content.Load<SpriteFont>("Resource/font/Arial_12_Bold");
-            arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");            
+            arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");
 
             div_char[0] = new Rectangle(55, 40, 180, 180);
             div_char[1] = new Rectangle(265, 40, 180, 180);
@@ -130,9 +132,6 @@ namespace WindowsGame1
                 }
             }
 
-            avatar_img = new Image("Player 1", Content.Load<Texture2D>("Resource/avatar_default")
-                , div_char[0], 0.5f, this);
-
             start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980, 540, 180, 70), this);
             start_button.OnClick += Start_button_clicked;
@@ -150,14 +149,10 @@ namespace WindowsGame1
                 , font, new Rectangle(22, 522, 946, 126), this);
             chatDisplay.ReadOnly = true;
 
-            //roomInfo = new TextBox("Room Info"
-            //    , white_textbox, highlighted_textbox, caret
-            //    , font, new Rectangle(932, 22, 246, 476), this);
-            //roomInfo.ReadOnly = true;
             roomInfoDiv = new Div("Room Info", new Rectangle(932, 22, 246, 476), Color.DarkRed, this);
             roomInfoContent = new Label("Room Info", font, "", 960, 80, 300, Color.White, this);
             roomInfoTitle = new Label("Info Label", arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
-            
+
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -171,12 +166,13 @@ namespace WindowsGame1
             foreach (Keys k in keys)
             {
                 if (k == Keys.Escape)
-                {                    
+                {
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
                 return;
             }
         }
+
         private void Start_button_clicked(object sender, FormEventData e)
         {
             String s = "Owner index: " + room.owner_index + "\n";
@@ -189,12 +185,12 @@ namespace WindowsGame1
                 s += "+ " + p.Player_name + " - " + p.Address + "\n";
             }
             Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
-            avatar_img.Delete();
-            avatar_img = null;
+            //avatar_img.Delete();
+            //avatar_img = null;
         }
 
         private void Quit_button_clicked(object sender, FormEventData e)
-        {           
+        {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
 
@@ -233,11 +229,14 @@ namespace WindowsGame1
                 s += "+ " + p.Player_name + " - " + p.Address + "\n";
             }
             roomInfoContent.Text = s;
-
+            foreach (var item in avatar_img) item.Delete();
+            avatar_img.Clear();
             for (int i = 0; i < room.Player_List.Count; i++)
             {
                 String playerNameStr = room.Player_List[i].Player_name;
                 playerName[i].Text = playerNameStr;
+                Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
+                avatar_img.Add(newAvatar);
             }
             numberOfPlayer = room.Player_List.Count;
         }
