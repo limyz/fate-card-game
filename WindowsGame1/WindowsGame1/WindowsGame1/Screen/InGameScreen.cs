@@ -87,7 +87,7 @@ namespace WindowsGame1
 
         private void MessageReceived(string message)
         {  
-            textbox_chat_show.Text += (message + "\r\n");
+            chatDisplayTextbox.Text += (message + "\r\n");
         }
         public void End_Chat()
         {
@@ -103,40 +103,27 @@ namespace WindowsGame1
         int card_height = 150;
         int hand_witdh = 535;
         int padding = 5;
-
-        SpriteFont font;                       
-        Random rand = new Random();
-
         int opponent_number = 5;
-        Texture2D border_texture, char_card_texture;
+        int hand_hovered_index = -1;
+        int[] player_random_char = new int[2];                       
+        Random rand = new Random();
+        Texture2D border_texture, char_card_texture, player_control_texture;
         Rectangle[,] opponent_area;
-
-        Rectangle player_control_area = new Rectangle(0, 570, 1000, 150);
-        Texture2D player_control_texture;
-
-        Rectangle chat_screen_area = new Rectangle(970, 0, 230, 330);
-        Texture2D chat_screen_texture;
-        Rectangle chat_input_area = new Rectangle(970, 330, 230, 220);
-        Texture2D chat_input_texture;
-
+        Rectangle playerControlRectangle;
+        Border chatInputBorder, chatDisplayBorder;
+        Border[] playerCharacterBorder = new Border[2];
+        Color borderColor = Color.MediumAquamarine;
         XmlDocument xml = new XmlDocument();
-        Character[] master_list;
-        Character[] servant_list;
+        Character[] master_list, servant_list;
         List<Card> card_list = new List<Card>();
         List<Card> hand_list = new List<Card>();
-        int hand_hovered_index = -1;
-
-        Rectangle[] player_char_area = new Rectangle[2];
-        int[] player_random_char = new int[2];
         List<Rectangle> hand_area_list = new List<Rectangle>();
+        Image masterImg, servantImg;
         //Rectangle player_card_area = new Rectangle(175,570,105,150);
         ImageButton draw_button;
-        TextBox chat_textbox;
-        Label label_username;
-        Label label_IP;
-        TextBox textbox_username;
-        TextBox textbox_IP;
-        TextBox textbox_chat_show;
+        TextBox chatInputTextbox, chatDisplayTextbox, textbox_username, textbox_IP;
+        Label label_username, label_IP;
+        Div PlayerControlPanel;
         #endregion        
         
         #region Character class
@@ -195,8 +182,24 @@ namespace WindowsGame1
             : base("InGameScreen",theScreenEvent,parent)
         {
             //parent.keyboard_dispatcher = new KeyboardDispatcher(main_game.Window);
-            //test_img = Content.Load<Texture2D>("Resource/Test");                      
+            #region Load Resource
+            border_texture = Content.Load<Texture2D>("Resource/Untitled-1");
+            char_card_texture = Content.Load<Texture2D>("Resource/character_back");
+            player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
+            #endregion
 
+            //content loading code here
+
+            #region Player Control Panel
+            playerControlRectangle = new Rectangle(0, 564, 1000, 156);
+            playerCharacterBorder[0] = new Border("Character Border 1", Color.Red, 3, new Rectangle(731, 564, 111, 156), this);
+            playerCharacterBorder[1] = new Border("Character Border 2", Color.Red, 3, new Rectangle(842, 564, 111, 156), this);
+            PlayerControlPanel = new Div("PlayerControlPanel", playerControlRectangle, Color.White, this);
+            masterImg = new Image("Player Master Image", char_card_texture, new Rectangle(734, 567, 105, 150), 0.5f, this);
+            servantImg = new Image("Player Servant Image", char_card_texture, new Rectangle(845, 567, 105, 150), 0.5f, this);
+            #endregion
+
+            #region Other Player location
             opponent_area = new Rectangle[opponent_number, 2];
             opponent_area[0, 0] = new Rectangle(30, 320, 100, 150);
             opponent_area[0, 1] = new Rectangle(130, 320, 100, 150);
@@ -208,62 +211,54 @@ namespace WindowsGame1
             opponent_area[3, 1] = new Rectangle(810, 100, 100, 150);
             opponent_area[4, 0] = new Rectangle(730, 320, 100, 150);
             opponent_area[4, 1] = new Rectangle(830, 320, 100, 150);
+            #endregion
 
-            player_char_area[0] = new Rectangle(734, 570, 105, 150);
-            player_char_area[1] = new Rectangle(845, 570, 105, 150);
-
-            //content loading code here
-
-            font = Content.Load<SpriteFont>("SpriteFont1");
-
-            border_texture = Content.Load<Texture2D>("Resource/Untitled-1");
-            char_card_texture = Content.Load<Texture2D>("Resource/character_back");
-
-            player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
-            chat_screen_texture = Content.Load<Texture2D>("Resource/chat_screen");
-            chat_input_texture = Content.Load<Texture2D>("Resource/chat_input");
-
+            #region Button
             draw_button = new ImageButton("draw_button", Content.Load<Texture2D>("Resource/draw")
                 , new Rectangle(740, 520, 130, 35), 0.5f, this);
             draw_button.OnClick += draw_button_clicked;
+            #endregion
 
-            Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
-            Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
-            Texture2D caret = Content.Load<Texture2D>("Resource/caret");
-            Texture2D scrollbarBackground = Content.Load<Texture2D>("Resource/ScrollbarBackground");
-            Texture2D scrollbar = Content.Load<Texture2D>("Resource/Scrollbar");
+            #region Chat
+            chatDisplayBorder = new Border("chatDisplayBorder", borderColor, 2
+                , new Rectangle(968, 10, 230, 404), this);
 
-            chat_textbox = new TextBox("chat_textbox"
-                , white_textbox, highlighted_textbox, caret
-                , scrollbarBackground, scrollbar, font
-                , new Rectangle(979, 345, 219, 200), this);
-            chat_textbox.scrollable = true;
-            chat_textbox.OnEnterPressed += chat_textbox_onEnterPressed;
-            chat_textbox.OnShift_EnterPressed += textbox_onShiftEnterPressed;
+            chatDisplayTextbox = new TextBox("chatDisplayTextbox"
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
+                , new Rectangle(970, 12, 226, 400), this);
+            chatDisplayTextbox.scrollable = true;  
+            chatDisplayTextbox.ReadOnly = true;
 
-            label_username = new Label("label_username", font, "Username"
+            chatInputBorder = new Border("chatInputBorder", borderColor, 2
+               , new Rectangle(968, 438, 230, 104), this);
+
+            chatInputTextbox = new TextBox("chatInputTextbox"
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
+                , new Rectangle(970, 440, 226, 100), this);
+            chatInputTextbox.scrollable = true;
+            chatInputTextbox.OnEnterPressed += chat_textbox_onEnterPressed;
+            chatInputTextbox.OnShift_EnterPressed += textbox_onShiftEnterPressed;
+            #endregion
+
+            #region IP Test
+            label_username = new Label("label_username", Game1.font, "Username"
                 , 1010, 550, 1198 - 1010, Color.White, this);
 
-            label_IP = new Label("label_IP", font, "IP Address"
+            label_IP = new Label("label_IP", Game1.font, "IP Address"
                 , 1010, 630, 1198 - 1010, Color.White, this);
 
             textbox_username = new TextBox("textbox_username"
-                , white_textbox, highlighted_textbox, caret
-                , font , new Rectangle(1010, 570, 188, 20), this);
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.font, new Rectangle(1010, 570, 188, 20), this);
             textbox_username.Text = "Siv";
 
             textbox_IP = new TextBox("textbox_IP"
-                , white_textbox, highlighted_textbox, caret
-                , font , new Rectangle(1010, 650, 188, 20), this);
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.font, new Rectangle(1010, 650, 188, 20), this);
             textbox_IP.Text = "255.255.255.255";
-
-            textbox_chat_show = new TextBox("textbox_chat_show"
-                , white_textbox, highlighted_textbox, caret
-                , scrollbarBackground, scrollbar, font
-                , new Rectangle(979, 10, 219, 312), this);
-            textbox_chat_show.scrollable = true;
-            //textbox_chat_show.OnClick = null;     
-            textbox_chat_show.ReadOnly = true;
+            #endregion
 
             #region inGameScreen_RegisterHandler
             OnKeysDown += InGameScreen_OnKeysDown;
@@ -325,7 +320,7 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             base.Update(theTime);
-
+            randomCharacter();
             if (hand_hovered_index == -1)
             {
                 for (int i = hand_area_list.Count - 1; i >= 0; i--)
@@ -386,6 +381,15 @@ namespace WindowsGame1
                 Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
         }
+
+        public void randomCharacter()
+        {
+            Texture2D master = master_list[player_random_char[0]].char_texture;
+            Texture2D servant = servant_list[player_random_char[1]].char_texture;
+
+            masterImg.texture = master;
+            servantImg.texture = servant;
+        }
         #endregion
 
         #region HANDLER
@@ -405,13 +409,13 @@ namespace WindowsGame1
         {
             SetIP();
             SetUsername();
-            if (!string.IsNullOrEmpty(chat_textbox.Text))
+            if (!string.IsNullOrEmpty(chatInputTextbox.Text))
             {
-                string toSend = userName + ": " + chat_textbox.Text;
+                string toSend = userName + ": " + chatInputTextbox.Text;
                 byte[] data = Encoding.Unicode.GetBytes(toSend);
-                textbox_chat_show.Text += toSend + "\r\n";
+                chatDisplayTextbox.Text += toSend + "\r\n";
                 sendingClient.Send(data, data.Length, Address, send_port);
-                chat_textbox.Text = "";
+                chatInputTextbox.Text = "";
             }
         }
         private void textbox_onShiftEnterPressed(TextBox sender)
@@ -438,16 +442,7 @@ namespace WindowsGame1
                     spriteBatch.Draw(border_texture, opponent_area[x, y], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
                 }
             }
-            spriteBatch.Draw(player_control_texture, player_control_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
-            spriteBatch.Draw(master_list[player_random_char[0]].char_texture, player_char_area[0], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.25f);
-            spriteBatch.Draw(servant_list[player_random_char[1]].char_texture, player_char_area[1], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.25f);
-            spriteBatch.Draw(chat_screen_texture, chat_screen_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
-            spriteBatch.Draw(chat_input_texture, chat_input_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
-
-            label_username.Draw(spriteBatch, gameTime);
-            label_IP.Draw(spriteBatch, gameTime);
-
-            draw_button.Draw(spriteBatch, gameTime);
+            //spriteBatch.Draw(player_control_texture, playerControlRectangle, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
 
             if (hand_hovered_index == -1)
             {
@@ -478,7 +473,7 @@ namespace WindowsGame1
         #region Draw's functions
         private void DrawText(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(Game1.font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
         }
         #endregion
     }
