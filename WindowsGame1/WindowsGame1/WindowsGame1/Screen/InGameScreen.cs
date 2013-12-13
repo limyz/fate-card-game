@@ -195,8 +195,8 @@ namespace WindowsGame1
             playerCharacterBorder[0] = new Border("Character Border 1", Color.Red, 3, new Rectangle(731, 564, 111, 156), this);
             playerCharacterBorder[1] = new Border("Character Border 2", Color.Red, 3, new Rectangle(842, 564, 111, 156), this);
             PlayerControlPanel = new Div("PlayerControlPanel", playerControlRectangle, Color.White, this);
-            masterImg = new Image("Player Master Image", char_card_texture, new Rectangle(734, 567, 105, 150), 0.5f, this);
-            servantImg = new Image("Player Servant Image", char_card_texture, new Rectangle(845, 567, 105, 150), 0.5f, this);
+            masterImg = new Image("Player Master Image", char_card_texture, new Rectangle(734, 567, 105, 150), 0.3f, this);
+            servantImg = new Image("Player Servant Image", char_card_texture, new Rectangle(845, 567, 105, 150), 0.3f, this);
             #endregion
 
             #region Other Player location
@@ -318,9 +318,8 @@ namespace WindowsGame1
 
         #region Update
         public override void Update(GameTime theTime)
-        {
-            base.Update(theTime);
-            randomCharacter();
+        {            
+            //randomCharacter();
             if (hand_hovered_index == -1)
             {
                 for (int i = hand_area_list.Count - 1; i >= 0; i--)
@@ -348,7 +347,8 @@ namespace WindowsGame1
                     }
                     
                 }
-            }            
+            }
+            base.Update(theTime);
         }
         #endregion                
 

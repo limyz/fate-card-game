@@ -32,6 +32,7 @@ namespace WindowsGame1
         public Screen parent;
         public Type original_type;
         public Rectangle rec;
+        public object value;
 
         public FormEventHandler OnClick;
         public FormEventHandler OnMouseUp;
@@ -63,7 +64,7 @@ namespace WindowsGame1
             parent.FormsUpdate += Update;
             parent.FormsDraw += Draw;
 
-            parent.main_game.debugger.Register_For_Debug(this);
+            //parent.main_game.debugger.Register_For_Debug(this);
         }
 
         public void Delete(){

@@ -229,6 +229,7 @@ namespace WindowsGame1
                 s += "+ " + p.Player_name + " - " + p.Address + "\n";
             }
             roomInfoContent.Text = s;
+
             foreach (var item in avatar_img) item.Delete();
             avatar_img.Clear();
             for (int i = 0; i < room.Player_List.Count; i++)
