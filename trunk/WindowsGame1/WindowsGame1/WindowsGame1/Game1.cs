@@ -109,7 +109,7 @@ public class SivEventArgs : EventArgs
     }
 
     public SivEventArgs(decimal c, object d)
-    {       
+    {
         command_code = c;
         data = d;
     }
@@ -162,8 +162,10 @@ namespace WindowsGame1
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
         public static Texture2D white_texture;
+        public static Texture2D white_textbox, highlighted_textbox, caret, scrollbarBackground, scrollbar;
+        public static SpriteFont font;   
         //end static variable
-        
+
         public int window_width = 1200;
         public int window_height = 720;
         GraphicsDeviceManager graphics;
@@ -414,8 +416,14 @@ namespace WindowsGame1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            font = Content.Load<SpriteFont>("SpriteFont1");
             white_texture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             white_texture.SetData(new[] { Color.White });
+            white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
+            highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
+            caret = Content.Load<Texture2D>("Resource/caret");
+            scrollbarBackground = Content.Load<Texture2D>("Resource/ScrollbarBackground");
+            scrollbar = Content.Load<Texture2D>("Resource/Scrollbar");
 
             mMenuScreen = new MenuScreen(graphics, this.Content, new SivEventHandler(MenuScreenEvent), this);
             mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent), this);
@@ -425,7 +433,7 @@ namespace WindowsGame1
 
             mCurrentScreen = mMenuScreen;
 
-            //update_input_state();            
+            //update_input_state();      
         }
 
         #region Screens's Event
@@ -537,7 +545,7 @@ namespace WindowsGame1
         {
             GraphicsDevice.Clear(Color.Black);
             if (this.IsActive)
-            {               
+            {
                 mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
 
                 base.Draw(gameTime);
