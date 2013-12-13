@@ -60,6 +60,7 @@ namespace WindowsGame1
             List_Room.Add(room);
             List_Room_Recieve_Time.Add(DateTime.Now);
         }
+
         private void Receiver()
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 51001);
@@ -88,11 +89,13 @@ namespace WindowsGame1
                 Game1.MessageBox(new IntPtr(0), s, endPoint.Address.ToString() + ":" + endPoint.Port, 0);*/
             }
         }
+
         public void End_Receive()
         {
             receivingThread.Abort();
             receivingClient.Close();
         }
+
         #endregion
 
         #region load content
