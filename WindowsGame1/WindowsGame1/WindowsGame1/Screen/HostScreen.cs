@@ -26,25 +26,29 @@ namespace WindowsGame1
         public HostScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("HostScreen",theEvent, parent)
         {
+            #region Load Resource
             font = Content.Load<SpriteFont>("Resource/font/TNRoman_12_Bold");
-            Texture2D white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
-            Texture2D highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
-            Texture2D caret = Content.Load<Texture2D>("Resource/caret");
-
             bg = new Background(Content.Load<Texture2D>("Resource/background"), this);
+            #endregion
 
+            #region Image
             saber = new Image("saber2", Content.Load<Texture2D>("Resource/saber_trans")
             , new Rectangle(-50, 0, 700, 735), 0.99f, this);
-
             dialog = new Image("dialog", Content.Load<Texture2D>("Resource/dialog_menu")
             , new Rectangle(400, 120, 400, 300), 0.98f, this);
+            #endregion
+
+            #region Host Game Panel
+            TextBox ipTextBox = new TextBox("Hosting IP", Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , font, new Rectangle(470, 160, 250, 20), this);
+            ipTextBox.Text = "255.255.255.255";
 
             Host_name_label = new Label("host_name_label",
                 font, "Player name"
                 , 470, 200, 150, Color.White, this);
 
             Host_name_textbox = new TextBox("Host_name_textbox"
-                , white_textbox, highlighted_textbox, caret
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
                 , font, new Rectangle(620, 200, 100, 20), this);
             Host_name_textbox.Text = "AltimaZ";
 
@@ -53,7 +57,7 @@ namespace WindowsGame1
                 , 470, 230, 150, Color.White, this);
 
             Room_name_textbox = new TextBox("Room_name_textbox"
-                , white_textbox, highlighted_textbox, caret
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
                 , font, new Rectangle(620, 230, 100, 20), this);
             Room_name_textbox.Text = "Room Test";
 
@@ -62,7 +66,7 @@ namespace WindowsGame1
                 , 470, 260, 150, Color.White, this);
 
             Number_of_player_textbox = new TextBox("Number_of_player_textbox"
-                , white_textbox, highlighted_textbox, caret
+                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
                 , font, new Rectangle(620, 260, 100, 20), this);
             Number_of_player_textbox.Text = "3";
 
@@ -75,6 +79,7 @@ namespace WindowsGame1
                 , Content.Load<Texture2D>("Resource/back_button")
                 , new Rectangle(600, 300, 120, 42), this);
             Canel_button.OnClick += Cancel_button_clicked;
+            #endregion
 
             #region HostScreen_RegisterHandler
             OnKeysDown += HostScreen_OnKeysDown;
