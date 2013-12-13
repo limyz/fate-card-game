@@ -109,7 +109,6 @@ namespace WindowsGame1
         Random rand = new Random();
         Texture2D border_texture, char_card_texture, player_control_texture;
         Rectangle[,] opponent_area;
-        Rectangle playerControlRectangle;
         Border chatInputBorder, chatDisplayBorder;
         Border[] playerCharacterBorder = new Border[2];
         Color borderColor = Color.MediumAquamarine;
@@ -177,7 +176,7 @@ namespace WindowsGame1
         }
         #endregion
 
-        #region Load content
+        #region Load Content
         public InGameScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theScreenEvent, Game1 parent)
             : base("InGameScreen",theScreenEvent,parent)
         {
@@ -191,10 +190,9 @@ namespace WindowsGame1
             //content loading code here
 
             #region Player Control Panel
-            playerControlRectangle = new Rectangle(0, 564, 1000, 156);
             playerCharacterBorder[0] = new Border("Character Border 1", Color.Red, 3, new Rectangle(731, 564, 111, 156), this);
             playerCharacterBorder[1] = new Border("Character Border 2", Color.Red, 3, new Rectangle(842, 564, 111, 156), this);
-            PlayerControlPanel = new Div("PlayerControlPanel", playerControlRectangle, Color.White, this);
+            PlayerControlPanel = new Div("PlayerControlPanel", new Rectangle(0, 564, 1000, 156), Color.White, this);
             masterImg = new Image("Player Master Image", char_card_texture, new Rectangle(734, 567, 105, 150), 0.3f, this);
             servantImg = new Image("Player Servant Image", char_card_texture, new Rectangle(845, 567, 105, 150), 0.3f, this);
             #endregion
@@ -263,6 +261,7 @@ namespace WindowsGame1
             #region inGameScreen_RegisterHandler
             OnKeysDown += InGameScreen_OnKeysDown;
             #endregion
+
             #region XML loading
             //Character's data load
             xml.Load("Data/Character.xml");
@@ -352,7 +351,7 @@ namespace WindowsGame1
         }
         #endregion                
 
-        #region update's function
+        #region Update's Function
         private void resize_hand()
         {
             int net_width = (hand_area_list[hand_area_list.Count - 1].Right - hand_area_list[0].Left);
@@ -426,6 +425,7 @@ namespace WindowsGame1
         {
             draw_card();
             resize_hand();
+            randomCharacter();
         }
         #endregion
 

@@ -61,6 +61,7 @@ namespace WindowsGame1
                 bformatter.Serialize(stream, room);
                 byte[] data = stream.ToArray();
                 sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
+                //sendingClient.Send(data, data.Length, "27.2.142.64", 51001);
 
                 Thread.Sleep(1000);
             }
