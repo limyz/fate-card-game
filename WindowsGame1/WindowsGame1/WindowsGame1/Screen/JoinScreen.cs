@@ -70,7 +70,7 @@ namespace WindowsGame1
             s2 += room.Player_List[room.owner_index].Address;
             int i2 = List_Room.Count - 1;
 
-            Label l = new Label(i2.ToString(), font, s2, 80, 165 + 15 * i2, 680
+            Label l = new Label(i2.ToString(), font, s2, 80, 165 + 20 * i2, 680
                 , Color.White, this);
             l.value = i2;
             l.OnClick += RoomClicked;
@@ -197,9 +197,18 @@ namespace WindowsGame1
                     List_Room_Recieve_Time.RemoveAt(i);
                     List_Room_Info[i].Delete();
                     List_Room_Info.RemoveAt(i);
+
+                    for (int i2 = i; i2 < List_Room_Info.Count; i2++)
+                    {
+                        List_Room_Info[i2].name = i2.ToString();
+                        List_Room_Info[i2].rec.Y = 165 + i2 * 20;
+                        List_Room_Info[i2].value = i2;
+                    }
+
                     i--;
                 }
             }
+            
         }
         #endregion
 
