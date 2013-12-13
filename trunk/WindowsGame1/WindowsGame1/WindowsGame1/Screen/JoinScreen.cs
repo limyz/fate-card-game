@@ -25,7 +25,6 @@ namespace WindowsGame1
 
         List<Room> List_Room = new List<Room>();
         List<DateTime> List_Room_Recieve_Time = new List<DateTime>();
-        Label test;
         List<Label> List_Room_Info = new List<Label>();
         #endregion
 
@@ -53,12 +52,31 @@ namespace WindowsGame1
                     room.Player_List[room.owner_index].Address = endPoint.Address.ToString();
                     List_Room[i] = room;
                     List_Room_Recieve_Time[i] = DateTime.Now;
+
+                    String s = List_Room[i].Room_name + " (" + List_Room[i].Player_List.Count;
+                    s += "/" + List_Room[i].Number_of_Player + ") - ";
+                    s += List_Room[i].Player_List[List_Room[i].owner_index].Address;
+                    List_Room_Info[i].Text = s;
+
                     return;
                 }
             }
             room.Player_List[room.owner_index].Address = endPoint.Address.ToString();
             List_Room.Add(room);
             List_Room_Recieve_Time.Add(DateTime.Now);
+
+            String s2 = room.Room_name + " (" + room.Player_List.Count + "/";
+            s2 += room.Number_of_Player + ") - ";
+            s2 += room.Player_List[room.owner_index].Address;
+            int i2 = List_Room.Count - 1;
+
+            Label l = new Label(i2.ToString(), font, s2, 80, 165 + 15 * i2, 680
+                , Color.White, this);
+            l.value = i2;
+            l.OnClick += RoomClicked;
+            l.OnMouseEnter += RoomEntered;
+            l.OnMouseLeave += RoomLeft;
+            List_Room_Info.Add(l);
         }
 
         private void Receiver()
@@ -73,20 +91,6 @@ namespace WindowsGame1
                 Room room = (Room)bin.Deserialize(mem);
 
                 this.Check_Room_Existed(room, endPoint);
-                //No need to renew the endpoint because the udpclient receive from any 
-                //source without caring for the ip address of the endpoint. TESTED.
-                //endPoint = new IPEndPoint(IPAddress.Any, 51001);  
-
-                /*String s = "Owner index: " + room.owner_index + "\n";
-                s += "Player List Count: " + room.Player_List.Count + "\n";
-                s += "Room name: " + room.Room_name + "\n";
-                s += "Number of Player: " + room.Number_of_Player + "\n";
-                s += "Player List:\n";
-                foreach (Player p in room.Player_List)
-                {
-                    s += "+ " + p.Player_name + " - " + p.Address + "\n";
-                }
-                Game1.MessageBox(new IntPtr(0), s, endPoint.Address.ToString() + ":" + endPoint.Port, 0);*/
             }
         }
 
@@ -127,8 +131,6 @@ namespace WindowsGame1
                 , new Rectangle(470, 650, 120, 42), this);
             back_button.OnClick += BackClicked;
 
-            test = new Label("", font, "", 80, 165, 680, Color.White, this);
-
             #region JoinScreen_RegisterHandler
             OnKeysDown += JoinScreen_OnKeysDown;                       
             #endregion
@@ -155,27 +157,56 @@ namespace WindowsGame1
             ScreenEvent.Invoke(this, new SivEventArgs(2));
             return;
         }
+        private void RoomClicked(object sender, FormEventData e)
+        {
+            Label label = (Label)sender;
+            int value = (int)label.value;
+            Room room = List_Room[value];
+
+            String s = "Owner index: " + room.owner_index + "\n";
+            s += "Player List Count: " + room.Player_List.Count + "\n";
+            s += "Room name: " + room.Room_name + "\n";
+            s += "Number of Player: " + room.Number_of_Player + "\n";
+            s += "Player List:\n";
+            foreach (Player p in room.Player_List)
+            {
+                s += "+ " + p.Player_name + " - " + p.Address + "\n";
+            }
+            Game1.MessageBox(new IntPtr(0), s, value.ToString(), 0);
+        }
+        private void RoomEntered(object sender, FormEventData e)
+        {
+            Label label = (Label)sender;
+            label._color = Color.Red;
+        }
+        private void RoomLeft(object sender, FormEventData e)
+        {
+            Label label = (Label)sender;
+            label._color = Color.White;
+        }
+        #endregion
+
+        #region Update's function
+        private void Update_Room_List()
+        {
+            for (int i = 0; i < List_Room_Recieve_Time.Count; i++)
+            {
+                if ((DateTime.Now - List_Room_Recieve_Time[i]) > new TimeSpan(0, 0, 3))
+                {
+                    List_Room.RemoveAt(i);
+                    List_Room_Recieve_Time.RemoveAt(i);
+                    List_Room_Info[i].Delete();
+                    List_Room_Info.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
         #endregion
 
         #region update
         public override void Update(GameTime theTime)
-        {                 
-            for (int i = 0; i < List_Room_Recieve_Time.Count; i++)
-            {
-                if ((DateTime.Now - List_Room_Recieve_Time[i]) > new TimeSpan(0,0,3))
-                {
-                    List_Room.RemoveAt(i);
-                    List_Room_Recieve_Time.RemoveAt(i);
-                    i--;
-                }
-            }
-            String s = "";
-            foreach (Room r in List_Room)
-            {
-                s += r.Room_name + " (" + r.Player_List.Count + "/" + r.Number_of_Player;
-                s += ") - " + r.Player_List[r.owner_index].Address + "\n";
-            }
-            test.Text = s;
+        {
+            Update_Room_List();
 
             base.Update(theTime);
         }
