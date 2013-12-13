@@ -86,6 +86,10 @@ namespace WindowsGame1
             }
             set
             {
+                if (_readonly == value)
+                {
+                    return;
+                }
                 _readonly = value;
                 if (_readonly)
                 {
@@ -95,9 +99,6 @@ namespace WindowsGame1
                 }
                 else
                 {
-                    this.OnClick -= new FormEventHandler(textbox_clicked);
-                    this.OnMouseEnter -= new FormEventHandler(textbox_OnMouseEnter);
-                    this.OnMouseLeave -= new FormEventHandler(textbox_OnMouseLeave);
                     this.OnClick += new FormEventHandler(textbox_clicked);
                     this.OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
                     this.OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);

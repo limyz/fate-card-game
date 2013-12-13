@@ -33,6 +33,26 @@ namespace WindowsGame1
         public Type original_type;
         public Rectangle rec;
         public object value;
+        private bool _visible = true;
+        public bool visible
+        {
+            get { return _visible; }
+            set
+            {
+                if (_visible == value) return;
+                _visible = value;
+                if (_visible)
+                {
+                    parent.FormsUpdate += Update;
+                    parent.FormsDraw += Draw;
+                }
+                else
+                {
+                    parent.FormsUpdate -= Update;
+                    parent.FormsDraw -= Draw;
+                }
+            }
+        }
 
         public FormEventHandler OnClick;
         public FormEventHandler OnMouseUp;
