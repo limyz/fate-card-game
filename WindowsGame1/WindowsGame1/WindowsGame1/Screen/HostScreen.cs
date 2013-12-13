@@ -19,7 +19,7 @@ namespace WindowsGame1
         TextBox Host_name_textbox, Room_name_textbox, Number_of_player_textbox;
         Background bg;
         Image saber, dialog;
-
+        TextBox ipTextBox;
         #endregion
 
         #region load content
@@ -39,7 +39,7 @@ namespace WindowsGame1
             #endregion
 
             #region Host Game Panel
-            TextBox ipTextBox = new TextBox("Hosting IP", Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+            ipTextBox = new TextBox("Hosting IP", Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
                 , font, new Rectangle(470, 160, 250, 20), this);
             ipTextBox.Text = "255.255.255.255";
 
@@ -106,11 +106,12 @@ namespace WindowsGame1
             }
             if (Room_name_textbox.Text.Length > 12)
             {
-                Game1.MessageBox(new IntPtr(0), "Room Name cannot more than 12 characters", "Player Name Invalid", 0);
+                Game1.MessageBox(new IntPtr(0), "Room Name cannot more than 12 characters", "Room Name Invalid", 0);
                 return;
             }
             try
             {
+                main_game.mRoomScreen.IPAddress = ipTextBox.Text;
                 Room r = new Room(
                     new Player(Host_name_textbox.Text, "0.0.0.0")
                     , Room_name_textbox.Text, int.Parse(Number_of_player_textbox.Text));
