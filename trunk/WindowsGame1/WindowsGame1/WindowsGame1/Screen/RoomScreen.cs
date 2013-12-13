@@ -38,6 +38,7 @@ namespace WindowsGame1
         #region broadcast Thread
         UdpClient sendingClient;
         Thread broadcastingThread;
+        public string IPAddress = "";
         /*public static byte[] ReadFully(Stream input)
         {
             input.Position = 0;
@@ -60,8 +61,7 @@ namespace WindowsGame1
                 BinaryFormatter bformatter = new BinaryFormatter();
                 bformatter.Serialize(stream, room);
                 byte[] data = stream.ToArray();
-                sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
-                //sendingClient.Send(data, data.Length, "27.2.142.64", 51001);
+                sendingClient.Send(data, data.Length, IPAddress, 51001);
 
                 Thread.Sleep(1000);
             }
