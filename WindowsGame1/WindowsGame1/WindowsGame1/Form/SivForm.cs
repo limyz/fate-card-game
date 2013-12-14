@@ -28,13 +28,13 @@ namespace WindowsGame1
 
     public class SivForm
     {
-        public string name;
-        public Screen parent;
+        public string Name;
+        public Screen Parent;
         public Type original_type;
-        public Rectangle rec;
-        public object value;
+        public Rectangle Rect;
+        public object Value;
         private bool _visible = true;
-        public bool visible
+        public bool Visible
         {
             get { return _visible; }
             set
@@ -43,13 +43,13 @@ namespace WindowsGame1
                 _visible = value;
                 if (_visible)
                 {
-                    parent.FormsUpdate += Update;
-                    parent.FormsDraw += Draw;
+                    Parent.FormsUpdate += Update;
+                    Parent.FormsDraw += Draw;
                 }
                 else
                 {
-                    parent.FormsUpdate -= Update;
-                    parent.FormsDraw -= Draw;
+                    Parent.FormsUpdate -= Update;
+                    Parent.FormsDraw -= Draw;
                 }
             }
         }
@@ -76,28 +76,29 @@ namespace WindowsGame1
 
         public SivForm(string _name, Screen parent, Type original_type,Rectangle rec)
         {
-            name = _name;
-            this.parent = parent;
+            Name = _name;
+            this.Parent = parent;
             this.original_type = original_type;
-            this.rec = rec;
+            this.Rect = rec;
             parent.Form_list.Add(this);
             parent.FormsUpdate += Update;
             parent.FormsDraw += Draw;
 
-            //parent.main_game.debugger.Register_For_Debug(this);
+            //Debugger
+            parent.main_game.debugger.Register_For_Debug(this);
         }
 
         public void Delete(){
-            parent.FormsUpdate -= Update;
-            parent.FormsDraw -= Draw;
-            parent.FormsUpdate += Remove_From_Forms_List;           
+            Parent.FormsUpdate -= Update;
+            Parent.FormsDraw -= Draw;
+            Parent.FormsUpdate += Remove_From_Forms_List;           
         }
 
         private void Remove_From_Forms_List(GameTime gameTime)
         {
             //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "before", 0);
-            parent.Form_list.Remove(this);        
-            parent.FormsUpdate -= Remove_From_Forms_List;
+            Parent.Form_list.Remove(this);        
+            Parent.FormsUpdate -= Remove_From_Forms_List;
             //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "after", 0);
         }
 

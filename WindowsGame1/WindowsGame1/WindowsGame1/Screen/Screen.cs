@@ -67,7 +67,7 @@ namespace WindowsGame1
             {
                 if (form.OnClick != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -80,7 +80,7 @@ namespace WindowsGame1
             {
                 if (form.OnMouseUp != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -93,7 +93,7 @@ namespace WindowsGame1
             {
                 if (form.OnMouseDown != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -106,7 +106,7 @@ namespace WindowsGame1
             {
                 if (form.OnRightMouseClick != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnRightMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -119,7 +119,7 @@ namespace WindowsGame1
             {
                 if (form.OnRightMouseUp != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnRightMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -132,7 +132,7 @@ namespace WindowsGame1
             {
                 if (form.OnRightMouseDown != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnRightMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -145,7 +145,7 @@ namespace WindowsGame1
             {
                 if (form.OnMiddleMouseClick != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMiddleMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -158,7 +158,7 @@ namespace WindowsGame1
             {
                 if (form.OnMiddleMouseUp != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMiddleMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -171,7 +171,7 @@ namespace WindowsGame1
             {
                 if (form.OnMiddleMouseDown != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMiddleMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -187,7 +187,7 @@ namespace WindowsGame1
             {
                 if (form.OnMouseHover != null)
                 {
-                    if (form.rec.Contains(new Point(ms.X, ms.Y)))
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
                     {
                         form.OnMouseHover.Invoke(form, new FormEventData(typeof(MouseState), ms));
                     }
@@ -199,14 +199,14 @@ namespace WindowsGame1
             foreach (SivForm form in Form_list)
             {
 
-                if (!form.rec.Contains(new Point(last_ms.X, last_ms.Y))
-                    && form.rec.Contains(new Point(ms.X, ms.Y))
+                if (!form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
+                    && form.Rect.Contains(new Point(ms.X, ms.Y))
                     && form.OnMouseEnter != null)
                 {
                     form.OnMouseEnter.Invoke(form, new FormEventData(typeof(MouseState), ms));
                 }
-                else if (!form.rec.Contains(new Point(ms.X, ms.Y))
-                    && form.rec.Contains(new Point(last_ms.X, last_ms.Y))
+                else if (!form.Rect.Contains(new Point(ms.X, ms.Y))
+                    && form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
                     && form.OnMouseLeave != null)
                 {
                     form.OnMouseLeave.Invoke(form, new FormEventData(typeof(MouseState), ms));

@@ -39,7 +39,7 @@ namespace WindowsGame1
             #endregion
 
             #region Host Game Panel
-            ipTextBox = new TextBox("Hosting IP", Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+            ipTextBox = new TextBox("Hosting IP", Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , font, new Rectangle(470, 160, 250, 20), this);
             ipTextBox.Text = "255.255.255.255";
 
@@ -48,7 +48,7 @@ namespace WindowsGame1
                 , 470, 200, 150, Color.White, this);
 
             Host_name_textbox = new TextBox("Host_name_textbox"
-                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , font, new Rectangle(620, 200, 100, 20), this);
             Host_name_textbox.Text = "AltimaZ";
 
@@ -57,7 +57,7 @@ namespace WindowsGame1
                 , 470, 230, 150, Color.White, this);
 
             Room_name_textbox = new TextBox("Room_name_textbox"
-                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , font, new Rectangle(620, 230, 100, 20), this);
             Room_name_textbox.Text = "Room Test";
 
@@ -66,7 +66,7 @@ namespace WindowsGame1
                 , 470, 260, 150, Color.White, this);
 
             Number_of_player_textbox = new TextBox("Number_of_player_textbox"
-                , Game1.white_textbox, Game1.highlighted_textbox, Game1.caret
+                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , font, new Rectangle(620, 260, 100, 20), this);
             Number_of_player_textbox.Text = "3";
 

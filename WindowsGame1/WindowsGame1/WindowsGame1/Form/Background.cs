@@ -10,18 +10,18 @@ namespace WindowsGame1
 {
     class Background : SivForm
     {
-        private Texture2D backgroundTexture;
+        public Texture2D BackgroundTexture;
 
         public Background(Texture2D background_img, Screen parent)
             :base("background",parent,typeof(Background)
             ,new Rectangle(0, 0, parent.main_game.window_width, parent.main_game.window_height))
         {
-            backgroundTexture = background_img;
+            BackgroundTexture = background_img;
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(backgroundTexture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
+            spriteBatch.Draw(BackgroundTexture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 1f);
         }        
     }
 }

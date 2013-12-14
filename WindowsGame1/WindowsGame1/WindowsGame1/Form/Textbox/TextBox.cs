@@ -64,14 +64,14 @@ namespace WindowsGame1
                     _text = filtered;
                     if (scrollable)
                     {
-                        if (rec.Width <= _font.MeasureString(_text).X)
+                        if (Rect.Width <= _font.MeasureString(_text).X)
                         {
-                            hscrollbar_width = (int)(rec.Width * (rec.Width / _font.MeasureString(_text).X));
+                            hscrollbar_width = (int)(Rect.Width * (Rect.Width / _font.MeasureString(_text).X));
                         }
                         else
                         {
                             hscrollbar_offset = 0;
-                            hscrollbar_width = rec.Width;
+                            hscrollbar_width = Rect.Width;
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace WindowsGame1
             _scrollbarTexture = scrollbarTexture;
             _font = font;           
             hscrollbar_width = rec.Width;
-            this.parent = parent;  
+            this.Parent = parent;  
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
@@ -135,7 +135,7 @@ namespace WindowsGame1
             _HighlightedTexture = highlightedTexture;
             _caretTexture = caretTexture;
             _font = font;
-            this.parent = parent;
+            this.Parent = parent;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
@@ -146,7 +146,7 @@ namespace WindowsGame1
         {
             if (scrollable)
             {
-                hscrollbar_rec = new Rectangle(rec.X + hscrollbar_offset, rec.Y + rec.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
+                hscrollbar_rec = new Rectangle(Rect.X + hscrollbar_offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
             }
         }
 
@@ -164,7 +164,7 @@ namespace WindowsGame1
                 for (int i = 0; i < Text.Length; i++)
                     toDraw += (char)0x2022; //bullet character (make sure you include it in the font!!!!)
             }           
-            Rectangle _textbox_rec = new Rectangle(rec.X, rec.Y, rec.Width, rec.Height -(scrollable?_font.LineSpacing:0));
+            Rectangle _textbox_rec = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height -(scrollable?_font.LineSpacing:0));
 
             spriteBatch.End();//end current screen's spriteBatch.Begin
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);           
@@ -172,7 +172,7 @@ namespace WindowsGame1
             spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (scrollable)
             {
-                Rectangle hscroll_region_rec = new Rectangle(rec.X, rec.Y + rec.Height - _font.LineSpacing, rec.Width, _font.LineSpacing);
+                Rectangle hscroll_region_rec = new Rectangle(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
                 spriteBatch.Draw(_scrollbarBackground, hscroll_region_rec, Color.White);
                 spriteBatch.Draw(_scrollbarTexture, hscrollbar_rec, Color.White);
             }
@@ -182,10 +182,10 @@ namespace WindowsGame1
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec;
             if (caretVisible && Selected)
-                spriteBatch.Draw(_caretTexture, new Vector2(rec.X + (int)size.X + 2, rec.Y + (int)size.Y-((int)size.Y==0?0:_font.LineSpacing)), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
+                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + 2, Rect.Y + (int)size.Y-((int)size.Y==0?0:_font.LineSpacing)), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
             //shadow first, then the actual text
-            spriteBatch.DrawString(_font, toDraw, new Vector2(rec.X, rec.Y) + Vector2.One, Color.White,0f,new Vector2(0,0),1f,SpriteEffects.None,0.21f);
-            spriteBatch.DrawString(_font, toDraw, new Vector2(rec.X, rec.Y), Color.Black,0f, new Vector2(0, 0), 1f, SpriteEffects.None,0.2f);
+            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y) + Vector2.One, Color.White,0f,new Vector2(0,0),1f,SpriteEffects.None,0.21f);
+            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y), Color.Black,0f, new Vector2(0, 0), 1f, SpriteEffects.None,0.2f);
             //spriteBatch.DrawString(_font, toDraw, new Vector2(X, Y), Color.Black);
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();
@@ -213,7 +213,7 @@ namespace WindowsGame1
                         Text = Text.Substring(0, Text.Length - 1);
                     break;
                 case '\r': //return
-                    if (parent.main_game.keyboard_state.IsKeyDown(Keys.LeftShift) || parent.main_game.keyboard_state.IsKeyDown(Keys.RightShift))
+                    if (Parent.main_game.keyboard_state.IsKeyDown(Keys.LeftShift) || Parent.main_game.keyboard_state.IsKeyDown(Keys.RightShift))
                     {
                         if (OnShift_EnterPressed != null)
                         OnShift_EnterPressed(this);
@@ -244,7 +244,7 @@ namespace WindowsGame1
         #region FormEventHandler
         private void textbox_clicked(object sender, FormEventData e)
         {
-            parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
+            Parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
         }
         private void textbox_OnMouseEnter(object sender, FormEventData e)
         {

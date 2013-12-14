@@ -123,13 +123,13 @@ namespace WindowsGame1
                 {
                     playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
                     , 55 + (i * 210), 230, 180, Color.White, this);
-                    playerName[i].center_align = true;
+                    playerName[i].CenterAlign = true;
                 }
                 else
                 {
                     playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
                     , 55 + ((i - 4) * 210), 460, 180, Color.White, this);
-                    playerName[i].center_align = true;
+                    playerName[i].CenterAlign = true;
                 }
             }
 
