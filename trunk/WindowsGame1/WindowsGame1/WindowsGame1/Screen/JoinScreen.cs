@@ -72,7 +72,7 @@ namespace WindowsGame1
 
             Label l = new Label(i2.ToString(), font, s2, 80, 165 + 20 * i2, 680
                 , Color.White, this);
-            l.value = i2;
+            l.Value = i2;
             l.OnClick += RoomClicked;
             l.OnMouseEnter += RoomEntered;
             l.OnMouseLeave += RoomLeft;
@@ -160,7 +160,7 @@ namespace WindowsGame1
         private void RoomClicked(object sender, FormEventData e)
         {
             Label label = (Label)sender;
-            int value = (int)label.value;
+            int value = (int)label.Value;
             Room room = List_Room[value];
 
             String s = "Owner index: " + room.owner_index + "\n";
@@ -177,12 +177,12 @@ namespace WindowsGame1
         private void RoomEntered(object sender, FormEventData e)
         {
             Label label = (Label)sender;
-            label._color = Color.Red;
+            label.Color = Color.Red;
         }
         private void RoomLeft(object sender, FormEventData e)
         {
             Label label = (Label)sender;
-            label._color = Color.White;
+            label.Color = Color.White;
         }
         #endregion
 
@@ -200,9 +200,9 @@ namespace WindowsGame1
 
                     for (int i2 = i; i2 < List_Room_Info.Count; i2++)
                     {
-                        List_Room_Info[i2].name = i2.ToString();
-                        List_Room_Info[i2].rec.Y = 165 + i2 * 20;
-                        List_Room_Info[i2].value = i2;
+                        List_Room_Info[i2].Name = i2.ToString();
+                        List_Room_Info[i2].Rect.Y = 165 + i2 * 20;
+                        List_Room_Info[i2].Value = i2;
                     }
 
                     i--;

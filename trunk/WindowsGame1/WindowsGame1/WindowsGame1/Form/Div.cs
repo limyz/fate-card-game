@@ -10,30 +10,30 @@ namespace WindowsGame1
 {
     class Div : SivForm
     {
-        public Texture2D texture;
-        public float draw_order = 0.5f;
-        public Color color;
+        public Texture2D Texture;
+        public float DrawOrder = 0.5f;
+        public Color Color;
 
         public Div(string name, Rectangle rec, Color color
             , float draw_order, Screen parent)
             : base(name, parent, typeof(Div), rec)
         {
-            this.texture = Game1.white_texture;
-            this.color = color;
-            this.draw_order = draw_order;
-            this.parent = parent;
+            this.Texture = Game1.whiteTexture;
+            this.Color = color;
+            this.DrawOrder = draw_order;
+            this.Parent = parent;
         }
         public Div(string name, Rectangle rec, Color color, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {
-            this.texture = Game1.white_texture;
-            this.color = color;
-            this.parent = parent;
+            this.Texture = Game1.whiteTexture;
+            this.Color = color;
+            this.Parent = parent;
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(texture, rec, null, color, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
+            spriteBatch.Draw(Texture, Rect, null, Color, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
         }
     }
 }

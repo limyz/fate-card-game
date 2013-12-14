@@ -32,36 +32,41 @@ namespace WindowsGame1
                     String filtered = "";
                     foreach (char c in value)
                     {
-                        if (_font.Characters.Contains(c) || c == '\n')
+                        if (Font.Characters.Contains(c) || c == '\n')
                             filtered += c;
                     }
                     _text = filtered;
                 }
             }
-        }    
-        public SpriteFont _font;
-        public Color _color;
-        public bool center_align = false;
+        }
+        public SpriteFont Font;
+        public Color Color;
+        private bool center_align = false;
+        public bool CenterAlign
+        {
+            get { return center_align; }
+            set { center_align = value; }
+        }
 
         public Label(string name, SpriteFont font, string text, int x, int y, int width, Color color
             , Screen parent)
             : base(name, parent, typeof(Label), new Rectangle(x, y, width, font.LineSpacing))
         {
-            _font = font;
+            Font = font;
             Text = text;
-            _color = color;
+            Color = color;
         }
 
         public override void Draw(SpriteBatch sb, GameTime gt)
         {
             if (center_align)
             {
-                float offset_x = ((float)rec.Width - _font.MeasureString(Text).X) / 2;
-                sb.DrawString(_font, _text, new Vector2(offset_x + rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+                float offset_x = ((float)Rect.Width - Font.MeasureString(Text).X) / 2;
+                sb.DrawString(Font, _text, new Vector2(offset_x + Rect.X, Rect.Y), Color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             }
             else
             {
-                sb.DrawString(_font, _text, new Vector2(rec.X, rec.Y), _color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
+                sb.DrawString(Font, _text, new Vector2(Rect.X, Rect.Y), Color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             }
         }
     }

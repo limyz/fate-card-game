@@ -27,7 +27,7 @@ namespace WindowsGame1
         public Border(string name, Color color, int width, Rectangle rec, Screen parent)
             : base(name, parent, typeof(Border), rec)
         {
-            texture = Game1.white_texture;
+            texture = Game1.whiteTexture;
             this.color = color;
             this.Width = width;
         }
@@ -35,11 +35,11 @@ namespace WindowsGame1
         #region Draw's function
         private void Draw_Horizontal_Line(SpriteBatch sb, int y)
         {
-            sb.Draw(texture, new Rectangle(rec.X, y, rec.Width, Width), color);
+            sb.Draw(texture, new Rectangle(Rect.X, y, Rect.Width, Width), color);
         }
         private void Draw_Vertical_Line(SpriteBatch sb, int x)
         {
-            sb.Draw(texture, new Rectangle(x, rec.Y, Width, rec.Height), color);
+            sb.Draw(texture, new Rectangle(x, Rect.Y, Width, Rect.Height), color);
         }
         #endregion
 
@@ -48,10 +48,10 @@ namespace WindowsGame1
             //uncomment these lines to draw negative width/height rectangle
             //sb.End();
             //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
-            Draw_Horizontal_Line(sb, rec.Y);
-            Draw_Horizontal_Line(sb, rec.Y + rec.Height - Width);
-            Draw_Vertical_Line(sb, rec.X);
-            Draw_Vertical_Line(sb, rec.X + rec.Width - Width);
+            Draw_Horizontal_Line(sb, Rect.Y);
+            Draw_Horizontal_Line(sb, Rect.Y + Rect.Height - Width);
+            Draw_Vertical_Line(sb, Rect.X);
+            Draw_Vertical_Line(sb, Rect.X + Rect.Width - Width);
             //uncomment these lines to draw negative width/height rectangle
             //sb.End();
             //sb.Begin();

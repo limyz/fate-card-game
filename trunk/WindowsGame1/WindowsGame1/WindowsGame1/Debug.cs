@@ -29,25 +29,25 @@ namespace WindowsGame1
             if (sv.original_type == typeof(TextBox))
             {
                 Textbox_List.Add((TextBox)sv);
-                listBox1.Items.Add(sv.name);
+                listBox1.Items.Add(sv.Name);
             }
 
             else if (sv.original_type == typeof(ImageButton))
             {
                 ImageButton_List.Add((ImageButton)sv);
-                listBox2.Items.Add(sv.name);
+                listBox2.Items.Add(sv.Name);
             }
 
             else if (sv.original_type == typeof(Label))
             {
                 Label_List.Add((Label)sv);
-                listBox3.Items.Add(sv.name);
+                listBox3.Items.Add(sv.Name);
             }
 
             else if (sv.original_type == typeof(Border))
             {
                 Border_List.Add((Border)sv);
-                listBox4.Items.Add(sv.name);
+                listBox4.Items.Add(sv.Name);
             }
         }
         #endregion
@@ -56,11 +56,11 @@ namespace WindowsGame1
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             TextBox t = Textbox_List[listBox1.SelectedIndex];
-            ParentScreen_toolStripStatusLabel2.Text = t.parent.name;
-            X_textBox.Text = t.rec.X.ToString();
-            Y_textBox.Text = t.rec.Y.ToString();
-            Width_textBox.Text = t.rec.Width.ToString();
-            Height_textBox.Text = t.rec.Height.ToString();
+            ParentScreen_toolStripStatusLabel2.Text = t.Parent.name;
+            X_textBox.Text = t.Rect.X.ToString();
+            Y_textBox.Text = t.Rect.Y.ToString();
+            Width_textBox.Text = t.Rect.Width.ToString();
+            Height_textBox.Text = t.Rect.Height.ToString();
             scrollable_checkBox.Checked = t.scrollable;
             Text_textBox.Text = t.Text;
         }
@@ -71,10 +71,10 @@ namespace WindowsGame1
             try
             {
                 TextBox t = Textbox_List[listBox1.SelectedIndex];
-                t.rec.X = int.Parse(X_textBox.Text);
-                t.rec.Y = int.Parse(Y_textBox.Text);
-                t.rec.Width = int.Parse(Width_textBox.Text);
-                t.rec.Height = int.Parse(Height_textBox.Text);
+                t.Rect.X = int.Parse(X_textBox.Text);
+                t.Rect.Y = int.Parse(Y_textBox.Text);
+                t.Rect.Width = int.Parse(Width_textBox.Text);
+                t.Rect.Height = int.Parse(Height_textBox.Text);
                 t.scrollable = scrollable_checkBox.Checked;
                 t.Text = Text_textBox.Text;
             }
@@ -88,10 +88,10 @@ namespace WindowsGame1
         {
             if (listBox1.SelectedIndex < 0) return;
             TextBox t = Textbox_List[listBox1.SelectedIndex];
-            X_textBox.Text = t.rec.X.ToString();
-            Y_textBox.Text = t.rec.Y.ToString();
-            Width_textBox.Text = t.rec.Width.ToString();
-            Height_textBox.Text = t.rec.Height.ToString();
+            X_textBox.Text = t.Rect.X.ToString();
+            Y_textBox.Text = t.Rect.Y.ToString();
+            Width_textBox.Text = t.Rect.Width.ToString();
+            Height_textBox.Text = t.Rect.Height.ToString();
             scrollable_checkBox.Checked = t.scrollable;
             Text_textBox.Text = t.Text;
         }
@@ -101,11 +101,11 @@ namespace WindowsGame1
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             ImageButton i = ImageButton_List[listBox2.SelectedIndex];
-            ParentScreen_toolStripStatusLabel2.Text = i.parent.name;
-            X_textBox2.Text = i.rec.X.ToString();
-            Y_textBox2.Text = i.rec.Y.ToString();
-            Width_textBox2.Text = i.rec.Width.ToString();
-            Height_textBox2.Text = i.rec.Height.ToString();
+            ParentScreen_toolStripStatusLabel2.Text = i.Parent.name;
+            X_textBox2.Text = i.Rect.X.ToString();
+            Y_textBox2.Text = i.Rect.Y.ToString();
+            Width_textBox2.Text = i.Rect.Width.ToString();
+            Height_textBox2.Text = i.Rect.Height.ToString();
         }
 
         private void Apply_button2_Click(object sender, EventArgs e)
@@ -114,10 +114,10 @@ namespace WindowsGame1
             try
             {
                 ImageButton i = ImageButton_List[listBox2.SelectedIndex];
-                i.rec.X = int.Parse(X_textBox2.Text);
-                i.rec.Y = int.Parse(Y_textBox2.Text);
-                i.rec.Width = int.Parse(Width_textBox2.Text);
-                i.rec.Height = int.Parse(Height_textBox2.Text);
+                i.Rect.X = int.Parse(X_textBox2.Text);
+                i.Rect.Y = int.Parse(Y_textBox2.Text);
+                i.Rect.Width = int.Parse(Width_textBox2.Text);
+                i.Rect.Height = int.Parse(Height_textBox2.Text);
             }
             catch (Exception ex)
             {
@@ -129,10 +129,10 @@ namespace WindowsGame1
         {
             if (listBox2.SelectedIndex < 0) return;
             ImageButton i = ImageButton_List[listBox2.SelectedIndex];
-            X_textBox2.Text = i.rec.X.ToString();
-            Y_textBox2.Text = i.rec.Y.ToString();
-            Width_textBox2.Text = i.rec.Width.ToString();
-            Height_textBox2.Text = i.rec.Height.ToString();
+            X_textBox2.Text = i.Rect.X.ToString();
+            Y_textBox2.Text = i.Rect.Y.ToString();
+            Width_textBox2.Text = i.Rect.Width.ToString();
+            Height_textBox2.Text = i.Rect.Height.ToString();
         }
         #endregion
 
@@ -140,15 +140,15 @@ namespace WindowsGame1
         private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             Label l = Label_List[listBox3.SelectedIndex];
-            ParentScreen_toolStripStatusLabel2.Text = l.parent.name;
-            X_textBox3.Text = l.rec.X.ToString();
-            Y_textBox3.Text = l.rec.Y.ToString();
-            Width_textBox3.Text = l.rec.Width.ToString();
+            ParentScreen_toolStripStatusLabel2.Text = l.Parent.name;
+            X_textBox3.Text = l.Rect.X.ToString();
+            Y_textBox3.Text = l.Rect.Y.ToString();
+            Width_textBox3.Text = l.Rect.Width.ToString();
             Text_textBox3.Text = l.Text;
-            Red_textBox3.Text = l._color.R.ToString();
-            Green_textBox3.Text = l._color.G.ToString();
-            Blue_textBox3.Text = l._color.B.ToString();
-            Alpha_textBox3.Text = l._color.A.ToString();
+            Red_textBox3.Text = l.Color.R.ToString();
+            Green_textBox3.Text = l.Color.G.ToString();
+            Blue_textBox3.Text = l.Color.B.ToString();
+            Alpha_textBox3.Text = l.Color.A.ToString();
         }
 
         private void Apply_button3_Click(object sender, EventArgs e)
@@ -157,14 +157,14 @@ namespace WindowsGame1
             try
             {
                 Label l = Label_List[listBox3.SelectedIndex];
-                l.rec.X = int.Parse(X_textBox3.Text);
-                l.rec.Y = int.Parse(Y_textBox3.Text);
-                l.rec.Width = int.Parse(Width_textBox3.Text);
+                l.Rect.X = int.Parse(X_textBox3.Text);
+                l.Rect.Y = int.Parse(Y_textBox3.Text);
+                l.Rect.Width = int.Parse(Width_textBox3.Text);
                 l.Text = Text_textBox3.Text;
-                l._color.R = Convert.ToByte(Red_textBox3.Text);
-                l._color.G = Convert.ToByte(Green_textBox3.Text);
-                l._color.B = Convert.ToByte(Blue_textBox3.Text);
-                l._color.A = Convert.ToByte(Alpha_textBox3.Text);
+                l.Color.R = Convert.ToByte(Red_textBox3.Text);
+                l.Color.G = Convert.ToByte(Green_textBox3.Text);
+                l.Color.B = Convert.ToByte(Blue_textBox3.Text);
+                l.Color.A = Convert.ToByte(Alpha_textBox3.Text);
             }
             catch (Exception ex)
             {
@@ -176,14 +176,14 @@ namespace WindowsGame1
         {
             if (listBox3.SelectedIndex < 0) return;
             Label l = Label_List[listBox3.SelectedIndex];
-            X_textBox3.Text = l.rec.X.ToString();
-            Y_textBox3.Text = l.rec.Y.ToString();
-            Width_textBox3.Text = l.rec.Width.ToString();
+            X_textBox3.Text = l.Rect.X.ToString();
+            Y_textBox3.Text = l.Rect.Y.ToString();
+            Width_textBox3.Text = l.Rect.Width.ToString();
             Text_textBox3.Text = l.Text;
-            Red_textBox3.Text = l._color.R.ToString();
-            Green_textBox3.Text = l._color.G.ToString();
-            Blue_textBox3.Text = l._color.B.ToString();
-            Alpha_textBox3.Text = l._color.A.ToString();
+            Red_textBox3.Text = l.Color.R.ToString();
+            Green_textBox3.Text = l.Color.G.ToString();
+            Blue_textBox3.Text = l.Color.B.ToString();
+            Alpha_textBox3.Text = l.Color.A.ToString();
         }
         #endregion
 
@@ -191,11 +191,11 @@ namespace WindowsGame1
         private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             Border b = Border_List[listBox4.SelectedIndex];
-            ParentScreen_toolStripStatusLabel2.Text = b.parent.name;
-            X_textBox4.Text = b.rec.X.ToString();
-            Y_textBox4.Text = b.rec.Y.ToString();
-            Width_textBox4.Text = b.rec.Width.ToString();
-            Height_textBox4.Text = b.rec.Height.ToString();
+            ParentScreen_toolStripStatusLabel2.Text = b.Parent.name;
+            X_textBox4.Text = b.Rect.X.ToString();
+            Y_textBox4.Text = b.Rect.Y.ToString();
+            Width_textBox4.Text = b.Rect.Width.ToString();
+            Height_textBox4.Text = b.Rect.Height.ToString();
             Border_witdh_textBox4.Text = b.Width.ToString();
             Red_textBox4.Text = b.color.R.ToString();
             Green_textBox4.Text = b.color.G.ToString();
@@ -209,10 +209,10 @@ namespace WindowsGame1
             try
             {
                 Border b = Border_List[listBox4.SelectedIndex];
-                b.rec.X = int.Parse(X_textBox4.Text);
-                b.rec.Y = int.Parse(Y_textBox4.Text);
-                b.rec.Width = int.Parse(Width_textBox4.Text);
-                b.rec.Height = int.Parse(Height_textBox4.Text);
+                b.Rect.X = int.Parse(X_textBox4.Text);
+                b.Rect.Y = int.Parse(Y_textBox4.Text);
+                b.Rect.Width = int.Parse(Width_textBox4.Text);
+                b.Rect.Height = int.Parse(Height_textBox4.Text);
                 b.Width = int.Parse(Border_witdh_textBox4.Text);
                 Microsoft.Xna.Framework.Color c = new Microsoft.Xna.Framework.Color();
                 c.R = Convert.ToByte(Red_textBox4.Text);
@@ -231,10 +231,10 @@ namespace WindowsGame1
         {
             if (listBox4.SelectedIndex < 0) return;
             Border b = Border_List[listBox4.SelectedIndex];
-            X_textBox4.Text = b.rec.X.ToString();
-            Y_textBox4.Text = b.rec.Y.ToString();
-            Width_textBox4.Text = b.rec.Width.ToString();
-            Height_textBox4.Text = b.rec.Height.ToString();
+            X_textBox4.Text = b.Rect.X.ToString();
+            Y_textBox4.Text = b.Rect.Y.ToString();
+            Width_textBox4.Text = b.Rect.Width.ToString();
+            Height_textBox4.Text = b.Rect.Height.ToString();
             Border_witdh_textBox4.Text = b.Width.ToString();
             Red_textBox4.Text = b.color.R.ToString();
             Green_textBox4.Text = b.color.G.ToString();
@@ -273,8 +273,8 @@ namespace WindowsGame1
                         for (int i = 0; i < Textbox_List.Count; i++)
                         {
                             sw.WriteLine("\t" + listBox1.Items[i] + ":");
-                            sw.WriteLine("\tParent Screen:" + Textbox_List[i].parent.name);
-                            sw.WriteLine("\tRectangle:" + Textbox_List[i].rec.ToString());
+                            sw.WriteLine("\tParent Screen:" + Textbox_List[i].Parent.name);
+                            sw.WriteLine("\tRectangle:" + Textbox_List[i].Rect.ToString());
                             sw.WriteLine("\tScrollable:" + Textbox_List[i].scrollable);
                             sw.WriteLine("\t-----------------");
                         }
@@ -284,8 +284,8 @@ namespace WindowsGame1
                         for (int i = 0; i < ImageButton_List.Count; i++)
                         {
                             sw.WriteLine("\t" + listBox2.Items[i] + ":");
-                            sw.WriteLine("\tParent Screen:" + ImageButton_List[i].parent.name);
-                            sw.WriteLine("\tRectangle:" + ImageButton_List[i].rec.ToString());
+                            sw.WriteLine("\tParent Screen:" + ImageButton_List[i].Parent.name);
+                            sw.WriteLine("\tRectangle:" + ImageButton_List[i].Rect.ToString());
                             sw.WriteLine("\t-----------------");
                         }
                         sw.WriteLine("-------------------------------------------------------");
@@ -294,9 +294,9 @@ namespace WindowsGame1
                         for (int i = 0; i < Label_List.Count; i++)
                         {
                             sw.WriteLine("\t" + listBox3.Items[i] + ":");
-                            sw.WriteLine("\tParent Screen:" + Label_List[i].parent.name);
-                            sw.WriteLine("\tRectangle:" + Label_List[i].rec.ToString());
-                            sw.WriteLine("\tColor:" + Label_List[i]._color.ToString());
+                            sw.WriteLine("\tParent Screen:" + Label_List[i].Parent.name);
+                            sw.WriteLine("\tRectangle:" + Label_List[i].Rect.ToString());
+                            sw.WriteLine("\tColor:" + Label_List[i].Color.ToString());
                             sw.WriteLine("\t-----------------");
                         }
                         sw.WriteLine("-------------------------------------------------------");
@@ -305,8 +305,8 @@ namespace WindowsGame1
                         for (int i = 0; i < Border_List.Count; i++)
                         {
                             sw.WriteLine("\t" + listBox4.Items[i] + ":");
-                            sw.WriteLine("\tParent Screen:" + Border_List[i].parent.name);
-                            sw.WriteLine("\tRectangle:" + Border_List[i].rec.ToString());
+                            sw.WriteLine("\tParent Screen:" + Border_List[i].Parent.name);
+                            sw.WriteLine("\tRectangle:" + Border_List[i].Rect.ToString());
                             sw.WriteLine("\tBorder Width:" + Border_List[i].Width);
                             sw.WriteLine("\tColor:" + Border_List[i].color.ToString());
                             sw.WriteLine("\t-----------------");

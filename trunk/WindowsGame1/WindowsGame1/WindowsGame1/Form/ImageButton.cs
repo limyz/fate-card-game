@@ -13,16 +13,22 @@ namespace WindowsGame1
 
     public class ImageButton : SivForm
     {
-        public Texture2D texture;
-        public bool isHovered = false;
-        float draw_order=0.5f;
+        private Texture2D texture;
+
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+        public bool IsHovered = false;
+        public float DrawOrder = 0.5f;
 
         public ImageButton(string name, Texture2D button_texture, Rectangle button_rec
             , Screen parent)
             : base(name, parent, typeof(ImageButton), button_rec)
         {
             texture = button_texture;
-            this.parent = parent;
+            this.Parent = parent;
             imageButton_RegisterHandler();
         }
 
@@ -31,8 +37,8 @@ namespace WindowsGame1
             : base(name, parent, typeof(ImageButton), button_rec)
         {
             texture = button_texture;
-            draw_order = p_draw_order;
-            this.parent = parent;
+            DrawOrder = p_draw_order;
+            this.Parent = parent;
             imageButton_RegisterHandler();
         }
 
@@ -44,24 +50,24 @@ namespace WindowsGame1
         }
         private void imageButton_OnMouseEnter(object sender, FormEventData e)
         {
-            isHovered = true;
+            IsHovered = true;
         }
         private void imageButton_OnMouseLeave(object sender, FormEventData e)
         {
-            isHovered = false;
+            IsHovered = false;
         }
         #endregion
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            if (isHovered)
+            if (IsHovered)
             {
-                spriteBatch.Draw(texture/*main_game.white_texture*/, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order + 0.0001f);
-                spriteBatch.Draw(texture, rec, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
+                spriteBatch.Draw(texture/*main_game.white_texture*/, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder + 0.0001f);
+                spriteBatch.Draw(texture, Rect, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
             }
             else
             {
-                spriteBatch.Draw(texture, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, draw_order);
+                spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
             }
         }
     }
