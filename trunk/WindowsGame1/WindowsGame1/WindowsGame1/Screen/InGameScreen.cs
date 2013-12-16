@@ -107,7 +107,7 @@ namespace WindowsGame1
         int hand_hovered_index = -1;
         int[] playerRandomChar = new int[2];
         Random rand = new Random();
-        Texture2D borderTexture, characterBackTexture;
+        Texture2D borderTexture, characterBackTexture, shirou;
         Rectangle[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -187,6 +187,7 @@ namespace WindowsGame1
             #region Load Resource
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
+            shirou = Content.Load<Texture2D>("Resource/character1");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
@@ -223,14 +224,17 @@ namespace WindowsGame1
             //oppPlayerBorder[0, 0] = new Border("Player 1 Servant", Color.Red, 2, new Rectangle(139, 320, 109, 154), this);
             for (int i = 0; i < otherPlayerCount; i++)
             {
-                Image temp = new Image("Opp Master Image", characterBackTexture, oppPlayerRectangle[i, 0], 0.3f, this);
-                Rectangle rec = new Rectangle(0, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
-                temp.Source_Rectangle = rec;
-                otherPlayerMasterImage.Add(temp);
+                Image masterTemp = new Image("Opp Master Image", shirou, oppPlayerRectangle[i, 0], 0.3f, this);
+                masterTemp.Source_Rectangle = new Rectangle(0, 0, shirou.Width / 2, shirou.Height);
+                masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
+                otherPlayerMasterImage.Add(masterTemp);
 
-                temp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i, 1], 0.3f, this);
-                temp.Source_Rectangle = rec;
-                otherPlayerServantImage.Add(temp);
+                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i, 1], 0.3f, this);
+                servantTemp.Source_Rectangle = new Rectangle(characterBackTexture.Width / 2, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
+                servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
+                otherPlayerServantImage.Add(servantTemp);
             }
             #endregion
 
@@ -336,6 +340,7 @@ namespace WindowsGame1
             cardList.shuffle<Card>();
             #endregion
         }
+
         #endregion
 
         #region Update
@@ -457,7 +462,35 @@ namespace WindowsGame1
             //Image master = otherPlayerMasterImage[0];
             //Image servant = otherPlayerServantImage[0];
             //randomCharacter(ref master, ref servant);
-            otherPlayerMasterImage[0].Visible = false;
+            //otherPlayerMasterImage[0].Visible = false;
+        }
+
+        private void hoverChar(object sender, FormEventData e)
+        {
+            Image image = (Image)sender;
+            image.Rect.Width = 100;
+            image.DrawOrder = 0.2f;
+            image.Source_Rectangle = null;
+            if (image.Name == "Opp Servant Image")
+            {
+                image.Rect.X = image.Rect.X - 50;
+            }
+        }
+
+        private void unHoverMasterChar(object sender, FormEventData e)
+        {
+            Image image = (Image)sender;
+            image.Rect.Width = 50;
+            image.DrawOrder = 0.3f;
+            image.Source_Rectangle = new Rectangle(0, 0, image.Texture.Width / 2, image.Texture.Height);
+        }
+        private void unHoverServantChar(object sender, FormEventData e)
+        {
+            Image image = (Image)sender;
+            image.Rect.Width = 50;
+            image.DrawOrder = 0.3f;
+            image.Rect.X = image.Rect.X + 50;
+            image.Source_Rectangle = new Rectangle(image.Texture.Width / 2, 0, image.Texture.Width / 2, image.Texture.Height);
         }
         #endregion
 
