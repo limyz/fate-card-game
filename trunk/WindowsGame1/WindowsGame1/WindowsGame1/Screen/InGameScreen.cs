@@ -223,8 +223,14 @@ namespace WindowsGame1
             //oppPlayerBorder[0, 0] = new Border("Player 1 Servant", Color.Red, 2, new Rectangle(139, 320, 109, 154), this);
             for (int i = 0; i < otherPlayerCount; i++)
             {
-                otherPlayerMasterImage.Add(new Image("Opp Master Image", characterBackTexture, oppPlayerRectangle[i, 0], 0.3f, this));
-                otherPlayerServantImage.Add(new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i, 1], 0.3f, this));
+                Image temp = new Image("Opp Master Image", characterBackTexture, oppPlayerRectangle[i, 0], 0.3f, this);
+                Rectangle rec = new Rectangle(0, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
+                temp.Source_Rectangle = rec;
+                otherPlayerMasterImage.Add(temp);
+
+                temp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i, 1], 0.3f, this);
+                temp.Source_Rectangle = rec;
+                otherPlayerServantImage.Add(temp);
             }
             #endregion
 
