@@ -485,6 +485,7 @@ namespace WindowsGame1
             {
                 mRoomScreen.room = (Room)e.Data;
                 mRoomScreen.Start_Broadcast();
+                mRoomScreen.InitializeReceiver();
                 mCurrentScreen = mRoomScreen;
             }
         }
@@ -496,8 +497,11 @@ namespace WindowsGame1
             {
                 mRoomScreen.numberOfPlayer = 0;
                 mRoomScreen.End_Broadcast();
+                mRoomScreen.End_Receive();
+                mRoomScreen.End_Response();
                 mCurrentScreen = mMenuScreen;
             }
+            
         }
         //code = 3
         public void JoinScreenEvent(object obj, SivEventArgs e)
@@ -513,6 +517,19 @@ namespace WindowsGame1
             {
                 mJoinScreen.End_Receive();
                 mCurrentScreen = mHostScreen;
+            }
+            //JoinScreen to RoomScreen
+            else if (e.Command_code == 4)
+            {
+                mJoinScreen.End_Receive();
+                Room _room = (Room)e.Data;
+                mRoomScreen.room = _room;
+                mRoomScreen.numberOfPlayer = 0;
+                mRoomScreen.player = _room.Player_List.Last();
+                mRoomScreen.InitializeReceiver();
+                mRoomScreen.Start_Respond();
+                //mRoomScreen.numberOfPlayer = _room.Player_List.Count();
+                mCurrentScreen = mRoomScreen;
             }
         }
         #endregion
