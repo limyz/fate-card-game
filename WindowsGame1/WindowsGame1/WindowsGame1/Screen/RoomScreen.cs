@@ -32,12 +32,13 @@ namespace WindowsGame1
         Div roomInfoDiv;
         Texture2D avatarDefault, caret, highlighted_textbox, white_textbox;
         public Room room;
+        public Player player;
         public int numberOfPlayer = 0;
         #endregion
 
         #region broadcast Thread
-        UdpClient sendingClient;
-        Thread broadcastingThread;
+        UdpClient sendingClient, respondClient;
+        Thread broadcastingThread, joinResponseThread;
         public string IPAddress = "";
         /*public static byte[] ReadFully(Stream input)
         {
@@ -53,6 +54,38 @@ namespace WindowsGame1
                 return ms.ToArray();
             }
         }*/
+        private void Responder(Player _player, List<string> ipTarget)
+        {
+            while (true)
+            {
+                MemoryStream stream = new MemoryStream();
+                BinaryFormatter bformatter = new BinaryFormatter();
+                bformatter.Serialize(stream, _player);
+                byte[] data = stream.ToArray();
+                foreach (string ip in ipTarget)
+                {
+                    sendingClient.Send(data, data.Length, ip, 51002);
+                }
+                
+                Thread.Sleep(1000);
+            }
+        }
+
+        public void Start_Respond()
+        {
+            //ThreadStart ts = new ThreadStart(Broadcaster);
+            List<string> ipTarget = new List<string>();
+            foreach (Player p in room.Player_List)
+            {
+                ipTarget.Add(p.Address);
+            }
+            respondClient = new UdpClient();
+            respondClient.EnableBroadcast = true;
+            joinResponseThread = new Thread(() => Responder(player, ipTarget));
+            joinResponseThread.IsBackground = true;
+            joinResponseThread.Start();
+        }
+
         private void Broadcaster()
         {
             while (true)
@@ -81,6 +114,62 @@ namespace WindowsGame1
             broadcastingThread.Abort();
             sendingClient.Close();
         }
+        public void End_Response()
+        {
+            joinResponseThread.Abort();
+            respondClient.Close();
+        }
+        #endregion
+
+        #region receiver Thread
+        UdpClient receivingClient;
+        Thread receivingThread;
+
+        public void InitializeReceiver()
+        {
+            receivingClient = new UdpClient(51002);
+            receivingClient.EnableBroadcast = true;
+
+            ThreadStart start = new ThreadStart(Receiver);
+            receivingThread = new Thread(start);
+            receivingThread.IsBackground = true;
+            receivingThread.Start();
+        }
+
+        private void Receiver()
+        {
+            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
+
+            while (true)
+            {
+                byte[] data = receivingClient.Receive(ref endPoint);
+                BinaryFormatter bin = new BinaryFormatter();
+                MemoryStream mem = new MemoryStream(data);
+                Player _player = (Player)bin.Deserialize(mem);
+                bool found = false;
+                foreach (Player p in room.Player_List)
+                {
+                    if (p.Address == _player.Address)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    this.room.Player_List.Add(_player);
+                }
+                //this.room = _room;
+                //this.Check_Room_Existed(room, endPoint);
+            }
+        }
+
+        public void End_Receive()
+        {
+            receivingThread.Abort();
+            receivingClient.Close();
+        }
+
         #endregion
 
         #region Load Content
@@ -218,7 +307,7 @@ namespace WindowsGame1
             }
         }*/
 
-        private void playerNumberChange()
+        public void playerNumberChange()
         {
             String s = "Owner index: " + room.owner_index + "\n";
             s += "Player List Count: " + room.Player_List.Count + "\n";
@@ -248,7 +337,7 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //if (play_animation_state) play_animation(ref avatar_img.rec);            
-            if (room.Player_List.Count != numberOfPlayer) playerNumberChange();
+            if (this.room.Player_List.Count != numberOfPlayer) playerNumberChange();
             base.Update(theTime);
         }
         #endregion

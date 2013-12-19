@@ -81,7 +81,7 @@ namespace WindowsGame1
 
         private void Receiver()
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 51001);
+            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51001);
 
             while (true)
             {
@@ -104,10 +104,10 @@ namespace WindowsGame1
 
         #region load content
         public JoinScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
-            : base("JoinScreen",theEvent, parent)
+            : base("JoinScreen", theEvent, parent)
         {
             font = Content.Load<SpriteFont>("SpriteFont1");
-            bg = new Background(Content.Load<Texture2D>("Resource/background"),this);
+            bg = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
             saber = new Image("saber"
                 , Content.Load<Texture2D>("Resource/SaberLily_Trans")
@@ -132,7 +132,7 @@ namespace WindowsGame1
             back_button.OnClick += BackClicked;
 
             #region JoinScreen_RegisterHandler
-            OnKeysDown += JoinScreen_OnKeysDown;                       
+            OnKeysDown += JoinScreen_OnKeysDown;
             #endregion
         }
         #endregion
@@ -163,16 +163,19 @@ namespace WindowsGame1
             int value = (int)label.Value;
             Room room = List_Room[value];
 
-            String s = "Owner index: " + room.owner_index + "\n";
-            s += "Player List Count: " + room.Player_List.Count + "\n";
-            s += "Room name: " + room.Room_name + "\n";
-            s += "Number of Player: " + room.Number_of_Player + "\n";
-            s += "Player List:\n";
-            foreach (Player p in room.Player_List)
-            {
-                s += "+ " + p.Player_name + " - " + p.Address + "\n";
-            }
-            Game1.MessageBox(new IntPtr(0), s, value.ToString(), 0);
+            //String s = "Owner index: " + room.owner_index + "\n";
+            //s += "Player List Count: " + room.Player_List.Count + "\n";
+            //s += "Room name: " + room.Room_name + "\n";
+            //s += "Number of Player: " + room.Number_of_Player + "\n";
+            //s += "Player List:\n";
+            //foreach (Player p in room.Player_List)
+            //{
+            //    s += "+ " + p.Player_name + " - " + p.Address + "\n";
+            //}
+            //Game1.MessageBox(new IntPtr(0), s, value.ToString(), 0);
+            Player player = new Player("SivCloud", "1.1.1.1");
+            room.Player_List.Add(player);
+            ScreenEvent.Invoke(this, new SivEventArgs(4, room));
         }
         private void RoomEntered(object sender, FormEventData e)
         {
@@ -208,7 +211,7 @@ namespace WindowsGame1
                     i--;
                 }
             }
-            
+
         }
         #endregion
 
@@ -224,7 +227,7 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend); 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
