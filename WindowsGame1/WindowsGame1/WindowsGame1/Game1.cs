@@ -495,6 +495,7 @@ namespace WindowsGame1
             //RoomScreen to Menu
             if (e.Command_code == 0)
             {
+                mRoomScreen.room.Player_List.Clear();
                 mRoomScreen.numberOfPlayer = 0;
                 mRoomScreen.End_Broadcast();
                 mRoomScreen.End_Receive();
