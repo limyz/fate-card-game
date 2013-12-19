@@ -60,11 +60,11 @@ namespace WindowsGame1
             {
                 MemoryStream stream = new MemoryStream();
                 BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, _player);
+                bformatter.Serialize(stream, player);
                 byte[] data = stream.ToArray();
                 foreach (string ip in ipTarget)
                 {
-                    sendingClient.Send(data, data.Length, ip, 51002);
+                    respondClient.Send(data, data.Length, ip, 51002);
                 }
                 
                 Thread.Sleep(1000);
@@ -77,7 +77,10 @@ namespace WindowsGame1
             List<string> ipTarget = new List<string>();
             foreach (Player p in room.Player_List)
             {
-                ipTarget.Add(p.Address);
+                //if (p.Address != player.Address)
+                {
+                    ipTarget.Add(p.Address);
+                }
             }
             respondClient = new UdpClient();
             respondClient.EnableBroadcast = true;
@@ -111,13 +114,19 @@ namespace WindowsGame1
         }
         public void End_Broadcast()
         {
-            broadcastingThread.Abort();
-            sendingClient.Close();
+            if (sendingClient != null)
+            {
+                broadcastingThread.Abort();
+                sendingClient.Close();
+            }
         }
         public void End_Response()
         {
-            joinResponseThread.Abort();
-            respondClient.Close();
+            if (respondClient != null)
+            {
+                joinResponseThread.Abort();
+                respondClient.Close();
+            }
         }
         #endregion
 
@@ -166,8 +175,11 @@ namespace WindowsGame1
 
         public void End_Receive()
         {
-            receivingThread.Abort();
-            receivingClient.Close();
+            if (receivingClient != null)
+            {
+                receivingThread.Abort();
+                receivingClient.Close();
+            }
         }
 
         #endregion
@@ -281,7 +293,7 @@ namespace WindowsGame1
 
         private void Quit_button_clicked(object sender, FormEventData e)
         {
-            ScreenEvent.Invoke(this, new SivEventArgs(0));
+            ScreenEvent.Invoke(this, new SivEventArgs(0, player));
         }
 
         /*bool play_animation_state = false;
@@ -322,10 +334,16 @@ namespace WindowsGame1
 
             foreach (var item in avatar_img) item.Delete();
             avatar_img.Clear();
+            foreach (var item in playerName)
+            {
+                item.Text = "";
+                item.Visible = false;
+            }
             for (int i = 0; i < room.Player_List.Count; i++)
             {
                 String playerNameStr = room.Player_List[i].Player_name;
                 playerName[i].Text = playerNameStr;
+                playerName[i].Visible = true;
                 Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
                 avatar_img.Add(newAvatar);
             }
