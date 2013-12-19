@@ -526,7 +526,7 @@ namespace WindowsGame1
                 Room _room = (Room)e.Data;
                 mRoomScreen.room = _room;
                 mRoomScreen.numberOfPlayer = 0;
-                mRoomScreen.player = _room.Player_List.Last();
+                mRoomScreen.mainPlayer = _room.Player_List.Last();
                 mRoomScreen.InitializeReceiver();
                 mRoomScreen.Start_Respond();
                 //mRoomScreen.numberOfPlayer = _room.Player_List.Count();

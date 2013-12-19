@@ -18,7 +18,6 @@ namespace WindowsGame1
     public class RoomScreen : Screen
     {
         #region variable decleration
-        SpriteFont font, arial14Bold, arial12Bold;
         Border div_border, chat_box_border, chat_input_border, div_info_border;
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
@@ -30,9 +29,9 @@ namespace WindowsGame1
         Color borderColor = Color.MediumAquamarine;
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
-        Texture2D avatarDefault, caret, highlighted_textbox, white_textbox;
+        Texture2D avatarDefault;
         public Room room;
-        public Player player;
+        public Player mainPlayer;
         public int numberOfPlayer = 0;
         #endregion
 
@@ -60,7 +59,7 @@ namespace WindowsGame1
             {
                 MemoryStream stream = new MemoryStream();
                 BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, player);
+                bformatter.Serialize(stream, mainPlayer);
                 byte[] data = stream.ToArray();
                 foreach (string ip in ipTarget)
                 {
@@ -84,7 +83,7 @@ namespace WindowsGame1
             }
             respondClient = new UdpClient();
             respondClient.EnableBroadcast = true;
-            joinResponseThread = new Thread(() => Responder(player, ipTarget));
+            joinResponseThread = new Thread(() => Responder(mainPlayer, ipTarget));
             joinResponseThread.IsBackground = true;
             joinResponseThread.Start();
         }
@@ -188,14 +187,12 @@ namespace WindowsGame1
         public RoomScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("RoomScreen", theEvent, parent)
         {
-            white_textbox = Content.Load<Texture2D>("Resource/white_textbox");
-            highlighted_textbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
-            caret = Content.Load<Texture2D>("Resource/caret");
+            #region Load Resource
             avatarDefault = Content.Load<Texture2D>("Resource/avatar_default");
-            font = Content.Load<SpriteFont>("SpriteFont1");
-            arial12Bold = Content.Load<SpriteFont>("Resource/font/Arial_12_Bold");
-            arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");
+            backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
+            #endregion
 
+            #region Player Content
             div_char[0] = new Rectangle(55, 40, 180, 180);
             div_char[1] = new Rectangle(265, 40, 180, 180);
             div_char[2] = new Rectangle(475, 40, 180, 180);
@@ -207,33 +204,38 @@ namespace WindowsGame1
 
             div_border = new Border("player_border", borderColor, 2
                , new Rectangle(20, 20, 900, 480), this);
-            chat_box_border = new Border("chat_screen", borderColor, 2
-                , new Rectangle(20, 520, 950, 130), this);
-            chat_input_border = new Border("chat_input", borderColor, 2
-                , new Rectangle(20, 660, 950, 24), this);
+            
+            #endregion
+
+            #region Room Information
             div_info_border = new Border("div_info", borderColor, 2
                 , new Rectangle(930, 20, 250, 480), this);
+            roomInfoDiv = new Div("Room Info", new Rectangle(932, 22, 246, 476), Color.DarkRed, this);
+            roomInfoContent = new Label("Room Info", Game1.font, "", 960, 80, 300, Color.White, this);
+            roomInfoTitle = new Label("Info Label", Game1.arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
+            #endregion
 
-            backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
-
+            #region Player Name Label
             for (int i = 0; i < div_char.Length; i++)
             {
-                String name = "div_char" + i;
+                //String name = "div_char" + i;
                 div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
                 if (i < 4)
                 {
-                    playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
+                    playerName[i] = new Label("playerNameLabel" + i, Game1.arial12Bold, ""
                     , 55 + (i * 210), 230, 180, Color.White, this);
                     playerName[i].CenterAlign = true;
                 }
                 else
                 {
-                    playerName[i] = new Label("playerNameLabel" + i, arial12Bold, ""
+                    playerName[i] = new Label("playerNameLabel" + i, Game1.arial12Bold, ""
                     , 55 + ((i - 4) * 210), 460, 180, Color.White, this);
                     playerName[i].CenterAlign = true;
                 }
             }
+            #endregion
 
+            #region Button
             start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
                 , new Rectangle(980, 540, 180, 70), this);
             start_button.OnClick += Start_button_clicked;
@@ -241,20 +243,25 @@ namespace WindowsGame1
             quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
                 , new Rectangle(980, 620, 180, 70), this);
             quit_button.OnClick += Quit_button_clicked;
+            #endregion
 
+            #region Chat
+            //Border
+            chat_box_border = new Border("chat_screen", borderColor, 2
+                , new Rectangle(20, 520, 950, 130), this);
+            chat_input_border = new Border("chat_input", borderColor, 2
+                , new Rectangle(20, 660, 950, 24), this);
+
+            //Textbox
             chat = new TextBox("Chat Input"
-                , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(22, 662, 946, 20), this);
+                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.font, new Rectangle(22, 662, 946, 20), this);
 
             chatDisplay = new TextBox("Chat Display"
-                , white_textbox, highlighted_textbox, caret
-                , font, new Rectangle(22, 522, 946, 126), this);
+                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.font, new Rectangle(22, 522, 946, 126), this);
             chatDisplay.ReadOnly = true;
-
-            roomInfoDiv = new Div("Room Info", new Rectangle(932, 22, 246, 476), Color.DarkRed, this);
-            roomInfoContent = new Label("Room Info", font, "", 960, 80, 300, Color.White, this);
-            roomInfoTitle = new Label("Info Label", arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
-
+            #endregion
 
             #region RoomScreen_RegisterHandler
             OnKeysDown += RoomScreen_OnKeysDown;
@@ -293,7 +300,7 @@ namespace WindowsGame1
 
         private void Quit_button_clicked(object sender, FormEventData e)
         {
-            ScreenEvent.Invoke(this, new SivEventArgs(0, player));
+            ScreenEvent.Invoke(this, new SivEventArgs(0, mainPlayer));
         }
 
         /*bool play_animation_state = false;
@@ -364,7 +371,7 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(Game1.font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }
