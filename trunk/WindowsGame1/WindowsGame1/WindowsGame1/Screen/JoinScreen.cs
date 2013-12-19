@@ -18,7 +18,6 @@ namespace WindowsGame1
     public class JoinScreen : Screen
     {
         #region variable decleration
-        SpriteFont font;
         Background bg;
         ImageButton back_button, ok_button, host_button;
         Image saber, gameList;
@@ -70,7 +69,7 @@ namespace WindowsGame1
             s2 += room.Player_List[room.owner_index].Address;
             int i2 = List_Room.Count - 1;
 
-            Label l = new Label(i2.ToString(), font, s2, 80, 165 + 20 * i2, 680
+            Label l = new Label(i2.ToString(), Game1.font, s2, 80, 165 + 20 * i2, 680
                 , Color.White, this);
             l.Value = i2;
             l.OnClick += RoomClicked;
@@ -106,9 +105,9 @@ namespace WindowsGame1
         public JoinScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("JoinScreen", theEvent, parent)
         {
-            font = Content.Load<SpriteFont>("SpriteFont1");
             bg = new Background(Content.Load<Texture2D>("Resource/background"), this);
 
+            #region Image
             saber = new Image("saber"
                 , Content.Load<Texture2D>("Resource/SaberLily_Trans")
                 , new Rectangle(720, 110, 480, 615), 0.99f, this);
@@ -116,7 +115,9 @@ namespace WindowsGame1
             gameList = new Image("gameList"
                 , Content.Load<Texture2D>("Resource/gamelist")
                 , new Rectangle(50, 50, 700, 650), 0.97f, this);
+            #endregion
 
+            #region Button
             ok_button = new ImageButton("Ok"
                 , Content.Load<Texture2D>("Resource/ok_button")
                 , new Rectangle(170, 650, 120, 42), this);
@@ -130,6 +131,7 @@ namespace WindowsGame1
                 , Content.Load<Texture2D>("Resource/back_button")
                 , new Rectangle(470, 650, 120, 42), this);
             back_button.OnClick += BackClicked;
+            #endregion
 
             #region JoinScreen_RegisterHandler
             OnKeysDown += JoinScreen_OnKeysDown;
@@ -228,7 +230,7 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(Game1.font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }
