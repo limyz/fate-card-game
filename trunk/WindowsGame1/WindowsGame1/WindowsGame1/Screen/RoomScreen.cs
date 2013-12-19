@@ -36,7 +36,9 @@ namespace WindowsGame1
         #endregion
 
         #region broadcast Thread
-        UdpClient sendingClient, respondClient;
+        UdpClient sendingClient;
+        TcpClient tcpClient;
+        NetworkStream networkStream;
         Thread broadcastingThread, joinResponseThread;
         public string IPAddress = "";
         /*public static byte[] ReadFully(Stream input)
@@ -53,6 +55,7 @@ namespace WindowsGame1
                 return ms.ToArray();
             }
         }*/
+
         private void Responder(Player _player, List<string> ipTarget)
         {
             while (true)
@@ -63,9 +66,12 @@ namespace WindowsGame1
                 byte[] data = stream.ToArray();
                 foreach (string ip in ipTarget)
                 {
-                    respondClient.Send(data, data.Length, ip, 51002);
+                    tcpClient = new TcpClient(ip, 51002);
+                    networkStream = tcpClient.GetStream();
+                    networkStream.Write(data, 0, data.Length);
+                    tcpClient.Close();
                 }
-                
+
                 Thread.Sleep(1000);
             }
         }
@@ -76,16 +82,23 @@ namespace WindowsGame1
             List<string> ipTarget = new List<string>();
             foreach (Player p in room.Player_List)
             {
-                //if (p.Address != player.Address)
+                if (p.Address != mainPlayer.Address)
                 {
                     ipTarget.Add(p.Address);
                 }
             }
-            respondClient = new UdpClient();
-            respondClient.EnableBroadcast = true;
             joinResponseThread = new Thread(() => Responder(mainPlayer, ipTarget));
             joinResponseThread.IsBackground = true;
             joinResponseThread.Start();
+        }
+
+        public void End_Response()
+        {
+            //if (tcpClient != null)
+            {
+                joinResponseThread.Abort();
+                //tcpClient.Close();
+            }
         }
 
         private void Broadcaster()
@@ -101,6 +114,7 @@ namespace WindowsGame1
                 Thread.Sleep(1000);
             }
         }
+
         public void Start_Broadcast()
         {
             sendingClient = new UdpClient();
@@ -111,6 +125,7 @@ namespace WindowsGame1
             broadcastingThread.IsBackground = true;
             broadcastingThread.Start();
         }
+
         public void End_Broadcast()
         {
             if (sendingClient != null)
@@ -119,24 +134,18 @@ namespace WindowsGame1
                 sendingClient.Close();
             }
         }
-        public void End_Response()
-        {
-            if (respondClient != null)
-            {
-                joinResponseThread.Abort();
-                respondClient.Close();
-            }
-        }
         #endregion
 
         #region receiver Thread
-        UdpClient receivingClient;
+        TcpListener receiveTcp = null;
         Thread receivingThread;
+        Int32 port = 51002;
 
         public void InitializeReceiver()
         {
-            receivingClient = new UdpClient(51002);
-            receivingClient.EnableBroadcast = true;
+            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
+            receiveTcp = new TcpListener(endPoint);
+            receiveTcp.Start();
 
             ThreadStart start = new ThreadStart(Receiver);
             receivingThread = new Thread(start);
@@ -146,38 +155,44 @@ namespace WindowsGame1
 
         private void Receiver()
         {
-            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
-
+            //IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
+            Byte[] bytes = new Byte[256];
+            Player _player = null;
             while (true)
             {
-                byte[] data = receivingClient.Receive(ref endPoint);
-                BinaryFormatter bin = new BinaryFormatter();
-                MemoryStream mem = new MemoryStream(data);
-                Player _player = (Player)bin.Deserialize(mem);
-                bool found = false;
-                foreach (Player p in room.Player_List)
+                TcpClient client = receiveTcp.AcceptTcpClient();
+                _player = null;
+                NetworkStream stream = client.GetStream();
+                int i;
+                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    if (p.Address == _player.Address)
+                    BinaryFormatter bin = new BinaryFormatter();
+                    MemoryStream mem = new MemoryStream(bytes);
+                    _player = (Player)bin.Deserialize(mem);
+                    bool found = false;
+                    foreach (Player p in room.Player_List)
                     {
-                        found = true;
-                        break;
+                        if (p.Address == _player.Address)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        this.room.Player_List.Add(_player);
                     }
                 }
-                if (!found)
-                {
-                    this.room.Player_List.Add(_player);
-                }
-                //this.room = _room;
-                //this.Check_Room_Existed(room, endPoint);
+                client.Close();
             }
         }
 
         public void End_Receive()
         {
-            if (receivingClient != null)
+            if (receiveTcp != null)
             {
+                receiveTcp.Stop();
                 receivingThread.Abort();
-                receivingClient.Close();
             }
         }
 
@@ -204,7 +219,7 @@ namespace WindowsGame1
 
             div_border = new Border("player_border", borderColor, 2
                , new Rectangle(20, 20, 900, 480), this);
-            
+
             #endregion
 
             #region Room Information
