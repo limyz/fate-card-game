@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Net;
+using System.Net.Sockets;
 
 
 namespace WindowsGame1
@@ -112,9 +114,10 @@ namespace WindowsGame1
             try
             {
                 main_game.mRoomScreen.IPAddress = ipTextBox.Text;
-                Room r = new Room(
-                    new Player(Host_name_textbox.Text, "0.0.0.0")
-                    , Room_name_textbox.Text, int.Parse(Number_of_player_textbox.Text));
+                Player player = new Player(Host_name_textbox.Text, Game1.getLocalIP());
+                Room r = new Room(player, Room_name_textbox.Text, 
+                    int.Parse(Number_of_player_textbox.Text));
+                main_game.mRoomScreen.mainPlayer = player;
                 ScreenEvent.Invoke(this, new SivEventArgs(4, r));
             }
             catch(Exception ex)
@@ -126,6 +129,7 @@ namespace WindowsGame1
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
+        
         #endregion
 
         #region update

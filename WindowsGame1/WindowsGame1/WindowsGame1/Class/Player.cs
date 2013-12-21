@@ -10,6 +10,7 @@ namespace WindowsGame1
     {
         string player_name;
         string address;
+
         public string Player_name 
         {
             get { return player_name; }

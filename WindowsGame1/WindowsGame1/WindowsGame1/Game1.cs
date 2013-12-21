@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using EventTextInput;
+using System.Net;
+using System.Net.Sockets;
 
 #region MyExtension
 public static class My_Extension
@@ -485,6 +487,7 @@ namespace WindowsGame1
             {
                 mRoomScreen.room = (Room)e.Data;
                 mRoomScreen.Start_Broadcast();
+                mRoomScreen.StartSynch();
                 mRoomScreen.InitializeReceiver();
                 mCurrentScreen = mRoomScreen;
             }
@@ -499,7 +502,7 @@ namespace WindowsGame1
                 mRoomScreen.numberOfPlayer = 0;
                 mRoomScreen.End_Broadcast();
                 mRoomScreen.End_Receive();
-                mRoomScreen.End_Response();
+                mRoomScreen.EndSynch();
                 mCurrentScreen = mMenuScreen;
             }
             
@@ -522,18 +525,34 @@ namespace WindowsGame1
             //JoinScreen to RoomScreen
             else if (e.Command_code == 4)
             {
-                mJoinScreen.End_Receive();
+                //mJoinScreen.End_Receive();
                 Room _room = (Room)e.Data;
                 mRoomScreen.room = _room;
                 mRoomScreen.numberOfPlayer = 0;
                 mRoomScreen.mainPlayer = _room.Player_List.Last();
                 mRoomScreen.InitializeReceiver();
-                mRoomScreen.Start_Respond();
+                mRoomScreen.StartSynch();
                 //mRoomScreen.numberOfPlayer = _room.Player_List.Count();
                 mCurrentScreen = mRoomScreen;
             }
         }
         #endregion
+
+        public static string getLocalIP()
+        {
+            IPHostEntry host;
+            string localIP = "";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.ToString();
+                    break;
+                }
+            }
+            return localIP;
+        }
 
         protected override void UnloadContent()
         {

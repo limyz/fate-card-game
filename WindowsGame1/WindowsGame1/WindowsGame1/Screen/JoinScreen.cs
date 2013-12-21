@@ -25,6 +25,8 @@ namespace WindowsGame1
         List<Room> List_Room = new List<Room>();
         List<DateTime> List_Room_Recieve_Time = new List<DateTime>();
         List<Label> List_Room_Info = new List<Label>();
+        TextBox playerName;
+        Label playerNameLabel;
         #endregion
 
         #region receiver Thread
@@ -72,31 +74,45 @@ namespace WindowsGame1
             Label l = new Label(i2.ToString(), Game1.font, s2, 80, 165 + 20 * i2, 680
                 , Color.White, this);
             l.Value = i2;
-            l.OnClick += RoomClicked;
-            l.OnMouseEnter += RoomEntered;
-            l.OnMouseLeave += RoomLeft;
+            l.OnClick = RoomClicked;
+            l.OnMouseEnter = RoomEntered;
+            l.OnMouseLeave = RoomLeft;
             List_Room_Info.Add(l);
         }
 
         private void Receiver()
         {
-            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51001);
-
-            while (true)
+            try
             {
-                byte[] data = receivingClient.Receive(ref endPoint);
-                BinaryFormatter bin = new BinaryFormatter();
-                MemoryStream mem = new MemoryStream(data);
-                Room room = (Room)bin.Deserialize(mem);
+                IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51001);
 
-                this.Check_Room_Existed(room, endPoint);
+                while (true)
+                {
+                    byte[] data = receivingClient.Receive(ref endPoint);
+                    BinaryFormatter bin = new BinaryFormatter();
+                    MemoryStream mem = new MemoryStream(data);
+                    Room room = (Room)bin.Deserialize(mem);
+
+                    this.Check_Room_Existed(room, endPoint);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
         }
 
         public void End_Receive()
         {
-            receivingThread.Abort();
-            receivingClient.Close();
+            try
+            {
+                receivingThread.Abort();
+                receivingClient.Close();
+            }
+            catch (Exception ex)
+            {
+                //Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
         }
 
         #endregion
@@ -133,6 +149,12 @@ namespace WindowsGame1
             back_button.OnClick += BackClicked;
             #endregion
 
+            playerName = new TextBox("Player Name", Game1.whiteTextbox, Game1.highlightedTextbox,
+                Game1.caret, Game1.font, new Rectangle(600, 65, 150, 20), this);
+            playerNameLabel = new Label("PlayerName Label", Game1.arial13Bold, "Name: ",
+                540, 65, 100, Color.White, this);
+            playerName.Text = "SivCloud";
+
             #region JoinScreen_RegisterHandler
             OnKeysDown += JoinScreen_OnKeysDown;
             #endregion
@@ -161,6 +183,7 @@ namespace WindowsGame1
         }
         private void RoomClicked(object sender, FormEventData e)
         {
+            End_Receive();
             Label label = (Label)sender;
             int value = (int)label.Value;
             Room room = List_Room[value];
@@ -175,7 +198,7 @@ namespace WindowsGame1
             //    s += "+ " + p.Player_name + " - " + p.Address + "\n";
             //}
             //Game1.MessageBox(new IntPtr(0), s, value.ToString(), 0);
-            Player player = new Player("SivCloud", "1.1.1.1");
+            Player player = new Player(playerName.Text, Game1.getLocalIP());
             room.Player_List.Add(player);
             ScreenEvent.Invoke(this, new SivEventArgs(4, room));
         }
