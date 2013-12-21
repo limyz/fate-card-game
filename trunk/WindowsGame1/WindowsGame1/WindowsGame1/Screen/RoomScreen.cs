@@ -37,10 +37,9 @@ namespace WindowsGame1
 
         #region broadcast Thread
         UdpClient sendingClient;
-        TcpClient tcpClient;
-        NetworkStream networkStream;
-        Thread broadcastingThread, joinResponseThread;
+        Thread broadcastingThread;
         public string IPAddress = "";
+
         /*public static byte[] ReadFully(Stream input)
         {
             input.Position = 0;
@@ -55,51 +54,6 @@ namespace WindowsGame1
                 return ms.ToArray();
             }
         }*/
-
-        private void Responder(Player _player, List<string> ipTarget)
-        {
-            while (true)
-            {
-                MemoryStream stream = new MemoryStream();
-                BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, mainPlayer);
-                byte[] data = stream.ToArray();
-                foreach (string ip in ipTarget)
-                {
-                    tcpClient = new TcpClient(ip, 51002);
-                    networkStream = tcpClient.GetStream();
-                    networkStream.Write(data, 0, data.Length);
-                    tcpClient.Close();
-                }
-
-                Thread.Sleep(1000);
-            }
-        }
-
-        public void Start_Respond()
-        {
-            //ThreadStart ts = new ThreadStart(Broadcaster);
-            List<string> ipTarget = new List<string>();
-            foreach (Player p in room.Player_List)
-            {
-                if (p.Address != mainPlayer.Address)
-                {
-                    ipTarget.Add(p.Address);
-                }
-            }
-            joinResponseThread = new Thread(() => Responder(mainPlayer, ipTarget));
-            joinResponseThread.IsBackground = true;
-            joinResponseThread.Start();
-        }
-
-        public void End_Response()
-        {
-            //if (tcpClient != null)
-            {
-                joinResponseThread.Abort();
-                //tcpClient.Close();
-            }
-        }
 
         private void Broadcaster()
         {
@@ -136,63 +90,201 @@ namespace WindowsGame1
         }
         #endregion
 
+        #region Synchonize Thread
+        Thread joinResponseThread;
+        NetworkStream networkStream;
+        TcpClient tcpClient;
+        bool synchronizeRun = true;
+
+        private void ServerRespond()
+        {
+            try
+            {
+                while (synchronizeRun)
+                {
+                    MemoryStream stream = new MemoryStream();
+                    BinaryFormatter bformatter = new BinaryFormatter();
+                    bformatter.Serialize(stream, room);
+                    byte[] data = stream.ToArray();
+                    foreach (Player p in room.Player_List)
+                    {
+                        if (p.Player_name != mainPlayer.Player_name)
+                        {
+                            tcpClient = new TcpClient(p.Address, 51003);
+                            networkStream = tcpClient.GetStream();
+                            networkStream.Write(data, 0, data.Length);
+                            tcpClient.Close();
+                        }
+                    }
+                    Thread.Sleep(1000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
+        }
+
+        private void ClientRespond()
+        {
+            try
+            {
+                while (synchronizeRun)
+                {
+                    MemoryStream stream = new MemoryStream();
+                    BinaryFormatter bformatter = new BinaryFormatter();
+                    bformatter.Serialize(stream, mainPlayer);
+                    byte[] data = stream.ToArray();
+                    tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                    networkStream = tcpClient.GetStream();
+                    networkStream.Write(data, 0, data.Length);
+                    tcpClient.Close();
+                    Thread.Sleep(1000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
+        }
+
+        public void StartSynch()
+        {
+            if (!isHost())
+            {
+                Console.WriteLine("Run Client Respond");
+                joinResponseThread = new Thread(() => ClientRespond());
+            }
+            else
+            {
+                Console.WriteLine("Run Server Respond");
+                joinResponseThread = new Thread(() => ServerRespond());
+            }
+            joinResponseThread.IsBackground = true;
+            joinResponseThread.Start();
+        }
+
+        public void EndSynch()
+        {
+            synchronizeRun = false;
+            //if (tcpClient != null)
+            //{
+                //joinResponseThread.Abort();
+                //tcpClient.Close();
+            //}
+        }
+        #endregion
+
         #region receiver Thread
         TcpListener receiveTcp = null;
         Thread receivingThread;
-        Int32 port = 51002;
+        bool receiverRun = true;
 
         public void InitializeReceiver()
         {
-            IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
-            receiveTcp = new TcpListener(endPoint);
-            receiveTcp.Start();
+            if (isHost())
+            {
+                Console.WriteLine("Run Server Receiver");
+                IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
+                receiveTcp = new TcpListener(endPoint);
+                receiveTcp.Start();
+                ThreadStart start = new ThreadStart(ServerReceiver);
+                receivingThread = new Thread(start);
+                receivingThread.IsBackground = true;
+                receivingThread.Start();
+            }
+            else
+            {
+                Console.WriteLine("Run Client Receiver");
+                IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51003);
+                receiveTcp = new TcpListener(endPoint);
+                receiveTcp.Start();
+                ThreadStart start = new ThreadStart(ClientReceiver);
+                receivingThread = new Thread(start);
+                receivingThread.IsBackground = true;
+                receivingThread.Start();
+            }
 
-            ThreadStart start = new ThreadStart(Receiver);
-            receivingThread = new Thread(start);
-            receivingThread.IsBackground = true;
-            receivingThread.Start();
         }
 
-        private void Receiver()
+        private void ServerReceiver()
         {
-            //IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
-            Byte[] bytes = new Byte[256];
-            Player _player = null;
-            while (true)
+            try
             {
-                TcpClient client = receiveTcp.AcceptTcpClient();
-                _player = null;
-                NetworkStream stream = client.GetStream();
-                int i;
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                Byte[] bytes = new Byte[1024];
+                Player _player = null;
+                while (receiverRun)
                 {
-                    BinaryFormatter bin = new BinaryFormatter();
-                    MemoryStream mem = new MemoryStream(bytes);
-                    _player = (Player)bin.Deserialize(mem);
-                    bool found = false;
-                    foreach (Player p in room.Player_List)
+                    TcpClient client = receiveTcp.AcceptTcpClient();
+                    _player = null;
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
-                        if (p.Address == _player.Address)
+                        BinaryFormatter bin = new BinaryFormatter();
+                        MemoryStream mem = new MemoryStream(bytes);
+                        mem.Position = 0;
+                        _player = (Player)bin.Deserialize(mem);
+                        _player.Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                        bool found = false;
+                        foreach (Player p in room.Player_List)
                         {
-                            found = true;
-                            break;
+                            if (p.Address == _player.Address && p.Player_name == _player.Player_name)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            this.room.Player_List.Add(_player);
+                            chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
                         }
                     }
-                    if (!found)
-                    {
-                        this.room.Player_List.Add(_player);
-                    }
+                    client.Close();
                 }
-                client.Close();
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
+        }
+
+        private void ClientReceiver()
+        {
+            try
+            {
+                //IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
+                Byte[] bytes = new Byte[1024];
+                while (receiverRun)
+                {
+                    TcpClient client = receiveTcp.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        MemoryStream mem = new MemoryStream(bytes);
+                        mem.Position = 0;
+                        room = (Room)bin.Deserialize(mem);
+                        playerNumberChange();
+                    }
+                    client.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
         }
 
         public void End_Receive()
         {
+            receiverRun = false;
             if (receiveTcp != null)
             {
                 receiveTcp.Stop();
-                receivingThread.Abort();
+                //receivingThread.Abort();
             }
         }
 
@@ -318,6 +410,18 @@ namespace WindowsGame1
             ScreenEvent.Invoke(this, new SivEventArgs(0, mainPlayer));
         }
 
+        private bool isHost()
+        {
+            if (room.Player_List[room.owner_index].Address == mainPlayer.Address && room.Player_List[room.owner_index].Player_name == mainPlayer.Player_name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /*bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
         {
@@ -344,6 +448,7 @@ namespace WindowsGame1
         public void playerNumberChange()
         {
             String s = "Owner index: " + room.owner_index + "\n";
+            s += "Main Player: " + mainPlayer.Player_name + "\n";
             s += "Player List Count: " + room.Player_List.Count + "\n";
             s += "Room name: " + room.Room_name + "\n";
             s += "Number of Player: " + room.Number_of_Player + "\n";
@@ -377,7 +482,10 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //if (play_animation_state) play_animation(ref avatar_img.rec);            
-            if (this.room.Player_List.Count != numberOfPlayer) playerNumberChange();
+            if (this.room.Player_List.Count != numberOfPlayer)
+            {
+                playerNumberChange();
+            }
             base.Update(theTime);
         }
         #endregion
