@@ -96,6 +96,18 @@ namespace WindowsGame1
         TcpClient tcpClient;
         bool synchronizeRun = true;
 
+        private bool isHost()
+        {
+            if (room.Player_List[room.owner_index].Address == mainPlayer.Address && room.Player_List[room.owner_index].Player_name == mainPlayer.Player_name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void ServerRespond()
         {
             try
@@ -408,20 +420,7 @@ namespace WindowsGame1
         private void Quit_button_clicked(object sender, FormEventData e)
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0, mainPlayer));
-        }
-
-        private bool isHost()
-        {
-            if (room.Player_List[room.owner_index].Address == mainPlayer.Address && room.Player_List[room.owner_index].Player_name == mainPlayer.Player_name)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+        }       
         /*bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
         {
