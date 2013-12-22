@@ -117,7 +117,6 @@ namespace WindowsGame1
                 Player player = new Player(Host_name_textbox.Text, Game1.getLocalIP());
                 Room r = new Room(player, Room_name_textbox.Text, 
                     int.Parse(Number_of_player_textbox.Text));
-                main_game.mRoomScreen.mainPlayer = player;
                 ScreenEvent.Invoke(this, new SivEventArgs(4, r));
             }
             catch(Exception ex)

@@ -31,7 +31,7 @@ namespace WindowsGame1
         Div roomInfoDiv;
         Texture2D avatarDefault;
         public Room room;
-        public Player mainPlayer;
+        public int Player_Index = 0;
         public int numberOfPlayer = 0;
         #endregion
 
@@ -94,11 +94,37 @@ namespace WindowsGame1
         Thread joinResponseThread;
         NetworkStream networkStream;
         TcpClient tcpClient;
+        List<TcpClient> tcpServerClient = new List<TcpClient>();
         bool synchronizeRun = true;
 
+        public void StartSynch()
+        {
+            if (isHost())
+            {
+                for (int i = 0; i < room.Player_List.Count; i++)
+                {
+                    if (i == this.Player_Index)
+                    {
+                        //dummy client for host to balance the size of
+                        // Player_List and tcpServerClient
+                        tcpServerClient.Add(new TcpClient());
+                        continue;
+                    }
+                    Player temp_player =room.Player_List[i];
+                    tcpServerClient.Add(new TcpClient(temp_player.Address,51003));
+                }
+                joinResponseThread = new Thread(() => ServerRespond());
+            }
+            else
+            {
+                joinResponseThread = new Thread(() => ClientRespond());
+            }
+            joinResponseThread.IsBackground = true;
+            joinResponseThread.Start();
+        }
         private bool isHost()
         {
-            if (room.Player_List[room.owner_index].Address == mainPlayer.Address && room.Player_List[room.owner_index].Player_name == mainPlayer.Player_name)
+            if (room.owner_index == this.Player_Index)
             {
                 return true;
             }
@@ -107,75 +133,50 @@ namespace WindowsGame1
                 return false;
             }
         }
-
         private void ServerRespond()
         {
-            try
+            while (synchronizeRun)
             {
-                while (synchronizeRun)
+                MemoryStream stream = new MemoryStream();
+                BinaryFormatter bformatter = new BinaryFormatter();
+                bformatter.Serialize(stream, room);
+                byte[] data = stream.ToArray();
+                for (int i = 0; i < tcpServerClient.Count; i++)
                 {
-                    MemoryStream stream = new MemoryStream();
-                    BinaryFormatter bformatter = new BinaryFormatter();
-                    bformatter.Serialize(stream, room);
-                    byte[] data = stream.ToArray();
-                    foreach (Player p in room.Player_List)
+                    try
                     {
-                        if (p.Player_name != mainPlayer.Player_name)
-                        {
-                            tcpClient = new TcpClient(p.Address, 51003);
-                            networkStream = tcpClient.GetStream();
-                            networkStream.Write(data, 0, data.Length);
-                            tcpClient.Close();
-                        }
+                        if (i == this.Player_Index) continue;
+                        tcpServerClient[i].GetStream().Write(data, 0, data.Length);
                     }
-                    Thread.Sleep(1000);
+                    //couldn't send message because the client has disconnected
+                    //so we remove that tcp client and player from the list
+                    catch
+                    {
+                        chatDisplay.Text += room.Player_List[i].Player_name + " had left the room!" + "\n";
+                        this.tcpServerClient.RemoveAt(i);
+                        this.room.Player_List.RemoveAt(i);
+                        i--;                   
+                        UpdateRoom();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+                Thread.Sleep(1000);
             }
         }
-
         private void ClientRespond()
         {
-            try
-            {
-                while (synchronizeRun)
-                {
-                    MemoryStream stream = new MemoryStream();
-                    BinaryFormatter bformatter = new BinaryFormatter();
-                    bformatter.Serialize(stream, mainPlayer);
-                    byte[] data = stream.ToArray();
-                    tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
-                    networkStream = tcpClient.GetStream();
-                    networkStream.Write(data, 0, data.Length);
-                    tcpClient.Close();
-                    Thread.Sleep(1000);
-                }
-            }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
-            }
+            /*while (synchronizeRun)
+            {*/
+                MemoryStream stream = new MemoryStream();
+                BinaryFormatter bformatter = new BinaryFormatter();
+                bformatter.Serialize(stream, room.Player_List[Player_Index]);
+                byte[] data = stream.ToArray();
+                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+                tcpClient.Close();
+                /*Thread.Sleep(1000);
+            }*/
         }
-
-        public void StartSynch()
-        {
-            if (!isHost())
-            {
-                Console.WriteLine("Run Client Respond");
-                joinResponseThread = new Thread(() => ClientRespond());
-            }
-            else
-            {
-                Console.WriteLine("Run Server Respond");
-                joinResponseThread = new Thread(() => ServerRespond());
-            }
-            joinResponseThread.IsBackground = true;
-            joinResponseThread.Start();
-        }
-
         public void EndSynch()
         {
             synchronizeRun = false;
@@ -188,7 +189,7 @@ namespace WindowsGame1
         #endregion
 
         #region receiver Thread
-        TcpListener receiveTcp = null;
+        TcpListener receiveTcp;
         Thread receivingThread;
         bool receiverRun = true;
 
@@ -196,10 +197,10 @@ namespace WindowsGame1
         {
             if (isHost())
             {
-                Console.WriteLine("Run Server Receiver");
                 IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
                 receiveTcp = new TcpListener(endPoint);
                 receiveTcp.Start();
+
                 ThreadStart start = new ThreadStart(ServerReceiver);
                 receivingThread = new Thread(start);
                 receivingThread.IsBackground = true;
@@ -207,10 +208,10 @@ namespace WindowsGame1
             }
             else
             {
-                Console.WriteLine("Run Client Receiver");
                 IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51003);
                 receiveTcp = new TcpListener(endPoint);
                 receiveTcp.Start();
+
                 ThreadStart start = new ThreadStart(ClientReceiver);
                 receivingThread = new Thread(start);
                 receivingThread.IsBackground = true;
@@ -221,11 +222,11 @@ namespace WindowsGame1
 
         private void ServerReceiver()
         {
-            try
+            Byte[] bytes = new Byte[1024];
+            Player _player = null;
+            while (receiverRun)
             {
-                Byte[] bytes = new Byte[1024];
-                Player _player = null;
-                while (receiverRun)
+                if (receiveTcp.Pending())
                 {
                     TcpClient client = receiveTcp.AcceptTcpClient();
                     _player = null;
@@ -235,7 +236,6 @@ namespace WindowsGame1
                     {
                         BinaryFormatter bin = new BinaryFormatter();
                         MemoryStream mem = new MemoryStream(bytes);
-                        mem.Position = 0;
                         _player = (Player)bin.Deserialize(mem);
                         _player.Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
                         bool found = false;
@@ -250,49 +250,46 @@ namespace WindowsGame1
                         if (!found)
                         {
                             this.room.Player_List.Add(_player);
+                            this.tcpServerClient.Add(new TcpClient(_player.Address, 51003));
+                            this.UpdateRoom();
                             chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
                         }
                     }
                     client.Close();
                 }
             }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
-            }
         }
 
+        bool connect_to_host = true;
         private void ClientReceiver()
         {
-            try
+            Byte[] bytes = new Byte[1024];
+            while (receiverRun)
             {
-                //IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, port);
-                Byte[] bytes = new Byte[1024];
-                while (receiverRun)
+                if (receiveTcp.Pending())
                 {
                     TcpClient client = receiveTcp.AcceptTcpClient();
                     NetworkStream stream = client.GetStream();
                     int i;
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
+                        if (!connect_to_host)
+                        {
+                            client.Close();
+                            break;
+                        }
                         BinaryFormatter bin = new BinaryFormatter();
                         MemoryStream mem = new MemoryStream(bytes);
-                        mem.Position = 0;
                         room = (Room)bin.Deserialize(mem);
-                        playerNumberChange();
+                        this.UpdateRoom();
                     }
-                    client.Close();
                 }
             }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
-            }
         }
-
         public void End_Receive()
         {
             receiverRun = false;
+            connect_to_host = false;
             if (receiveTcp != null)
             {
                 receiveTcp.Stop();
@@ -419,7 +416,7 @@ namespace WindowsGame1
 
         private void Quit_button_clicked(object sender, FormEventData e)
         {
-            ScreenEvent.Invoke(this, new SivEventArgs(0, mainPlayer));
+            ScreenEvent.Invoke(this, new SivEventArgs(0));
         }       
         /*bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
@@ -444,10 +441,10 @@ namespace WindowsGame1
             }
         }*/
 
-        public void playerNumberChange()
+        public void UpdateRoom()
         {
             String s = "Owner index: " + room.owner_index + "\n";
-            s += "Main Player: " + mainPlayer.Player_name + "\n";
+            //s += "Main Player: " + room.Player_List[Player_Index].Player_name + "\n";
             s += "Player List Count: " + room.Player_List.Count + "\n";
             s += "Room name: " + room.Room_name + "\n";
             s += "Number of Player: " + room.Number_of_Player + "\n";
@@ -481,10 +478,6 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //if (play_animation_state) play_animation(ref avatar_img.rec);            
-            if (this.room.Player_List.Count != numberOfPlayer)
-            {
-                playerNumberChange();
-            }
             base.Update(theTime);
         }
         #endregion
