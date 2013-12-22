@@ -489,6 +489,7 @@ namespace WindowsGame1
                 mRoomScreen.Start_Broadcast();
                 mRoomScreen.StartSynch();
                 mRoomScreen.InitializeReceiver();
+                mRoomScreen.UpdateRoom();
                 mCurrentScreen = mRoomScreen;
             }
         }
@@ -499,7 +500,6 @@ namespace WindowsGame1
             if (e.Command_code == 0)
             {
                 mRoomScreen.room.Player_List.Clear();
-                mRoomScreen.numberOfPlayer = 0;
                 mRoomScreen.End_Broadcast();
                 mRoomScreen.End_Receive();
                 mRoomScreen.EndSynch();
@@ -526,13 +526,12 @@ namespace WindowsGame1
             else if (e.Command_code == 4)
             {
                 //mJoinScreen.End_Receive();
-                Room _room = (Room)e.Data;
+                Room _room = (Room)e.Data;                
                 mRoomScreen.room = _room;
-                mRoomScreen.numberOfPlayer = 0;
-                mRoomScreen.mainPlayer = _room.Player_List.Last();
+                mRoomScreen.Player_Index = _room.Player_List.Count - 1;
                 mRoomScreen.InitializeReceiver();
                 mRoomScreen.StartSynch();
-                //mRoomScreen.numberOfPlayer = _room.Player_List.Count();
+                mRoomScreen.UpdateRoom();
                 mCurrentScreen = mRoomScreen;
             }
         }
