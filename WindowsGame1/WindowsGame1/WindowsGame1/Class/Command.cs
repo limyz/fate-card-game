@@ -5,10 +5,10 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace WindowsGame1.Class
+namespace WindowsGame1
 {
     [Serializable]
-    class Command
+    public class Command
     {
         public enum CommandCode
         {
@@ -33,6 +33,10 @@ namespace WindowsGame1.Class
         #region Constructors
         public Command()
         { }
+        public Command(CommandCode Command_Code)
+        {
+            this.Command_Code = Command_Code;
+        }
         public Command(CommandCode Command_Code, object Data1)
         {
             this.Command_Code = Command_Code;

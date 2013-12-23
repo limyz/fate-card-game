@@ -114,13 +114,14 @@ namespace WindowsGame1
                     tcpServerClient.Add(new TcpClient(temp_player.Address,51003));
                 }
                 joinResponseThread = new Thread(() => ServerRespond());
+                joinResponseThread.IsBackground = true;
+                joinResponseThread.Start();
             }
             else
             {
-                joinResponseThread = new Thread(() => ClientRespond());
+                ClientJoin();
             }
-            joinResponseThread.IsBackground = true;
-            joinResponseThread.Start();
+            
         }
         private bool isHost()
         {
@@ -137,10 +138,12 @@ namespace WindowsGame1
         {
             while (synchronizeRun)
             {
-                MemoryStream stream = new MemoryStream();
+                /*MemoryStream stream = new MemoryStream();
                 BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, room);
-                byte[] data = stream.ToArray();
+                bformatter.Serialize(stream, room);*/
+                Command c = new Command(Command.CommandCode.standby);
+                byte[] data = c.Serialize();//stream.ToArray();
+                bool update_room = false;
                 for (int i = 0; i < tcpServerClient.Count; i++)
                 {
                     try
@@ -157,25 +160,39 @@ namespace WindowsGame1
                         this.room.Player_List.RemoveAt(i);
                         i--;                   
                         UpdateRoom();
+                        update_room = true;
                     }
                 }
+
+                Command c2 = new Command(Command.CommandCode.update_room, room);
+                byte[] data2 = c2.Serialize();
+                if (update_room)
+                {
+                    for (int i = 0; i < tcpServerClient.Count; i++)
+                    {
+                        try
+                        {
+                            if (i == this.Player_Index) continue;
+                            tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+
                 Thread.Sleep(1000);
             }
         }
-        private void ClientRespond()
+        private void ClientJoin()
         {
-            /*while (synchronizeRun)
-            {*/
-                MemoryStream stream = new MemoryStream();
-                BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, room.Player_List[Player_Index]);
-                byte[] data = stream.ToArray();
-                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
-                networkStream = tcpClient.GetStream();
-                networkStream.Write(data, 0, data.Length);
-                tcpClient.Close();
-                /*Thread.Sleep(1000);
-            }*/
+            Command c = new Command(Command.CommandCode.join_game, room.Player_List[Player_Index]);
+            byte[] data = c.Serialize();
+
+            tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+            networkStream = tcpClient.GetStream();
+            networkStream.Write(data, 0, data.Length);
+            tcpClient.Close();
         }
         public void EndSynch()
         {
@@ -234,25 +251,27 @@ namespace WindowsGame1
                     int i;
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
-                        BinaryFormatter bin = new BinaryFormatter();
-                        MemoryStream mem = new MemoryStream(bytes);
-                        _player = (Player)bin.Deserialize(mem);
-                        _player.Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
-                        bool found = false;
-                        foreach (Player p in room.Player_List)
+                        Command c = new Command(bytes);
+                        if (c.Command_Code == Command.CommandCode.join_game)
                         {
-                            if (p.Address == _player.Address && p.Player_name == _player.Player_name)
+                            _player = (Player)c.Data1;
+                            _player.Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                            bool found = false;
+                            foreach (Player p in room.Player_List)
                             {
-                                found = true;
-                                break;
+                                if (p.Address == _player.Address && p.Player_name == _player.Player_name)
+                                {
+                                    found = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!found)
-                        {
-                            this.room.Player_List.Add(_player);
-                            this.tcpServerClient.Add(new TcpClient(_player.Address, 51003));
-                            this.UpdateRoom();
-                            chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
+                            if (!found)
+                            {
+                                this.room.Player_List.Add(_player);
+                                this.tcpServerClient.Add(new TcpClient(_player.Address, 51003));
+                                this.UpdateRoom();
+                                chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
+                            }
                         }
                     }
                     client.Close();
@@ -277,11 +296,19 @@ namespace WindowsGame1
                         {
                             client.Close();
                             break;
+                        }                        
+                        /*BinaryFormatter bin = new BinaryFormatter();
+                        MemoryStream mem = new MemoryStream(bytes);*/
+                        Command c = new Command(bytes);
+                        if (c.Command_Code == Command.CommandCode.standby)
+                        {
+                            //do nothing
                         }
-                        BinaryFormatter bin = new BinaryFormatter();
-                        MemoryStream mem = new MemoryStream(bytes);
-                        room = (Room)bin.Deserialize(mem);
-                        this.UpdateRoom();
+                        else if (c.Command_Code == Command.CommandCode.update_room)
+                        {
+                            room = (Room)c.Data1;
+                            this.UpdateRoom();
+                        }
                     }
                 }
             }
