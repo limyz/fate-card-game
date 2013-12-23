@@ -10,15 +10,6 @@ namespace WindowsGame1
     [Serializable]
     public class Command
     {
-        public enum CommandCode
-        {
-            //No data, used to check connect status
-            standby = 0,
-            //Room as Data1, used to update room state
-            update_room = 1,
-            //Player as Data1, used to send Player object to host
-            join_game = 2,
-        };
         public CommandCode Command_Code;
         public object Data1;
         public object Data2;

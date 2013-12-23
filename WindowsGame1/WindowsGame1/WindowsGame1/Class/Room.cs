@@ -32,5 +32,29 @@ namespace WindowsGame1
             this.owner_index = 0;
             this.Player_List.Capacity = Number_of_Player;
         }
+
+        public int findByID(Guid guid)
+        {
+            for (int i = 0; i < this.player_List.Count; i++)
+            {
+                if (player_List[i].id == guid)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public Player findPlayerByID(Guid guid)
+        {
+            foreach (Player p in this.player_List)
+            {
+                if (p.id == guid)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
     }
 }

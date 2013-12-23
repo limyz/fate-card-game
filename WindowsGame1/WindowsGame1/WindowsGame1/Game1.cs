@@ -486,6 +486,8 @@ namespace WindowsGame1
             else if (e.Command_code == 4)
             {
                 mRoomScreen.room = (Room)e.Data;
+                mRoomScreen.Player_ID = ((Room)e.Data).Player_List.First().id;
+
                 mRoomScreen.Start_Broadcast();
                 mRoomScreen.StartSynch();
                 mRoomScreen.InitializeReceiver();
@@ -525,10 +527,12 @@ namespace WindowsGame1
             //JoinScreen to RoomScreen
             else if (e.Command_code == 4)
             {
-                //mJoinScreen.End_Receive();
+                mJoinScreen.End_Receive();
                 Room _room = (Room)e.Data;                
                 mRoomScreen.room = _room;
-                mRoomScreen.Player_Index = _room.Player_List.Count - 1;
+                mRoomScreen.Player_ID = _room.Player_List.Last().id;
+                //mRoomScreen.Player_Index = _room.Player_List.Count - 1;
+
                 mRoomScreen.InitializeReceiver();
                 mRoomScreen.StartSynch();
                 mRoomScreen.UpdateRoom();
