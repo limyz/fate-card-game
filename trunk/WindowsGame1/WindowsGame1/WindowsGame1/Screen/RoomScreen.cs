@@ -31,7 +31,8 @@ namespace WindowsGame1
         Div roomInfoDiv;
         Texture2D avatarDefault;
         public Room room;
-        public int Player_Index = 0;
+        public Guid Player_ID;
+        //public int Player_Index = 0;
         public int numberOfPlayer = 0;
         #endregion
 
@@ -40,7 +41,7 @@ namespace WindowsGame1
         Thread broadcastingThread;
         public string IPAddress = "";
 
-        /*public static byte[] ReadFully(Stream input)
+        public static byte[] ReadFully(Stream input)
         {
             input.Position = 0;
             byte[] buffer = new byte[16 * 1024];
@@ -53,7 +54,7 @@ namespace WindowsGame1
                 }
                 return ms.ToArray();
             }
-        }*/
+        }
 
         private void Broadcaster()
         {
@@ -101,9 +102,10 @@ namespace WindowsGame1
         {
             if (isHost())
             {
+                int Player_Index = room.findByID(Player_ID);
                 for (int i = 0; i < room.Player_List.Count; i++)
                 {
-                    if (i == this.Player_Index)
+                    if (i == Player_Index)
                     {
                         //dummy client for host to balance the size of
                         // Player_List and tcpServerClient
@@ -125,7 +127,8 @@ namespace WindowsGame1
         }
         private bool isHost()
         {
-            if (room.owner_index == this.Player_Index)
+            int Player_Index = room.findByID(Player_ID);
+            if (room.owner_index == Player_Index)
             {
                 return true;
             }
@@ -138,17 +141,15 @@ namespace WindowsGame1
         {
             while (synchronizeRun)
             {
-                /*MemoryStream stream = new MemoryStream();
-                BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, room);*/
-                Command c = new Command(Command.CommandCode.standby);
-                byte[] data = c.Serialize();//stream.ToArray();
+                Command c = new Command(CommandCode.standby);
+                byte[] data = c.Serialize();
+                int Player_Index = room.findByID(Player_ID);
                 bool update_room = false;
                 for (int i = 0; i < tcpServerClient.Count; i++)
                 {
                     try
                     {
-                        if (i == this.Player_Index) continue;
+                        if (i == Player_Index) continue;
                         tcpServerClient[i].GetStream().Write(data, 0, data.Length);
                     }
                     //couldn't send message because the client has disconnected
@@ -164,15 +165,15 @@ namespace WindowsGame1
                     }
                 }
 
-                Command c2 = new Command(Command.CommandCode.update_room, room);
-                byte[] data2 = c2.Serialize();
                 if (update_room)
                 {
+                    Command c2 = new Command(CommandCode.update_room, room);
+                    byte[] data2 = c2.Serialize();
                     for (int i = 0; i < tcpServerClient.Count; i++)
                     {
                         try
                         {
-                            if (i == this.Player_Index) continue;
+                            if (i == Player_Index) continue;
                             tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
                         }
                         catch
@@ -186,7 +187,7 @@ namespace WindowsGame1
         }
         private void ClientJoin()
         {
-            Command c = new Command(Command.CommandCode.join_game, room.Player_List[Player_Index]);
+            Command c = new Command(CommandCode.join_game, room.Player_List.Last());
             byte[] data = c.Serialize();
 
             tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
@@ -239,7 +240,7 @@ namespace WindowsGame1
 
         private void ServerReceiver()
         {
-            Byte[] bytes = new Byte[1024];
+            Byte[] bytes = new Byte[1024 * 16];
             Player _player = null;
             while (receiverRun)
             {
@@ -252,25 +253,46 @@ namespace WindowsGame1
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         Command c = new Command(bytes);
-                        if (c.Command_Code == Command.CommandCode.join_game)
+                        if (c.Command_Code == CommandCode.join_game)
                         {
                             _player = (Player)c.Data1;
                             _player.Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
                             bool found = false;
                             foreach (Player p in room.Player_List)
                             {
-                                if (p.Address == _player.Address && p.Player_name == _player.Player_name)
+                                if (p.Address == _player.Address && p.id == _player.id)
                                 {
                                     found = true;
                                     break;
                                 }
                             }
+
+                            bool update_room = false;
                             if (!found)
                             {
                                 this.room.Player_List.Add(_player);
                                 this.tcpServerClient.Add(new TcpClient(_player.Address, 51003));
                                 this.UpdateRoom();
                                 chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
+                                update_room = true;
+                            }
+
+                            if (update_room)
+                            {
+                                int Player_Index = room.findByID(Player_ID);
+                                Command c2 = new Command(CommandCode.update_room, room);
+                                byte[] data2 = c2.Serialize();
+                                for (int i2 = 0; i2 < tcpServerClient.Count; i2++)
+                                {
+                                    try
+                                    {
+                                        if (i2 == Player_Index) continue;
+                                        tcpServerClient[i2].GetStream().Write(data2, 0, data2.Length);
+                                    }
+                                    catch
+                                    {
+                                    }
+                                }
                             }
                         }
                     }
@@ -282,7 +304,7 @@ namespace WindowsGame1
         bool connect_to_host = true;
         private void ClientReceiver()
         {
-            Byte[] bytes = new Byte[1024];
+            Byte[] bytes = new Byte[1024 * 16];
             while (receiverRun)
             {
                 if (receiveTcp.Pending())
@@ -300,11 +322,11 @@ namespace WindowsGame1
                         /*BinaryFormatter bin = new BinaryFormatter();
                         MemoryStream mem = new MemoryStream(bytes);*/
                         Command c = new Command(bytes);
-                        if (c.Command_Code == Command.CommandCode.standby)
+                        if (c.Command_Code == CommandCode.standby)
                         {
                             //do nothing
                         }
-                        else if (c.Command_Code == Command.CommandCode.update_room)
+                        else if (c.Command_Code == CommandCode.update_room)
                         {
                             room = (Room)c.Data1;
                             this.UpdateRoom();

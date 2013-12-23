@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\CommandCode.cs" />
     <Compile Include="Class\Command.cs" />
     <Compile Include="Class\Room.cs" />
     <Compile Include="Form\Background.cs" />

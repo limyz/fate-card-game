@@ -9,7 +9,7 @@ namespace WindowsGame1
     public class Player
     {
         string player_name;
-        string address;
+        string address; 
 
         public string Player_name 
         {
@@ -21,11 +21,13 @@ namespace WindowsGame1
             get { return address; }
             set { address = value; }
         }
+        public Guid id;
 
         public Player(string player_name, string address)
         {
             this.player_name = player_name;
             this.address = address;
+            this.id = Guid.NewGuid();
         }
     }
 }
