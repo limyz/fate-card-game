@@ -22,6 +22,7 @@ namespace WindowsGame1
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
         Label[] playerName = new Label[8];
+        Border MainPlayer_Boder;
         Label roomInfoContent, roomInfoTitle;
         Background backGround;
         ImageButton start_button, quit_button;
@@ -100,6 +101,7 @@ namespace WindowsGame1
 
         public void StartSynch()
         {
+            synchronizeRun = true;
             if (isHost())
             {
                 int Player_Index = room.findByID(Player_ID);
@@ -156,12 +158,14 @@ namespace WindowsGame1
                     //so we remove that tcp client and player from the list
                     catch
                     {
-                        chatDisplay.Text += room.Player_List[i].Player_name + " had left the room!" + "\n";
+                        string s = room.Player_List[i].Player_name + " had left the room!" + "\n";
                         this.tcpServerClient.RemoveAt(i);
                         this.room.Player_List.RemoveAt(i);
                         i--;                   
                         UpdateRoom();
                         update_room = true;
+
+                        SendChatMessage(s);
                     }
                 }
 
@@ -213,6 +217,8 @@ namespace WindowsGame1
 
         public void InitializeReceiver()
         {
+            receiverRun = true;
+            connect_to_host = true;
             if (isHost())
             {
                 IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
@@ -273,7 +279,7 @@ namespace WindowsGame1
                                 this.room.Player_List.Add(_player);
                                 this.tcpServerClient.Add(new TcpClient(_player.Address, 51003));
                                 this.UpdateRoom();
-                                chatDisplay.Text += _player.Player_name + " had joined the room!" + "\n";
+                                SendChatMessage(_player.Player_name + " had joined the room!" + "\n");
                                 update_room = true;
                             }
 
@@ -294,6 +300,10 @@ namespace WindowsGame1
                                     }
                                 }
                             }
+                        }
+                        else if (c.Command_Code == CommandCode.chat_message)
+                        {
+                            SendChatMessage(c.Message);
                         }
                     }
                     client.Close();
@@ -330,6 +340,10 @@ namespace WindowsGame1
                         {
                             room = (Room)c.Data1;
                             this.UpdateRoom();
+                        }
+                        else if (c.Command_Code == CommandCode.chat_message)
+                        {
+                            chatDisplay.Text += c.Message;
                         }
                     }
                 }
@@ -398,6 +412,7 @@ namespace WindowsGame1
                     playerName[i].CenterAlign = true;
                 }
             }
+            MainPlayer_Boder = new Border("MainPlayer_Border", Color.Purple, 2, new Rectangle(0, 0, 0, 0), this);
             #endregion
 
             #region Button
@@ -421,6 +436,7 @@ namespace WindowsGame1
             chat = new TextBox("Chat Input"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.font, new Rectangle(22, 662, 946, 20), this);
+            chat.OnEnterPressed += ChatBox_EnterPressed;
 
             chatDisplay = new TextBox("Chat Display"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
@@ -462,11 +478,46 @@ namespace WindowsGame1
             //avatar_img.Delete();
             //avatar_img = null;
         }
-
         private void Quit_button_clicked(object sender, FormEventData e)
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
-        }       
+        }
+        private void ChatBox_EnterPressed(object sender)
+        {
+            string s = room.findPlayerByID(Player_ID).Player_name + ": " + chat.Text + "\r\n";
+            if (isHost())
+            {
+                SendChatMessage(s);
+            }
+            else
+            {
+                Command c = new Command(CommandCode.chat_message, s);
+                byte[] data = c.Serialize();
+
+                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+                tcpClient.Close();
+            }
+            this.chat.Text = "";
+        }
+        private void SendChatMessage(string message)
+        {            
+            Command c = new Command(CommandCode.chat_message, message);
+            byte[] data = c.Serialize();
+            for (int i = 0; i < tcpServerClient.Count; i++)
+            {
+                try
+                {
+                    if (room.Player_List[i].id == this.Player_ID) continue;
+                    tcpServerClient[i].GetStream().Write(data, 0, data.Length);
+                }
+                catch
+                {
+                }
+            }
+            chatDisplay.Text += message;
+        }
         /*bool play_animation_state = false;
         private void avatar_clicked(object sender, FormEventData e)
         {
@@ -489,7 +540,6 @@ namespace WindowsGame1
                 My_Extension.move_rec(ref rec, x, y, speed, speed);
             }
         }*/
-
         public void UpdateRoom()
         {
             String s = "Owner index: " + room.owner_index + "\n";
@@ -516,6 +566,11 @@ namespace WindowsGame1
                 String playerNameStr = room.Player_List[i].Player_name;
                 playerName[i].Text = playerNameStr;
                 playerName[i].Visible = true;
+                if (room.Player_List[i].id == this.Player_ID)
+                {
+                    playerName[i].Color = Color.Blue;
+                    MainPlayer_Boder.Rect = playerName[i].Rect;
+                }
                 Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
                 avatar_img.Add(newAvatar);
             }

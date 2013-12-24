@@ -13,5 +13,7 @@ namespace WindowsGame1
         update_room = 1,
         //Player as Data1, used to send Player object to host
         join_game = 2,
+        //String as Message, used to send chat
+        chat_message = 3
     };
 }
