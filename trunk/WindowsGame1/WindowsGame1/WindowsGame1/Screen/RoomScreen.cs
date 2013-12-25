@@ -66,6 +66,10 @@ namespace WindowsGame1
                 bformatter.Serialize(stream, room);
                 byte[] data = stream.ToArray();
                 sendingClient.Send(data, data.Length, IPAddress, 51001);
+                if (IPAddress != "255.255.255.255")
+                {
+                    sendingClient.Send(data, data.Length, "255.255.255.255", 51001);
+                }
 
                 Thread.Sleep(1000);
             }
@@ -338,6 +342,7 @@ namespace WindowsGame1
                         }
                         else if (c.Command_Code == CommandCode.update_room)
                         {
+                            room.Player_List[room.owner_index].Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
                             room = (Room)c.Data1;
                             this.UpdateRoom();
                         }
