@@ -17,7 +17,7 @@ namespace WindowsGame1
 {
     public class RoomScreen : Screen
     {
-        #region variable decleration
+        #region Variable Decleration
         Border div_border, chat_box_border, chat_input_border, div_info_border;
         Border[] div_char_border = new Border[8];
         Rectangle[] div_char = new Rectangle[8];
@@ -37,7 +37,7 @@ namespace WindowsGame1
         public int numberOfPlayer = 0;
         #endregion
 
-        #region broadcast Thread
+        #region Broadcast Thread
         UdpClient sendingClient;
         Thread broadcastingThread;
         public string IPAddress = "";
@@ -118,7 +118,7 @@ namespace WindowsGame1
                         tcpServerClient.Add(new TcpClient());
                         continue;
                     }
-                    Player temp_player =room.Player_List[i];
+                    Player temp_player = room.Player_List[i];
                     tcpServerClient.Add(new TcpClient(temp_player.Address,51003));
                 }
                 joinResponseThread = new Thread(() => ServerRespond());
@@ -214,7 +214,7 @@ namespace WindowsGame1
         }
         #endregion
 
-        #region receiver Thread
+        #region Receiver Thread
         TcpListener receiveTcp;
         Thread receivingThread;
         bool receiverRun = true;
@@ -342,8 +342,8 @@ namespace WindowsGame1
                         }
                         else if (c.Command_Code == CommandCode.update_room)
                         {
-                            room.Player_List[room.owner_index].Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
                             room = (Room)c.Data1;
+                            room.Player_List[room.owner_index].Address = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
                             this.UpdateRoom();
                         }
                         else if (c.Command_Code == CommandCode.chat_message)
@@ -565,6 +565,7 @@ namespace WindowsGame1
             {
                 item.Text = "";
                 item.Visible = false;
+                item.Color = Color.White;
             }
             for (int i = 0; i < room.Player_List.Count; i++)
             {
@@ -573,8 +574,8 @@ namespace WindowsGame1
                 playerName[i].Visible = true;
                 if (room.Player_List[i].id == this.Player_ID)
                 {
-                    playerName[i].Color = Color.Blue;
-                    MainPlayer_Boder.Rect = playerName[i].Rect;
+                    playerName[i].Color = Color.Aquamarine;
+                    //MainPlayer_Boder.Rect = playerName[i].Rect;
                 }
                 Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
                 avatar_img.Add(newAvatar);
