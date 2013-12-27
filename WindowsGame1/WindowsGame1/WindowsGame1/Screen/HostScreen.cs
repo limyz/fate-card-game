@@ -14,7 +14,7 @@ namespace WindowsGame1
 {
     public class HostScreen : Screen
     {
-        #region variable decleration
+        #region Variable Decleration
         SpriteFont font;
         ImageButton OK_button, Canel_button;
         Label Host_name_label, Number_of_player_label, Room_name_label;
@@ -24,7 +24,7 @@ namespace WindowsGame1
         TextBox ipTextBox;
         #endregion
 
-        #region load content
+        #region Load Content
         public HostScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theEvent, Game1 parent)
             : base("HostScreen",theEvent, parent)
         {

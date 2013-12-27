@@ -95,6 +95,7 @@ namespace WindowsGame1
             bformatter.Serialize(stream, this);
             return stream.ToArray();
         }
+
         public void Deserialize(byte[] bytes)
         {
             BinaryFormatter bformatter = new BinaryFormatter();
