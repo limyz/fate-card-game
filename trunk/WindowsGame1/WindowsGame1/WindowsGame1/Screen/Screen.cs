@@ -16,6 +16,7 @@ namespace WindowsGame1
         protected SivEventHandler ScreenEvent;        
         public Game1 main_game;
         public List<SivForm> Form_list=new List<SivForm>();
+        public SivForm ActiveForm;
 
         public Screen(String _name, SivEventHandler theScreenEvent, Game1 parent)
         {
@@ -33,6 +34,7 @@ namespace WindowsGame1
             OnMiddleMouseUp += On_Middle_Mouse_Up_Dispatcher;
             OnMiddleMouseDown += On_Middle_Mouse_Down_Dispatcher;
             OnMouseHover += On_Mouse_Hover_Dispatcher;
+            OnMouseScroll += On_Mouse_Scroll_Dispatcher;
             OnMouseMove += On_Mouse_Move_Dispatcher;
             OnKeysPress += On_Keys_Pressed_Dispatcher;
             OnKeysDown += On_Keys_Down_Dispatcher;
@@ -180,6 +182,13 @@ namespace WindowsGame1
         }
         private void On_Mouse_Scroll_Dispatcher(int change)
         {
+            if (ActiveForm != null)
+            {
+                if (ActiveForm.OnMouseScroll != null)
+                {
+                    ActiveForm.OnMouseScroll.Invoke(ActiveForm,new FormEventData(change));
+                }
+            }
         }
         private void On_Mouse_Hover_Dispatcher(MouseState ms, MouseState last_ms)
         {

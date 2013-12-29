@@ -15,6 +15,10 @@ namespace WindowsGame1
         {
 
         }
+        public FormEventData(object args)
+        {
+            this.args = args;
+        }
         public FormEventData(Type args_type,object args)
         {
             this.args_type = args_type;

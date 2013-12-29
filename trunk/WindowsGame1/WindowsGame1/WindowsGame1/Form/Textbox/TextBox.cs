@@ -114,15 +114,17 @@ namespace WindowsGame1
                 _readonly = value;
                 if (_readonly)
                 {
-                    this.OnClick -= new FormEventHandler(textbox_clicked);
-                    this.OnMouseEnter -= new FormEventHandler(textbox_OnMouseEnter);
-                    this.OnMouseLeave -= new FormEventHandler(textbox_OnMouseLeave);
+                    this.OnClick -= textbox_clicked;
+                    this.OnClick += textbox_clicked_Readonly;
+                    this.OnMouseEnter -= textbox_OnMouseEnter;
+                    this.OnMouseLeave -= textbox_OnMouseLeave;
                 }
                 else
                 {
-                    this.OnClick += new FormEventHandler(textbox_clicked);
-                    this.OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
-                    this.OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
+                    this.OnClick -= textbox_clicked_Readonly;
+                    this.OnClick += textbox_clicked;
+                    this.OnMouseEnter += textbox_OnMouseEnter;
+                    this.OnMouseLeave += textbox_OnMouseLeave;
                 }
             }
         }
@@ -146,6 +148,7 @@ namespace WindowsGame1
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
+            OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
         }
 
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
@@ -162,6 +165,7 @@ namespace WindowsGame1
             OnClick += new FormEventHandler(textbox_clicked);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
+            OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
         }
 
         bool on_hscrollbar_drag = false;
@@ -335,6 +339,11 @@ namespace WindowsGame1
         private void textbox_clicked(object sender, FormEventData e)
         {
             Parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
+            Parent.ActiveForm = (SivForm)sender;
+        }
+        private void textbox_clicked_Readonly(object sender, FormEventData e)
+        {
+            Parent.ActiveForm = (SivForm)sender;
         }
         private void textbox_OnMouseEnter(object sender, FormEventData e)
         {
@@ -343,6 +352,40 @@ namespace WindowsGame1
         private void textbox_OnMouseLeave(object sender, FormEventData e)
         {
             Highlighted = false;
+        }
+        private void textbox_OnMouseScroll(object sender, FormEventData e)
+        {
+            if (vscrollable)
+            {
+                int change = (int)e.args;
+                Console.WriteLine(change);
+                float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height;
+                float offset = 0;
+                if (change < 0)
+                {
+                    offset = vscrollbar_offset + ((float)_font.LineSpacing / _font.MeasureString(_text).Y);
+                }
+                else
+                {
+                    offset = vscrollbar_offset - ((float)_font.LineSpacing / _font.MeasureString(_text).Y);
+                }
+                vscrollbar_offset = Math.Max(Math.Min(offset, maxoffset), 0);
+            }
+            else if (hscrollable)
+            {
+                int change = (int)e.args;
+                float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width;
+                float offset = 0;
+                if (change < 0)
+                {
+                    offset = hscrollbar_offset + ((float)_font.LineSpacing / _font.MeasureString(_text).X);
+                }
+                else
+                {
+                    offset = hscrollbar_offset - ((float)_font.LineSpacing / _font.MeasureString(_text).X);
+                }
+                hscrollbar_offset = Math.Max(Math.Min(offset, maxoffset), 0);
+            }
         }
         #endregion
 
