@@ -61,7 +61,7 @@ namespace WindowsGame1
             Y_textBox.Text = t.Rect.Y.ToString();
             Width_textBox.Text = t.Rect.Width.ToString();
             Height_textBox.Text = t.Rect.Height.ToString();
-            scrollable_checkBox.Checked = t.scrollable;
+            //scrollable_checkBox.Checked = t.scrollable;
             Text_textBox.Text = t.Text;
         }
 
@@ -75,7 +75,7 @@ namespace WindowsGame1
                 t.Rect.Y = int.Parse(Y_textBox.Text);
                 t.Rect.Width = int.Parse(Width_textBox.Text);
                 t.Rect.Height = int.Parse(Height_textBox.Text);
-                t.scrollable = scrollable_checkBox.Checked;
+                //t.scrollable = scrollable_checkBox.Checked;
                 t.Text = Text_textBox.Text;
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace WindowsGame1
             Y_textBox.Text = t.Rect.Y.ToString();
             Width_textBox.Text = t.Rect.Width.ToString();
             Height_textBox.Text = t.Rect.Height.ToString();
-            scrollable_checkBox.Checked = t.scrollable;
+            //scrollable_checkBox.Checked = t.scrollable;
             Text_textBox.Text = t.Text;
         }
         #endregion
@@ -275,7 +275,7 @@ namespace WindowsGame1
                             sw.WriteLine("\t" + listBox1.Items[i] + ":");
                             sw.WriteLine("\tParent Screen:" + Textbox_List[i].Parent.name);
                             sw.WriteLine("\tRectangle:" + Textbox_List[i].Rect.ToString());
-                            sw.WriteLine("\tScrollable:" + Textbox_List[i].scrollable);
+                            //sw.WriteLine("\tScrollable:" + Textbox_List[i].scrollable);
                             sw.WriteLine("\t-----------------");
                         }
                         sw.WriteLine("-------------------------------------------------------");

@@ -360,6 +360,17 @@ namespace WindowsGame1
             }
             return false;
         }
+        public bool left_mouse_release(Rectangle rec)///check ONE left mouse click
+        {
+            if (last_mouse_state.LeftButton == ButtonState.Pressed && mouse_state.LeftButton == ButtonState.Released)
+            {
+                if (rec.Contains(mouse_pos))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public bool mouse_hover(Rectangle rec)///check mouse hover
         {
             if (rec.Contains(mouse_pos))

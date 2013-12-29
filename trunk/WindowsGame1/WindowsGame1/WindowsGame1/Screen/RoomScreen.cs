@@ -445,8 +445,10 @@ namespace WindowsGame1
 
             chatDisplay = new TextBox("Chat Display"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.scrollbarBackground, Game1.scrollbar
                 , Game1.font, new Rectangle(22, 522, 946, 126), this);
             chatDisplay.ReadOnly = true;
+            chatDisplay.vscrollable = true;
             #endregion
 
             #region RoomScreen_RegisterHandler

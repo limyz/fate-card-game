@@ -21,10 +21,13 @@ namespace WindowsGame1
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
 
-        public int caret_pos = 0;
+        int caret_pos = 0;
         int hscrollbar_width;
-        public int hscrollbar_offset=0;
+        float hscrollbar_offset = 0;
         Rectangle hscrollbar_rec;
+        int vscrollbar_height;
+        float vscrollbar_offset = 0;
+        Rectangle vscrollbar_rec;
 
         public bool Highlighted { get; set; }
         public bool PasswordBox { get; set; } 
@@ -32,7 +35,8 @@ namespace WindowsGame1
         string _text = "";
         public int select_start=-1;
         public int select_end=-1;
-        public bool scrollable = false;
+        public bool hscrollable = false;
+        public bool vscrollable = false;
         public String Text
         {
             get
@@ -62,7 +66,7 @@ namespace WindowsGame1
                     }
                     
                     _text = filtered;
-                    if (scrollable)
+                    if (hscrollable)
                     {
                         if (Rect.Width <= _font.MeasureString(_text).X)
                         {
@@ -72,6 +76,18 @@ namespace WindowsGame1
                         {
                             hscrollbar_offset = 0;
                             hscrollbar_width = Rect.Width;
+                        }
+                    }
+                    if (vscrollable)
+                    {
+                        if (Rect.Height <= _font.MeasureString(_text).Y)
+                        {
+                            vscrollbar_height = (int)(Rect.Height * (Rect.Height / _font.MeasureString(_text).Y));
+                        }
+                        else
+                        {
+                            vscrollbar_offset = 0;
+                            vscrollbar_height = Rect.Height;
                         }
                     }
                 }
@@ -119,6 +135,7 @@ namespace WindowsGame1
             _scrollbarTexture = scrollbarTexture;
             _font = font;           
             hscrollbar_width = rec.Width;
+            vscrollbar_height = rec.Height;
             this.Parent = parent;  
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
@@ -142,11 +159,68 @@ namespace WindowsGame1
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
         }
 
+        bool on_hscrollbar_drag = false;
+        bool on_vscrollbar_drag = false;
         public override void Update(GameTime gameTime)
         {
-            if (scrollable)
+            if (hscrollable)
             {
-                hscrollbar_rec = new Rectangle(Rect.X + hscrollbar_offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
+                if (!on_hscrollbar_drag)
+                {
+                    if (Parent.main_game.left_mouse_click(hscrollbar_rec))
+                    {
+                        on_hscrollbar_drag = true;
+                    }
+                }
+                if (on_hscrollbar_drag)
+                {
+                    int move = Parent.main_game.mouse_state.X - Parent.main_game.last_mouse_state.X;
+                    float percentage = 0;
+                    if (move != 0)
+                    {
+                       percentage = (float)move / (float)Rect.Width;
+                    }
+                    hscrollbar_offset = Math.Max(Math.Min(hscrollbar_offset + percentage, 1f), 0);
+                }
+                int offset = (int)(hscrollbar_offset * Rect.Width);
+                hscrollbar_rec = new Rectangle(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
+                if (on_hscrollbar_drag)
+                {
+                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                    {
+                        on_hscrollbar_drag = false;
+                    }
+                }
+            }
+
+            if (vscrollable)
+            {
+                if (!on_vscrollbar_drag)
+                {
+                    if (Parent.main_game.left_mouse_click(vscrollbar_rec))
+                    {                        
+                        on_vscrollbar_drag = true;
+                    }
+                }
+                if (on_vscrollbar_drag)
+                {
+                    int move = Parent.main_game.mouse_state.Y - Parent.main_game.last_mouse_state.Y;
+                    float percentage = 0;
+                    if (move != 0)
+                    {
+                        percentage = (float)move / (float)Rect.Height;
+                    }
+                    vscrollbar_offset = Math.Max(Math.Min(vscrollbar_offset + percentage, 1f), 0);
+                }
+                int offset = (int)(vscrollbar_offset * Rect.Height);
+                vscrollbar_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
+                if (on_vscrollbar_drag)
+                {
+                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                    {
+                        on_vscrollbar_drag = false;
+                    }
+                }
             }
         }
 
@@ -163,18 +237,24 @@ namespace WindowsGame1
                 toDraw = "";
                 for (int i = 0; i < Text.Length; i++)
                     toDraw += (char)0x2022; //bullet character (make sure you include it in the font!!!!)
-            }           
-            Rectangle _textbox_rec = new Rectangle(Rect.X, Rect.Y, Rect.Width, Rect.Height -(scrollable?_font.LineSpacing:0));
+            }
+            Rectangle _textbox_rec = new Rectangle(Rect.X, Rect.Y, Rect.Width - (vscrollable ? _font.LineSpacing : 0), Rect.Height - (hscrollable ? _font.LineSpacing : 0));
 
             spriteBatch.End();//end current screen's spriteBatch.Begin
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);           
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
             spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
-            if (scrollable)
+            if (hscrollable)
             {
                 Rectangle hscroll_region_rec = new Rectangle(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
                 spriteBatch.Draw(_scrollbarBackground, hscroll_region_rec, Color.White);
                 spriteBatch.Draw(_scrollbarTexture, hscrollbar_rec, Color.White);
+            }
+            if (vscrollable)
+            {
+                Rectangle vscroll_region_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y, _font.LineSpacing, Rect.Height);
+                spriteBatch.Draw(_scrollbarBackground, vscroll_region_rec, Color.White);
+                spriteBatch.Draw(_scrollbarTexture, vscrollbar_rec, Color.White);
             }
             spriteBatch.End();
             Vector2 size = _font.MeasureString(toDraw);
@@ -182,11 +262,14 @@ namespace WindowsGame1
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec;
             if (caretVisible && Selected)
-                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + 2, Rect.Y + (int)size.Y-((int)size.Y==0?0:_font.LineSpacing)), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
+                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + 2, Rect.Y + (int)size.Y - ((int)size.Y == 0 ? 0 : _font.LineSpacing)), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
             //shadow first, then the actual text
-            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y) + Vector2.One, Color.White,0f,new Vector2(0,0),1f,SpriteEffects.None,0.21f);
-            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y), Color.Black,0f, new Vector2(0, 0), 1f, SpriteEffects.None,0.2f);
-            //spriteBatch.DrawString(_font, toDraw, new Vector2(X, Y), Color.Black);
+            float hoffset = hscrollbar_offset * _font.MeasureString(_text).X * -1f;
+            float voffset = vscrollbar_offset * _font.MeasureString(_text).Y * -1f;
+            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
+            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
+            //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
+            //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y), Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();
             spriteBatch.Begin();//Begin a new one(just to be ended immediatly) 
