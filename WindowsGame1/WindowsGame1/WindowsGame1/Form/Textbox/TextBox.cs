@@ -45,8 +45,7 @@ namespace WindowsGame1
             }
             set
             {
-                _text = value;
-                if (_text == null)
+                if (value == null)
                 {
                     _text = "";
                 }
@@ -64,13 +63,15 @@ namespace WindowsGame1
                             caret_pos += 1;
                         }
                     }
-                    
-                    _text = filtered;
+
                     if (hscrollable)
                     {
-                        if (Rect.Width <= _font.MeasureString(_text).X)
+                        if (Rect.Width <= _font.MeasureString(filtered).X)
                         {
-                            hscrollbar_width = (int)(Rect.Width * (Rect.Width / _font.MeasureString(_text).X));
+                            hscrollbar_width = (int)(Rect.Width * (Rect.Width / _font.MeasureString(filtered).X));
+                            float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width;
+                            float newoffset = hscrollbar_offset * (_font.MeasureString(filtered).X / _font.MeasureString(_text).X);
+                            hscrollbar_offset = Math.Min(newoffset, maxoffset);
                         }
                         else
                         {
@@ -80,9 +81,12 @@ namespace WindowsGame1
                     }
                     if (vscrollable)
                     {
-                        if (Rect.Height <= _font.MeasureString(_text).Y)
+                        if (Rect.Height <= _font.MeasureString(filtered).Y)
                         {
-                            vscrollbar_height = (int)(Rect.Height * (Rect.Height / _font.MeasureString(_text).Y));
+                            vscrollbar_height = (int)(Rect.Height * (Rect.Height / _font.MeasureString(filtered).Y));
+                            float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height; 
+                            float newoffset = vscrollbar_offset * (_font.MeasureString(filtered).Y / _font.MeasureString(_text).Y);
+                            vscrollbar_offset = Math.Min(newoffset, maxoffset);
                         }
                         else
                         {
@@ -90,6 +94,7 @@ namespace WindowsGame1
                             vscrollbar_height = Rect.Height;
                         }
                     }
+                    _text = filtered;
                 }
             }
         }
@@ -180,7 +185,8 @@ namespace WindowsGame1
                     {
                        percentage = (float)move / (float)Rect.Width;
                     }
-                    hscrollbar_offset = Math.Max(Math.Min(hscrollbar_offset + percentage, 1f), 0);
+                    float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width; 
+                    hscrollbar_offset = Math.Max(Math.Min(hscrollbar_offset + percentage, maxoffset), 0);
                 }
                 int offset = (int)(hscrollbar_offset * Rect.Width);
                 hscrollbar_rec = new Rectangle(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
@@ -210,7 +216,8 @@ namespace WindowsGame1
                     {
                         percentage = (float)move / (float)Rect.Height;
                     }
-                    vscrollbar_offset = Math.Max(Math.Min(vscrollbar_offset + percentage, 1f), 0);
+                    float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height; 
+                    vscrollbar_offset = Math.Max(Math.Min(vscrollbar_offset + percentage, maxoffset), 0);
                 }
                 int offset = (int)(vscrollbar_offset * Rect.Height);
                 vscrollbar_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
