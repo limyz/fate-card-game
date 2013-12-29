@@ -252,7 +252,8 @@ namespace WindowsGame1
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
                 , new Rectangle(1010, 12, 186, 400), this);
-            chatDisplayTextbox.scrollable = true;
+            chatDisplayTextbox.hscrollable = true;
+            chatDisplayTextbox.vscrollable = true;
             chatDisplayTextbox.ReadOnly = true;
 
             chatInputBorder = new Border("chatInputBorder", borderColor, 2
@@ -262,7 +263,8 @@ namespace WindowsGame1
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
                 , new Rectangle(1010, 440, 186, 100), this);
-            chatInputTextbox.scrollable = true;
+            chatInputTextbox.hscrollable = true;
+            chatInputTextbox.vscrollable = true;
             chatInputTextbox.OnEnterPressed += chat_textbox_onEnterPressed;
             chatInputTextbox.OnShift_EnterPressed += textbox_onShiftEnterPressed;
             #endregion
