@@ -34,7 +34,7 @@ namespace WindowsGame1
         string _text = "";
         public int caret_position = 0;
         public int select_start = 0;
-        public int select_end = 0;
+        public int select_count = 0;
         public bool hscrollable = false;
         public bool vscrollable = false;
         public String Text
@@ -207,6 +207,24 @@ namespace WindowsGame1
                 int offset = (int)(vscrollbar_offset * Rect.Height);
                 vscrollbar_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
             }
+
+            if (on_select_drag)
+            {
+                Point p = new Point(Parent.main_game.mouse_state.X, Parent.main_game.mouse_state.Y);
+                caret_position = this.GetTextIndexByPoint(p);
+                select_count = this.GetTextIndexByPoint(p) - select_start;
+
+                if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                {
+                    on_select_drag = false;
+                    /*if (select_count < 0)
+                    {
+                        select_start += select_count;
+                        select_count *= -1;
+                    }
+                    Game1.MessageBox(new IntPtr(0), _text.Substring(select_start, select_count), "", 0);*/
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -228,7 +246,7 @@ namespace WindowsGame1
             spriteBatch.End();//end current screen's spriteBatch.Begin
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
-            spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
+            //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
             {
                 Rectangle hscroll_region_rec = new Rectangle(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
@@ -247,28 +265,107 @@ namespace WindowsGame1
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec;
             
-            Vector2 size = new Vector2(0,0);
-            if (caret_position > 0)
-            {
-                int y_line_position = 0;
-                for (int i = caret_position-1; i >= 0; i--)
-                {
-                    if (_text[i] == '\n')
-                    {
-                            y_line_position = i + 1;
-                            break;
-                    }
-                }
-                size.X = _font.MeasureString(_text.Substring(y_line_position, caret_position-y_line_position)).X;
-                size.Y = _font.MeasureString(_text.Substring(0, caret_position)).Y - _font.LineSpacing;
-            }
             float hoffset = hscrollbar_offset * _font.MeasureString(_text).X * -1f;
             float voffset = vscrollbar_offset * _font.MeasureString(_text).Y * -1f;
-            
+
+            if (select_count > 0)
+            {
+                int first_line_offset = 0;
+                if (select_start > 0)
+                {
+                    int y_line_position = 0;
+                    for (int i = select_start - 1; i >= 0; i--)
+                    {
+                        if (_text[i] == '\n')
+                        {
+                            y_line_position = i + 1;
+                            break;
+                        }
+                    }
+                    first_line_offset = (int)_font.MeasureString(_text.Substring(y_line_position, select_start - y_line_position)).X;
+                }
+                List<Rectangle> select_recs = new List<Rectangle>();
+                int new_line_position = select_start;
+                for (int i = select_start; i < select_start + select_count; i++)
+                {
+                    if (_text[i] == '\n' || i == select_start + select_count - 1)
+                    {
+                        Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
+                        if (select_recs.Count == 0)
+                        {
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                        }
+                        else
+                        {
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                        }
+                        new_line_position = i;
+                    }
+                }
+                foreach (Rectangle select_rec in select_recs)
+                {
+                    spriteBatch.Draw(_HighlightedTexture, select_rec, null, Color.Aquamarine, 0f, new Vector2(0, 0), SpriteEffects.None, 0.23f);
+                }
+                //spriteBatch.Draw(_HighlightedTexture, select_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.23f);
+            }
+            else if (select_count < 0)
+            {
+                int first_line_offset = 0;
+                if (select_start + select_count > 0)
+                {
+                    int y_line_position = 0;
+                    for (int i = select_start + select_count - 1; i >= 0; i--)
+                    {
+                        if (_text[i] == '\n')
+                        {
+                            y_line_position = i + 1;
+                            break;
+                        }
+                    }
+                    first_line_offset = (int)_font.MeasureString(_text.Substring(y_line_position, select_start + select_count - y_line_position)).X;
+                }
+                List<Rectangle> select_recs = new List<Rectangle>();
+                int new_line_position = select_start + select_count;
+                for (int i = select_start + select_count; i < select_start; i++)
+                {
+                    if (_text[i] == '\n' || i == select_start - 1)
+                    {
+                        Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
+                        if (select_recs.Count == 0)
+                        {
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                        }
+                        else
+                        {
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                        }
+                        new_line_position = i;
+                    }
+                }
+                foreach (Rectangle select_rec in select_recs)
+                {
+                    spriteBatch.Draw(_HighlightedTexture, select_rec, null, Color.Aquamarine, 0f, new Vector2(0, 0), SpriteEffects.None, 0.23f);
+                }
+            }
             if (caretVisible && Selected)
-            { 
+            {
+                Vector2 size = new Vector2(0, 0);
+                if (caret_position > 0)
+                {
+                    int y_line_position = 0;
+                    for (int i = caret_position - 1; i >= 0; i--)
+                    {
+                        if (_text[i] == '\n')
+                        {
+                            y_line_position = i + 1;
+                            break;
+                        }
+                    }
+                    size.X = _font.MeasureString(_text.Substring(y_line_position, caret_position - y_line_position)).X;
+                    size.Y = _font.MeasureString(_text.Substring(0, caret_position)).Y - _font.LineSpacing;
+                }
+
                 spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + hoffset, Rect.Y + (int)size.Y + voffset), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); 
-                //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
             }
             //shadow first, then the actual text            
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
@@ -281,13 +378,35 @@ namespace WindowsGame1
 
         public void RecieveTextInput(char inputChar)
         {
+            if (select_count != 0)
+            {
+                if (select_count < 0)
+                {
+                    select_start += select_count;
+                    select_count *= -1;
+                }
+                Text = Text.Remove(select_start, select_count);
+                caret_position = select_start;
+                select_count = 0;
+            }
             Text = Text.Insert(caret_position, inputChar.ToString());
             caret_position += 1;
         }
         public void RecieveTextInput(string text)
         {
-            Text = Text.Insert(caret_position, text);
-            caret_position += text.Length;
+            if (select_count != 0)
+            {
+                if (select_count < 0)
+                {
+                    select_start += select_count;
+                    select_count *= -1;
+                }
+                Text = Text.Remove(select_start, select_count);
+                caret_position = select_start;
+                select_count = 0;
+            }
+                Text = Text.Insert(caret_position, text);
+                caret_position += text.Length;
         }
         public void RecieveCommandInput(char command)
         {
@@ -299,11 +418,23 @@ namespace WindowsGame1
                     }*/
                     if (Text.Length > 0)
                     {
-                        if (caret_position > 0)
+                        if (select_count != 0)
+                        {
+                            if (select_count < 0)
+                            {
+                                select_start += select_count;
+                                select_count *= -1;
+                            }
+                            Text = Text.Remove(select_start, select_count);
+                            caret_position = select_start;
+                            select_count = 0;
+                        }
+                        else if (caret_position > 0)
                         {
                             Text = Text.Remove(caret_position - 1, 1);
                             caret_position -= 1;
                         }
+
                     }
                     break;
                 case '\r': //return
@@ -336,6 +467,7 @@ namespace WindowsGame1
                 if (caret_position > 0)
                 {
                     caret_position --;
+                    select_count = 0;
                 }
             }
             else if (key == Keys.Right)
@@ -343,6 +475,7 @@ namespace WindowsGame1
                 if (caret_position < _text.Length)
                 {
                     caret_position ++;
+                    select_count = 0;
                 }
             }
         }
@@ -350,6 +483,7 @@ namespace WindowsGame1
         #region FormHandlerFunction
         bool on_hscrollbar_drag = false;
         bool on_vscrollbar_drag = false;
+        bool on_select_drag = false;
         private void check_textbox_clicked(MouseState ms)
         {
             Point mouse_position = new Point(ms.X, ms.Y);
@@ -375,52 +509,56 @@ namespace WindowsGame1
             }
             if (!on_hscrollbar_drag && !on_vscrollbar_drag)
             {
-                int relative_x = ms.X - Rect.X + (int)(hscrollbar_offset * _font.MeasureString(_text).X);
-                int relative_y = ms.Y - Rect.Y + (int)(vscrollbar_offset * _font.MeasureString(_text).Y);
-
-                int y_line_position = 0;
-                int test_newline = _font.LineSpacing;
-                bool end_of_string = false;
-                if (test_newline < relative_y)
+                caret_position = this.GetTextIndexByPoint(mouse_position);
+                if (!on_select_drag)
                 {
-                    for (int i = 0; i < _text.Length; i++)
+                    select_start = this.GetTextIndexByPoint(mouse_position);
+                    /*if (select_start == _text.Length)
                     {
-                        if (_text[i] == '\n')
-                        {
-                            test_newline += _font.LineSpacing;
-                            if (test_newline >= relative_y)
-                            {
-                                y_line_position = i + 1;
-                                goto OuterLabel;
-                            }
-                        }
-                    }
-                    y_line_position = _text.Length;
-                    caret_position = y_line_position;
-                    end_of_string = true;
+                        select_count = 0;
+                    }*/
+                    on_select_drag = true;
                 }
-            OuterLabel:
-                if (!end_of_string)
-                {
-                    String test_char = "";
-                    for (int i = y_line_position; i < _text.Length; i++)
-                    {
-                        if (_text[i] == '\n')
-                        {
-                            caret_position = Math.Max(i, 0);
-                            goto OuterLabel2;
-                        }
-                        test_char += _text[i];
-                        if (_font.MeasureString(test_char).X >= relative_x)
-                        {
-                            caret_position = i;
-                            goto OuterLabel2;
-                        }
-                    }
-                    caret_position = _text.Length;
-                }
-            OuterLabel2: ;
             }
+        }
+        private int GetTextIndexByPoint(Point p)
+        {
+            int relative_x = p.X - Rect.X + (int)(hscrollbar_offset * _font.MeasureString(_text).X);
+            int relative_y = p.Y - Rect.Y + (int)(vscrollbar_offset * _font.MeasureString(_text).Y);
+
+            int y_line_position = 0;
+            int test_newline = _font.LineSpacing;
+            if (test_newline < relative_y)
+            {
+                for (int i = 0; i < _text.Length; i++)
+                {
+                    if (_text[i] == '\n')
+                    {
+                        test_newline += _font.LineSpacing;
+                        if (test_newline >= relative_y)
+                        {
+                            y_line_position = i + 1;
+                            goto OuterLabel;
+                        }
+                    }
+                }
+                return _text.Length;
+            }
+        OuterLabel:
+            String test_char = "";
+            for (int i = y_line_position; i < _text.Length; i++)
+            {
+                if (_text[i] == '\n')
+                {
+                    return Math.Max(i, 0);
+                }
+                test_char += _text[i];
+                if (_font.MeasureString(test_char).X >= relative_x)
+                {
+                    return i;
+                }
+            }
+            return _text.Length;
         }
         #endregion
         #region FormEventHandler
