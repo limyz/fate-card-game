@@ -34,7 +34,7 @@ namespace WindowsGame1
 
         public void SetUsername()
         {
-            userName = usernameTextbox.Text.Replace("\r\n", "");
+            userName = usernameTextbox.Text.Replace("\n", "");
         }
 
         public void SetIP()
@@ -49,7 +49,7 @@ namespace WindowsGame1
             }*/
             else
             {
-                Address = ipTextbox.Text.Replace("\r\n", "");
+                Address = ipTextbox.Text.Replace("\n", "");
             }
         }
 
@@ -87,7 +87,7 @@ namespace WindowsGame1
 
         private void MessageReceived(string message)
         {
-            chatDisplayTextbox.Text += (message + "\r\n");
+            chatDisplayTextbox.Text += (message + "\n");
         }
         public void End_Chat()
         {
@@ -445,7 +445,7 @@ namespace WindowsGame1
             {
                 string toSend = userName + ": " + chatInputTextbox.Text;
                 byte[] data = Encoding.Unicode.GetBytes(toSend);
-                chatDisplayTextbox.Text += toSend + "\r\n";
+                chatDisplayTextbox.Text += toSend + "\n";
                 sendingClient.Send(data, data.Length, Address, send_port);
                 chatInputTextbox.Text = "";
             }
@@ -453,7 +453,7 @@ namespace WindowsGame1
 
         private void textbox_onShiftEnterPressed(TextBox sender)
         {
-            sender.Text += "\r\n";
+            sender.RecieveTextInput('\n');
         }
 
         private void draw_button_clicked(object sender, FormEventData e)

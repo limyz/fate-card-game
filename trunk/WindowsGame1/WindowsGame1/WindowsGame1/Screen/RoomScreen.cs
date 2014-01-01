@@ -474,7 +474,7 @@ namespace WindowsGame1
         {
             String s = "Owner index: " + room.owner_index + "\n";
             s += "Player List Count: " + room.Player_List.Count + "\n";
-            s += "Room name: " + room.Room_name + "\n";
+            s += "Room name: " + room.Room_name + "\r\n";
             s += "Number of Player: " + room.Number_of_Player + "\n";
             s += "Player List:\n";
             foreach (Player p in room.Player_List)
@@ -491,7 +491,7 @@ namespace WindowsGame1
         }
         private void ChatBox_EnterPressed(object sender)
         {
-            string s = room.findPlayerByID(Player_ID).Player_name + ": " + chat.Text + "\r\n";
+            string s = room.findPlayerByID(Player_ID).Player_name + ": " + chat.Text + "\n";
             if (isHost())
             {
                 SendChatMessage(s);
