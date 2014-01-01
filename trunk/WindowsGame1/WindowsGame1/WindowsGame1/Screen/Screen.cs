@@ -224,31 +224,31 @@ namespace WindowsGame1
         }                                                                         
         private void On_Keys_Pressed_Dispatcher(Keys[] keys)
         {
-            foreach (SivForm form in Form_list)
+            if (ActiveForm != null)
             {
-                if (form.OnKeyPress != null)
+                if (ActiveForm.OnKeyPress != null)
                 {
-                    form.OnKeyPress.Invoke(form, new FormEventData(typeof(Keys[]), keys));
+                    ActiveForm.OnKeyPress.Invoke(ActiveForm, new FormEventData(keys));
                 }
             }
         }
         private void On_Keys_Down_Dispatcher(Keys[] keys)
         {
-            foreach (SivForm form in Form_list)
+            if (ActiveForm != null)
             {
-                if (form.OnKeyDown != null)
+                if (ActiveForm.OnKeyDown != null)
                 {
-                    form.OnKeyDown.Invoke(form, new FormEventData(typeof(Keys[]), keys));
+                    ActiveForm.OnKeyDown.Invoke(ActiveForm, new FormEventData(keys));
                 }
             }
         }        
         private void On_Keys_Up_Dispatcher(Keys[] keys)
         {
-            foreach (SivForm form in Form_list)
+            if (ActiveForm != null)
             {
-                if (form.OnKeyUp != null)
+                if (ActiveForm.OnKeyUp != null)
                 {
-                    form.OnKeyUp.Invoke(form, new FormEventData(typeof(Keys[]), keys));
+                    ActiveForm.OnKeyUp.Invoke(ActiveForm, new FormEventData(keys));
                 }
             }
         }
