@@ -60,7 +60,7 @@ namespace WindowsGame1
                         }
                         else
                         {
-                            if (select_start - select_count < 0)
+                            if (select_start - select_count > _text.Length)
                                 select_count = 0;
                         }
                     }
@@ -303,7 +303,8 @@ namespace WindowsGame1
 
             if (select_count > 0)
             {
-                int first_line_offset = 0;
+                int first_line_offset_x = 0;
+                int line_offset_y = 0;
                 if (select_start > 0)
                 {
                     int y_line_position = 0;
@@ -315,7 +316,8 @@ namespace WindowsGame1
                             break;
                         }
                     }
-                    first_line_offset = (int)_font.MeasureString(_text.Substring(y_line_position, select_start - y_line_position)).X;
+                    first_line_offset_x = (int)_font.MeasureString(_text.Substring(y_line_position, select_start - y_line_position)).X;
+                    line_offset_y = (int)_font.MeasureString(_text.Substring(0, select_start)).Y - _font.LineSpacing;
                 }
                 List<Rectangle> select_recs = new List<Rectangle>();
                 int new_line_position = select_start;
@@ -326,11 +328,11 @@ namespace WindowsGame1
                         Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
                         if (select_recs.Count == 0)
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset_x, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
                         }
                         else
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
                         }
                         new_line_position = i;
                     }
@@ -343,7 +345,8 @@ namespace WindowsGame1
             }
             else if (select_count < 0)
             {
-                int first_line_offset = 0;
+                int first_line_offset_x = 0;
+                int line_offset_y = 0;
                 if (select_start + select_count > 0)
                 {
                     int y_line_position = 0;
@@ -355,7 +358,8 @@ namespace WindowsGame1
                             break;
                         }
                     }
-                    first_line_offset = (int)_font.MeasureString(_text.Substring(y_line_position, select_start + select_count - y_line_position)).X;
+                    first_line_offset_x = (int)_font.MeasureString(_text.Substring(y_line_position, select_start + select_count - y_line_position)).X;
+                    line_offset_y = (int)_font.MeasureString(_text.Substring(0, select_start + select_count)).Y - _font.LineSpacing;
                 }
                 List<Rectangle> select_recs = new List<Rectangle>();
                 int new_line_position = select_start + select_count;
@@ -366,11 +370,11 @@ namespace WindowsGame1
                         Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
                         if (select_recs.Count == 0)
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset_x, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
                         }
                         else
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
                         }
                         new_line_position = i;
                     }
