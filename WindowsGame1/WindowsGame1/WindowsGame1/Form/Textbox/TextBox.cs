@@ -21,7 +21,6 @@ namespace WindowsGame1
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
 
-        int caret_pos = 0;
         int hscrollbar_width;
         float hscrollbar_offset = 0;
         Rectangle hscrollbar_rec;
@@ -33,8 +32,9 @@ namespace WindowsGame1
         public bool PasswordBox { get; set; } 
        
         string _text = "";
-        public int select_start=-1;
-        public int select_end=-1;
+        public int caret_position = 0;
+        public int select_start = 0;
+        public int select_end = 0;
         public bool hscrollable = false;
         public bool vscrollable = false;
         public String Text
@@ -60,7 +60,6 @@ namespace WindowsGame1
                         if (_font.Characters.Contains(c) || c == '\n' || c == '\r' || c == '\t')
                         {
                             filtered += c;
-                            caret_pos += 1;
                         }
                     }
 
@@ -167,20 +166,10 @@ namespace WindowsGame1
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
             OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
         }
-
-        bool on_hscrollbar_drag = false;
-        bool on_vscrollbar_drag = false;
         public override void Update(GameTime gameTime)
         {
             if (hscrollable)
             {
-                if (!on_hscrollbar_drag)
-                {
-                    if (Parent.main_game.left_mouse_click(hscrollbar_rec))
-                    {
-                        on_hscrollbar_drag = true;
-                    }
-                }
                 if (on_hscrollbar_drag)
                 {
                     int move = Parent.main_game.mouse_state.X - Parent.main_game.last_mouse_state.X;
@@ -191,27 +180,16 @@ namespace WindowsGame1
                     }
                     float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width; 
                     hscrollbar_offset = Math.Max(Math.Min(hscrollbar_offset + percentage, maxoffset), 0);
+
+                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                        on_hscrollbar_drag = false;
                 }
                 int offset = (int)(hscrollbar_offset * Rect.Width);
                 hscrollbar_rec = new Rectangle(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
-                if (on_hscrollbar_drag)
-                {
-                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
-                    {
-                        on_hscrollbar_drag = false;
-                    }
-                }
             }
 
             if (vscrollable)
             {
-                if (!on_vscrollbar_drag)
-                {
-                    if (Parent.main_game.left_mouse_click(vscrollbar_rec))
-                    {                        
-                        on_vscrollbar_drag = true;
-                    }
-                }
                 if (on_vscrollbar_drag)
                 {
                     int move = Parent.main_game.mouse_state.Y - Parent.main_game.last_mouse_state.Y;
@@ -222,16 +200,12 @@ namespace WindowsGame1
                     }
                     float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height; 
                     vscrollbar_offset = Math.Max(Math.Min(vscrollbar_offset + percentage, maxoffset), 0);
+
+                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                        on_vscrollbar_drag = false;
                 }
                 int offset = (int)(vscrollbar_offset * Rect.Height);
                 vscrollbar_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
-                if (on_vscrollbar_drag)
-                {
-                    if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
-                    {
-                        on_vscrollbar_drag = false;
-                    }
-                }
             }
         }
 
@@ -268,19 +242,38 @@ namespace WindowsGame1
                 spriteBatch.Draw(_scrollbarTexture, vscrollbar_rec, Color.White);
             }
             spriteBatch.End();
-            Vector2 size = _font.MeasureString(toDraw);
+            
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, _rasterizerState);
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec;
-            if (caretVisible && Selected)
-                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + 2, Rect.Y + (int)size.Y - ((int)size.Y == 0 ? 0 : _font.LineSpacing)), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
-            //shadow first, then the actual text
+            
+            Vector2 size = new Vector2(0,0);
+            if (caret_position > 0)
+            {
+                int y_line_position = 0;
+                for (int i = caret_position-1; i >= 0; i--)
+                {
+                    if (_text[i] == '\n')
+                    {
+                            y_line_position = i + 1;
+                            break;
+                    }
+                }
+                size.X = _font.MeasureString(_text.Substring(y_line_position, caret_position-y_line_position)).X;
+                size.Y = _font.MeasureString(_text.Substring(0, caret_position)).Y - _font.LineSpacing;
+            }
             float hoffset = hscrollbar_offset * _font.MeasureString(_text).X * -1f;
             float voffset = vscrollbar_offset * _font.MeasureString(_text).Y * -1f;
+            
+            if (caretVisible && Selected)
+            { 
+                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + hoffset, Rect.Y + (int)size.Y + voffset), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); 
+                //my caret texture was a simple vertical line, 4 pixels smaller than font size.Y
+            }
+            //shadow first, then the actual text            
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
-            //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
-            //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X, Rect.Y), Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
+
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();
             spriteBatch.Begin();//Begin a new one(just to be ended immediatly) 
@@ -288,23 +281,30 @@ namespace WindowsGame1
 
         public void RecieveTextInput(char inputChar)
         {
-            Text = Text + inputChar;
+            Text = Text.Insert(caret_position, inputChar.ToString());
+            caret_position += 1;
         }
         public void RecieveTextInput(string text)
         {
-            Text = Text + text;
+            Text = Text.Insert(caret_position, text);
+            caret_position += text.Length;
         }
         public void RecieveCommandInput(char command)
         {
             switch (command)
             {
                 case '\b': //backspace
-                    if (select_end >= select_start)
-                    {
-                        
-                    }
+                    /*if (select_end > select_start)
+                    {   
+                    }*/
                     if (Text.Length > 0)
-                        Text = Text.Substring(0, Text.Length - 1);
+                    {
+                        if (caret_position > 0)
+                        {
+                            Text = Text.Remove(caret_position - 1, 1);
+                            caret_position -= 1;
+                        }
+                    }
                     break;
                 case '\r': //return
                     if (Parent.main_game.keyboard_state.IsKeyDown(Keys.LeftShift) || Parent.main_game.keyboard_state.IsKeyDown(Keys.RightShift))
@@ -331,15 +331,104 @@ namespace WindowsGame1
         }
         public void RecieveSpecialInput(Keys key)
         {   
-            //if (key == Keys.Down) Y += _font.LineSpacing;
-            //if (key == Keys.Up) Y -= _font.LineSpacing;
+            if (key == Keys.Left)
+            {
+                if (caret_position > 0)
+                {
+                    caret_position --;
+                }
+            }
+            else if (key == Keys.Right)
+            {
+                if (caret_position < _text.Length)
+                {
+                    caret_position ++;
+                }
+            }
         }
 
+        #region FormHandlerFunction
+        bool on_hscrollbar_drag = false;
+        bool on_vscrollbar_drag = false;
+        private void check_textbox_clicked(MouseState ms)
+        {
+            Point mouse_position = new Point(ms.X, ms.Y);
+            if (hscrollable)
+            {
+                if (!on_hscrollbar_drag)
+                {
+                    if (hscrollbar_rec.Contains(mouse_position))
+                    {
+                        on_hscrollbar_drag = true;
+                    }
+                }
+            }
+            if (vscrollable)
+            {
+                if (!on_vscrollbar_drag)
+                {
+                    if (vscrollbar_rec.Contains(mouse_position))
+                    {
+                        on_vscrollbar_drag = true;
+                    }
+                }
+            }
+            if (!on_hscrollbar_drag && !on_vscrollbar_drag)
+            {
+                int relative_x = ms.X - Rect.X + (int)(hscrollbar_offset * _font.MeasureString(_text).X);
+                int relative_y = ms.Y - Rect.Y + (int)(vscrollbar_offset * _font.MeasureString(_text).Y);
+
+                int y_line_position = 0;
+                int test_newline = _font.LineSpacing;
+                bool end_of_string = false;
+                if (test_newline < relative_y)
+                {
+                    for (int i = 0; i < _text.Length; i++)
+                    {
+                        if (_text[i] == '\n')
+                        {
+                            test_newline += _font.LineSpacing;
+                            if (test_newline >= relative_y)
+                            {
+                                y_line_position = i + 1;
+                                goto OuterLabel;
+                            }
+                        }
+                    }
+                    y_line_position = _text.Length;
+                    caret_position = y_line_position;
+                    end_of_string = true;
+                }
+            OuterLabel:
+                if (!end_of_string)
+                {
+                    String test_char = "";
+                    for (int i = y_line_position; i < _text.Length; i++)
+                    {
+                        if (_text[i] == '\n')
+                        {
+                            caret_position = Math.Max(i, 0);
+                            goto OuterLabel2;
+                        }
+                        test_char += _text[i];
+                        if (_font.MeasureString(test_char).X >= relative_x)
+                        {
+                            caret_position = i;
+                            goto OuterLabel2;
+                        }
+                    }
+                    caret_position = _text.Length;
+                }
+            OuterLabel2: ;
+            }
+        }
+        #endregion
         #region FormEventHandler
         private void textbox_clicked(object sender, FormEventData e)
         {
             Parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
             Parent.ActiveForm = (SivForm)sender;
+            check_textbox_clicked((MouseState)e.args);
         }
         private void textbox_clicked_Readonly(object sender, FormEventData e)
         {
