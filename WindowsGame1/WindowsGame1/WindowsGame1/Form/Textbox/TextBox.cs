@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -181,6 +183,7 @@ namespace WindowsGame1
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
             OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
+            OnKeyDown += new FormEventHandler(textbox_OnKeyDown);
         }
 
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
@@ -198,6 +201,7 @@ namespace WindowsGame1
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
             OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
+            OnKeyDown += new FormEventHandler(textbox_OnKeyDown);
         }
         public override void Update(GameTime gameTime)
         {
@@ -490,8 +494,6 @@ namespace WindowsGame1
                         OnTabPressed(this);
                     break;
                 /*case (char)1://ctrl-a
-                    select_start = 0;
-                    select_end = wrapedText.Length - 1;
                     break;*/
                 default:
                     break;
@@ -608,6 +610,7 @@ namespace WindowsGame1
         private void textbox_clicked_Readonly(object sender, FormEventData e)
         {
             Parent.ActiveForm = (SivForm)sender;
+            check_textbox_clicked((MouseState)e.args);
         }
         private void textbox_OnMouseEnter(object sender, FormEventData e)
         {
@@ -650,6 +653,47 @@ namespace WindowsGame1
                 }
                 hscrollbar_offset = Math.Max(Math.Min(offset, maxoffset), 0);
             }
+        }
+        private void textbox_OnKeyDown(object sender, FormEventData e)
+        {
+            Keys[] keys = (Keys[])e.args;
+            foreach (Keys k in keys)
+            {
+                if (k == Keys.C)
+                {
+                    if (Parent.main_game.keyboard_state.IsKeyDown(Keys.LeftControl))
+                    {
+                        if (select_count != 0)
+                        {
+                            Thread thread = new Thread(CopyThread);
+                            thread.SetApartmentState(ApartmentState.STA);
+                            thread.Start();
+                            thread.Join();
+                        }
+                    }
+                }
+                if (k == Keys.A)
+                {
+                    if (Parent.main_game.keyboard_state.IsKeyDown(Keys.LeftControl))
+                    {
+                        select_start = 0;
+                        select_count = _text.Length;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region CopyThread
+        [STAThread]
+        void CopyThread()
+        {
+            if (select_count < 0)
+            {
+                select_start += select_count;
+                select_count *= -1;
+            }
+            System.Windows.Forms.Clipboard.SetText(_text.Substring(select_start, select_count));
         }
         #endregion
 
