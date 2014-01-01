@@ -48,6 +48,22 @@ namespace WindowsGame1
                 if (value == null)
                 {
                     _text = "";
+
+                    if (caret_position > _text.Length || caret_position < 0)
+                        caret_position = _text.Length;
+                    if (select_count != 0)
+                    {
+                        if (select_count > 0)
+                        {
+                            if (select_start + select_count > _text.Length)
+                                select_count = 0;
+                        }
+                        else
+                        {
+                            if (select_start - select_count < 0)
+                                select_count = 0;
+                        }
+                    }
                 }
 
                 else
@@ -93,7 +109,24 @@ namespace WindowsGame1
                             vscrollbar_height = Rect.Height;
                         }
                     }
+
                     _text = filtered;
+
+                    if (caret_position > _text.Length || caret_position < 0)
+                        caret_position = _text.Length;
+                    if (select_count != 0)
+                    {
+                        if (select_count > 0)
+                        {
+                            if (select_start + select_count > _text.Length)
+                                select_count = 0;
+                        }
+                        else
+                        {
+                            if (select_start - select_count > _text.Length )
+                                select_count = 0;
+                        }
+                    }
                 }
             }
         }
