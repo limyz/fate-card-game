@@ -87,7 +87,11 @@ namespace WindowsGame1
                         {
                             hscrollbar_width = (int)(Rect.Width * (Rect.Width / _font.MeasureString(filtered).X));
                             float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width;
-                            float newoffset = hscrollbar_offset * (_font.MeasureString(filtered).X / _font.MeasureString(_text).X);
+                            float newoffset = maxoffset;
+                            if (_font.MeasureString(_text).X != 0)
+                            {
+                                newoffset = hscrollbar_offset * (_font.MeasureString(filtered).X / _font.MeasureString(_text).X);
+                            }
                             hscrollbar_offset = Math.Min(newoffset, maxoffset);
                         }
                         else
@@ -102,7 +106,11 @@ namespace WindowsGame1
                         {
                             vscrollbar_height = (int)(Rect.Height * (Rect.Height / _font.MeasureString(filtered).Y));
                             float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height; 
-                            float newoffset = vscrollbar_offset * (_font.MeasureString(filtered).Y / _font.MeasureString(_text).Y);
+                            float newoffset = maxoffset;
+                            if (_font.MeasureString(_text).X != 0)
+                            {
+                                newoffset = vscrollbar_offset * (_font.MeasureString(filtered).Y / _font.MeasureString(_text).Y);
+                            }
                             vscrollbar_offset = Math.Min(newoffset, maxoffset);
                         }
                         else
@@ -492,6 +500,23 @@ namespace WindowsGame1
                 case '\t': //tab
                     if (OnTabPressed != null)
                         OnTabPressed(this);
+                    break;
+                case (char)24://ctrl-x
+                    if (select_count != 0)
+                    {
+                        Thread thread = new Thread(CopyThread);
+                        thread.SetApartmentState(ApartmentState.STA);
+                        thread.Start();
+                        thread.Join();
+                        if (select_count < 0)
+                        {
+                            select_start += select_count;
+                            select_count *= -1;
+                        }
+                        Text = Text.Remove(select_start, select_count);
+                        caret_position = select_start;
+                        select_count = 0;
+                    }      
                     break;
                 /*case (char)1://ctrl-a
                     break;*/
