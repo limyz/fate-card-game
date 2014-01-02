@@ -480,8 +480,11 @@ namespace WindowsGame1
                         }
                         else if (caret_position > 0)
                         {
+                            int move_caret = 1;
+                            if (caret_position == _text.Length)
+                                move_caret = 0;
                             Text = Text.Remove(caret_position - 1, 1);
-                            caret_position -= 1;
+                            caret_position -= move_caret; ;
                         }
 
                     }
