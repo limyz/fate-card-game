@@ -115,6 +115,7 @@ namespace WindowsGame1
             {
                 main_game.mRoomScreen.IPAddress = ipTextBox.Text;
                 Player player = new Player(Host_name_textbox.Text, Game1.getLocalIP());
+                player.Status = true;
                 Room r = new Room(player, Room_name_textbox.Text, 
                     int.Parse(Number_of_player_textbox.Text));
                 ScreenEvent.Invoke(this, new SivEventArgs(4, r));

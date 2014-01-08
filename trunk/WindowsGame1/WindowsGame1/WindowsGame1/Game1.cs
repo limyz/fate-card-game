@@ -498,6 +498,7 @@ namespace WindowsGame1
             {
                 mRoomScreen.room = (Room)e.Data;
                 mRoomScreen.Player_ID = ((Room)e.Data).Player_List.First().id;
+                //mRoomScreen.room.Player_List[mRoomScreen.room.findByID(mRoomScreen.Player_ID)].Status = true;
 
                 mRoomScreen.Start_Broadcast();
                 mRoomScreen.StartSynch();
@@ -517,6 +518,16 @@ namespace WindowsGame1
                 mRoomScreen.End_Receive();
                 mRoomScreen.EndSynch();
                 mCurrentScreen = mMenuScreen;
+            }
+            //RoomScreen to InGameScreen
+            else if (e.Command_code == 1)
+            {
+                mRoomScreen.End_Broadcast();
+                mRoomScreen.End_Receive();
+                mRoomScreen.EndSynch();
+                mInGameScreen.room = mRoomScreen.room;
+                mInGameScreen.Player_ID = mRoomScreen.Player_ID;
+                mCurrentScreen = mInGameScreen;
             }
             
         }

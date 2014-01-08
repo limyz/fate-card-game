@@ -8,12 +8,18 @@ namespace WindowsGame1
     public enum CommandCode
     {
         //No data, used to check connect status
-        standby = 0,
+        Standby = 0,
         //Room as Data1, used to update room state
-        update_room = 1,
+        Update_Room = 1,
         //Player as Data1, used to send Player object to host
-        join_game = 2,
+        Join_Game = 2,
         //String as Message, used to send chat
-        chat_message = 3
+        Chat_Message = 3,
+        //Ready for start game
+        Ready = 4,
+        //Cancel ready status
+        Cancel = 5,
+        //Start the Game
+        Start_Game = 6
     };
 }
