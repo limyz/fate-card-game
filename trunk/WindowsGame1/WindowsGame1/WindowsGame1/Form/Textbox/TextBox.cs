@@ -50,22 +50,6 @@ namespace WindowsGame1
                 if (value == null)
                 {
                     _text = "";
-
-                    if (caret_position > _text.Length || caret_position < 0)
-                        caret_position = _text.Length;
-                    if (select_count != 0)
-                    {
-                        if (select_count > 0)
-                        {
-                            if (select_start + select_count > _text.Length)
-                                select_count = 0;
-                        }
-                        else
-                        {
-                            if (select_start - select_count > _text.Length)
-                                select_count = 0;
-                        }
-                    }
                 }
 
                 else
@@ -121,22 +105,6 @@ namespace WindowsGame1
                     }
 
                     _text = filtered;
-
-                    if (caret_position > _text.Length || caret_position < 0)
-                        caret_position = _text.Length;
-                    if (select_count != 0)
-                    {
-                        if (select_count > 0)
-                        {
-                            if (select_start + select_count > _text.Length)
-                                select_count = 0;
-                        }
-                        else
-                        {
-                            if (select_start - select_count > _text.Length )
-                                select_count = 0;
-                        }
-                    }
                 }
             }
         }
@@ -315,6 +283,9 @@ namespace WindowsGame1
 
             if (select_count > 0)
             {
+                if (select_start + select_count > _text.Length && select_start + select_count < 0)
+                    select_count = 0;
+
                 int first_line_offset_x = 0;
                 int line_offset_y = 0;
                 if (select_start > 0)
@@ -357,6 +328,9 @@ namespace WindowsGame1
             }
             else if (select_count < 0)
             {
+                if (select_start - select_count > _text.Length && select_start - select_count < 0)
+                    select_count = 0;
+
                 int first_line_offset_x = 0;
                 int line_offset_y = 0;
                 if (select_start + select_count > 0)
@@ -398,6 +372,8 @@ namespace WindowsGame1
             }
             if (caretVisible && Selected)
             {
+                if (caret_position > _text.Length || caret_position < 0)
+                    caret_position = _text.Length;
                 Vector2 size = new Vector2(0, 0);
                 if (caret_position > 0)
                 {
@@ -480,11 +456,11 @@ namespace WindowsGame1
                         }
                         else if (caret_position > 0)
                         {
-                            int move_caret = 1;
+                            /*int move_caret = 1;
                             if (caret_position == _text.Length)
-                                move_caret = 0;
+                                move_caret = 0;*/
                             Text = Text.Remove(caret_position - 1, 1);
-                            caret_position -= move_caret; ;
+                            caret_position --;
                         }
 
                     }
