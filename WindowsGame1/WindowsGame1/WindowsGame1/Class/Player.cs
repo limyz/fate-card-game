@@ -9,8 +9,14 @@ namespace WindowsGame1
     public class Player
     {
         string player_name;
-        string address; 
+        string address;
+        bool status = false;
 
+        public bool Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
         public string Player_name 
         {
             get { return player_name; }
@@ -21,6 +27,7 @@ namespace WindowsGame1
             get { return address; }
             set { address = value; }
         }
+        
         public Guid id;
 
         public Player(string player_name, string address)

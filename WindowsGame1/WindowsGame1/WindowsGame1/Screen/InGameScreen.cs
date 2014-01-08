@@ -106,6 +106,8 @@ namespace WindowsGame1
         int otherPlayerCount = 8;
         int hand_hovered_index = -1;
         int[] playerRandomChar = new int[2];
+        public Room room;
+        public Guid Player_ID;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou;
         Rectangle[,] oppPlayerRectangle;

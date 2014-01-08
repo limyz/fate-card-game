@@ -89,7 +89,7 @@ namespace WindowsGame1
             parent.FormsDraw += Draw;
 
             //Debugger
-            //parent.main_game.debugger.Register_For_Debug(this);
+            parent.main_game.debugger.Register_For_Debug(this);
         }
 
         public void Delete(){
