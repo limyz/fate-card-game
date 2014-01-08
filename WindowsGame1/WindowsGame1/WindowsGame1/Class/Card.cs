@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WindowsGame1.Class
+namespace WindowsGame1
 {
     [Serializable]
     public class Card
@@ -17,10 +17,10 @@ namespace WindowsGame1.Class
         public string CardEff;
         public enum Suit
         {
-            Heart = 0,
-            Diamond = 1,
-            Club = 2,
-            Spade = 3
+            Heart = 0,//♥♡
+            Diamond = 1,//♦♢
+            Club = 2,//♣♧
+            Spade = 3//♠♤
         };
         Suit cardSuit;
         public enum Number
