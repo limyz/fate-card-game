@@ -319,8 +319,8 @@ namespace WindowsGame1
                                 }
                             }
                             int Player_Index = room.findByID(Player_ID);
-                            Command c3 = new Command(CommandCode.Update_Room, room);
-                            byte[] data2 = c3.Serialize();
+                            Command c2 = new Command(CommandCode.Update_Room, room);
+                            byte[] data2 = c2.Serialize();
                             for (int j = 0; j < tcpServerClient.Count; j++)
                             {
                                 try
@@ -346,8 +346,8 @@ namespace WindowsGame1
                                 }
                             }
                             int Player_Index = room.findByID(Player_ID);
-                            Command c3 = new Command(CommandCode.Update_Room, room);
-                            byte[] data2 = c3.Serialize();
+                            Command c2 = new Command(CommandCode.Update_Room, room);
+                            byte[] data2 = c2.Serialize();
                             for (int j = 0; j < tcpServerClient.Count; j++)
                             {
                                 try
@@ -402,6 +402,7 @@ namespace WindowsGame1
                         }
                         else if (c.Command_Code == CommandCode.Start_Game)
                         {
+                            room = (Room)c.Data1;
                             ScreenEvent.Invoke(this, new SivEventArgs(1));
                         }
                     }
@@ -554,7 +555,7 @@ namespace WindowsGame1
                 try
                 {
                     int Player_Index = room.findByID(Player_ID);
-                    Command c = new Command(CommandCode.Start_Game);
+                    Command c = new Command(CommandCode.Start_Game, room);
                     byte[] data2 = c.Serialize();
                     for (int i = 0; i < tcpServerClient.Count; i++)
                     {
@@ -706,7 +707,6 @@ namespace WindowsGame1
                 if (room.Player_List[i].id == this.Player_ID)
                 {
                     playerName[i].Color = Color.Aquamarine;
-                    //MainPlayer_Boder.Rect = playerName[i].Rect;
                 }
                 Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
                 avatar_img.Add(newAvatar);

@@ -15,11 +15,11 @@ namespace WindowsGame1
         Join_Game = 2,
         //String as Message, used to send chat
         Chat_Message = 3,
-        //Ready for start game
+        //GUID as Data1,used to set ready_status to true for player
         Ready = 4,
-        //Cancel ready status
+        //GUID as Data1,used to set ready_status to false for player
         Cancel = 5,
-        //Start the Game
+        //Room as Data1,used to Start the Game
         Start_Game = 6
     };
 }
