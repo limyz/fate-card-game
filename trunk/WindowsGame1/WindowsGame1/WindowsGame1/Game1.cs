@@ -553,7 +553,6 @@ namespace WindowsGame1
                 Room _room = (Room)e.Data;                
                 mRoomScreen.room = _room;
                 mRoomScreen.Player_ID = _room.Player_List.Last().id;
-                //mRoomScreen.Player_Index = _room.Player_List.Count - 1;
 
                 mRoomScreen.InitializeReceiver();
                 mRoomScreen.StartSynch();
