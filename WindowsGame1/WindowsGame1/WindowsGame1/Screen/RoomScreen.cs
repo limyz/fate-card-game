@@ -33,7 +33,7 @@ namespace WindowsGame1
         Color borderColor = Color.MediumAquamarine;
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
-        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture;
+        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture;
         
         
         #endregion
@@ -507,7 +507,9 @@ namespace WindowsGame1
             #region Button
             cancelButtonTexture = Content.Load<Texture2D>("Resource/cancel_button");
             readyButtonTexture = Content.Load<Texture2D>("Resource/ready");
-            start_button = new ImageButton("Start", Content.Load<Texture2D>("Resource/start_button")
+            startButtonTexture = Content.Load<Texture2D>("Resource/start_button");
+
+            start_button = new ImageButton("Start", startButtonTexture
                 , new Rectangle(980, 540, 180, 70), this);
             start_button.OnClick += Start_button_clicked;
 
@@ -760,15 +762,23 @@ namespace WindowsGame1
         public void ButtonChange()
         {
             int Player_Index = room.findByID(Player_ID);
-            if (!isHost() && !room.Player_List[Player_Index].Status)
+            if (Player_Index == room.owner_index)
             {
-                start_button.Texture = readyButtonTexture;
-                start_button.OnClick = Ready_Button_Clicked;
+                start_button.Texture = startButtonTexture;
+                start_button.OnClick = Start_button_clicked;
             }
-            else if (!isHost() && room.Player_List[Player_Index].Status)
+            else
             {
-                start_button.Texture = cancelButtonTexture;
-                start_button.OnClick = Cancel_button_clicked;
+                if (!room.Player_List[Player_Index].Status)
+                {
+                    start_button.Texture = readyButtonTexture;
+                    start_button.OnClick = Ready_Button_Clicked;
+                }
+                else
+                {
+                    start_button.Texture = cancelButtonTexture;
+                    start_button.OnClick = Cancel_button_clicked;
+                }
             }
         }
         #endregion
