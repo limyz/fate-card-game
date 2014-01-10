@@ -50,6 +50,8 @@ namespace WindowsGame1
                 if (value == null)
                 {
                     _text = "";
+                    if (caret_position > _text.Length || caret_position < 0)
+                        caret_position = _text.Length;
                 }
 
                 else
@@ -105,6 +107,8 @@ namespace WindowsGame1
                     }
 
                     _text = filtered;
+                    if (caret_position > _text.Length || caret_position < 0)
+                        caret_position = _text.Length;
                 }
             }
         }
