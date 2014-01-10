@@ -188,16 +188,6 @@ namespace WindowsGame1
             int value = (int)label.Value;
             Room room = List_Room[value];
 
-            //String s = "Owner index: " + room.owner_index + "\n";
-            //s += "Player List Count: " + room.Player_List.Count + "\n";
-            //s += "Room name: " + room.Room_name + "\n";
-            //s += "Number of Player: " + room.Number_of_Player + "\n";
-            //s += "Player List:\n";
-            //foreach (Player p in room.Player_List)
-            //{
-            //    s += "+ " + p.Player_name + " - " + p.Address + "\n";
-            //}
-            //Game1.MessageBox(new IntPtr(0), s, value.ToString(), 0);
             Player player = new Player(playerName.Text, Game1.getLocalIP());
             room.Player_List.Add(player);
             ScreenEvent.Invoke(this, new SivEventArgs(4, room));

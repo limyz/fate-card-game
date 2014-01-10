@@ -34,10 +34,8 @@ namespace WindowsGame1
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
         Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture;
-        NetworkStream networkStream;
-        TcpClient tcpClient;
-        Thread joinResponseThread;
-        List<TcpClient> tcpServerClient = new List<TcpClient>();
+        
+        
         #endregion
 
         #region Broadcast Thread
@@ -100,7 +98,12 @@ namespace WindowsGame1
         #endregion
 
         #region Synchonize Thread
+        Thread joinResponseThread;
+        List<TcpClient> tcpServerClient = new List<TcpClient>();
         bool synchronizeRun = true;
+        NetworkStream networkStream;
+        TcpClient tcpClient;
+
         public void StartSynch()
         {
             synchronizeRun = true;
@@ -204,6 +207,11 @@ namespace WindowsGame1
         public void EndSynch()
         {
             synchronizeRun = false;
+            foreach (TcpClient tcpclient in tcpServerClient)
+            {
+                tcpclient.Close();
+            }
+            tcpServerClient.Clear();
             //if (tcpClient != null)
             //{
             //joinResponseThread.Abort();
@@ -217,11 +225,16 @@ namespace WindowsGame1
         Thread receivingThread;
         bool receiverRun = true;
         bool connect_to_host = true;
+        bool StoppedTcp = false;
+        DateTime LastReceiveTimeFromHost = DateTime.Now;
 
         public void InitializeReceiver()
         {
             receiverRun = true;
             connect_to_host = true;
+            StoppedTcp = false;
+            LastReceiveTimeFromHost = DateTime.Now;
+
             if (isHost())
             {
                 IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
@@ -246,13 +259,18 @@ namespace WindowsGame1
             }
 
         }
+        
         private void ServerReceiver()
         {
             Byte[] bytes = new Byte[1024 * 16];
             Player _player = null;
             while (receiverRun)
             {
-                if (receiveTcp.Pending())
+                if (StoppedTcp)
+                {
+                    break;
+                }
+                else if (receiveTcp.Pending())
                 {
                     TcpClient client = receiveTcp.AcceptTcpClient();
                     _player = null;
@@ -371,8 +389,13 @@ namespace WindowsGame1
             Byte[] bytes = new Byte[1024 * 16];
             while (receiverRun)
             {
-                if (receiveTcp.Pending())
+                if (StoppedTcp)
                 {
+                    break;
+                }     
+                else if (receiveTcp.Pending())
+                {
+                    LastReceiveTimeFromHost = DateTime.Now;
                     TcpClient client = receiveTcp.AcceptTcpClient();
                     NetworkStream stream = client.GetStream();
                     int i;
@@ -407,12 +430,18 @@ namespace WindowsGame1
                         }
                     }
                 }
+                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
+                {
+                    Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
+                    ScreenEvent.Invoke(this, new SivEventArgs(0));
+                }
             }
         }
         public void End_Receive()
         {
             receiverRun = false;
             connect_to_host = false;
+            StoppedTcp = true;
             if (receiveTcp != null)
             {
                 receiveTcp.Stop();
