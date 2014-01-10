@@ -256,6 +256,14 @@ namespace WindowsGame1
 
         public UpdateDelegate FormsUpdate;
         public DrawDelegate FormsDraw;
+
+        public virtual void Start(Command command)
+        {
+        }
+        public virtual void End(Command command)
+        {
+        }
+
         public virtual void Update(GameTime theTime)
         {
             if (FormsUpdate != null)

@@ -459,9 +459,8 @@ namespace WindowsGame1
             //Menu to Ingame
             if (e.Command_code == 1)
             {
-                mInGameScreen.InitializeSender();
-                mInGameScreen.InitializeReceiver();
-                mCurrentScreen = mInGameScreen;
+                /*mInGameScreen.Start();
+                mCurrentScreen = mInGameScreen;*/
             }
             //Menu to Host Screen
             else if (e.Command_code == 2)
@@ -481,7 +480,7 @@ namespace WindowsGame1
             //Ingame to Menu
             if (e.Command_code == 0)
             {
-                mInGameScreen.End_Chat();
+                mInGameScreen.End(new Command());
                 mCurrentScreen = mMenuScreen;
             }
         }
@@ -498,12 +497,8 @@ namespace WindowsGame1
             {
                 mRoomScreen.room = (Room)e.Data;
                 mRoomScreen.Player_ID = ((Room)e.Data).Player_List.First().id;
-                //mRoomScreen.room.Player_List[mRoomScreen.room.findByID(mRoomScreen.Player_ID)].Status = true;
 
-                mRoomScreen.Start_Broadcast();
-                mRoomScreen.StartSynch();
-                mRoomScreen.InitializeReceiver();
-                mRoomScreen.UpdateRoom();
+                mRoomScreen.Start(new Command(CommandCode.Standby,0));
                 mCurrentScreen = mRoomScreen;
             }
         }
@@ -513,20 +508,16 @@ namespace WindowsGame1
             //RoomScreen to Menu
             if (e.Command_code == 0)
             {
-                mRoomScreen.room.Player_List.Clear();
-                mRoomScreen.End_Broadcast();
-                mRoomScreen.End_Receive();
-                mRoomScreen.EndSynch();
+                mRoomScreen.End(new Command());
                 mCurrentScreen = mMenuScreen;
             }
             //RoomScreen to InGameScreen
             else if (e.Command_code == 1)
             {
-                mRoomScreen.End_Broadcast();
-                mRoomScreen.End_Receive();
-                mRoomScreen.EndSynch();
                 mInGameScreen.room = mRoomScreen.room;
                 mInGameScreen.Player_ID = mRoomScreen.Player_ID;
+                mRoomScreen.End(new Command());
+                mInGameScreen.Start(new Command());
                 mCurrentScreen = mInGameScreen;
             }
             
@@ -550,13 +541,12 @@ namespace WindowsGame1
             else if (e.Command_code == 4)
             {
                 mJoinScreen.End_Receive();
+
                 Room _room = (Room)e.Data;                
                 mRoomScreen.room = _room;
                 mRoomScreen.Player_ID = _room.Player_List.Last().id;
 
-                mRoomScreen.InitializeReceiver();
-                mRoomScreen.StartSynch();
-                mRoomScreen.UpdateRoom();
+                mRoomScreen.Start(new Command(CommandCode.Standby, 1));
                 mCurrentScreen = mRoomScreen;
             }
         }

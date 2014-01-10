@@ -541,6 +541,31 @@ namespace WindowsGame1
             OnKeysDown += RoomScreen_OnKeysDown;
             #endregion
         }
+
+        public override void Start(Command command)
+        {
+            chatDisplay.Text = "";
+            if (command.Value_Int == 0)
+            {
+                Start_Broadcast();
+                StartSynch();
+                InitializeReceiver();
+                UpdateRoom();
+            }
+            else if (command.Value_Int == 1)
+            {
+                InitializeReceiver();
+                StartSynch();
+                UpdateRoom();
+            }
+        }
+        public override void End(Command command)
+        {
+            room = null;
+            End_Broadcast();
+            End_Receive();
+            EndSynch();
+        }
         #endregion
 
         #region Handler
@@ -558,18 +583,6 @@ namespace WindowsGame1
 
         private void Start_button_clicked(object sender, FormEventData e)
         {
-            //String s = "Owner index: " + room.owner_index + "\n";
-            //s += "Player List Count: " + room.Player_List.Count + "\n";
-            //s += "Room name: " + room.Room_name + "\r\n";
-            //s += "Number of Player: " + room.Number_of_Player + "\n";
-            //s += "Player List:\n";
-            //foreach (Player p in room.Player_List)
-            //{
-            //    s += "+ " + p.Player_name + " - " + p.Address + "\n";
-            //}
-            //Game1.MessageBox(new IntPtr(0), s, "Room info", 0);
-            //avatar_img.Delete();
-            //avatar_img = null;
             bool isAllReady = true;
             foreach (Player p in room.Player_List)
             {
@@ -595,9 +608,9 @@ namespace WindowsGame1
                         }
                         catch { }
                     }
-                    ScreenEvent.Invoke(this, new SivEventArgs(1));
                 }
                 catch { }
+                ScreenEvent.Invoke(this, new SivEventArgs(1));
             }
             else
             {
