@@ -103,17 +103,18 @@ namespace WindowsGame1
         int cardHeight = 150;
         int handWitdh = 535;
         int padding = 5;
-        int otherPlayerCount = 8;
         int hand_hovered_index = -1;
         int[] playerRandomChar = new int[2];
+
         public Room room;
         public Guid Player_ID;
+
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou;
         Rectangle[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
-        Border[,] oppPlayerBorder;
+        List<Label> OtherPlayerNameLabel = new List<Label>();
         Color borderColor = Color.MediumAquamarine;
         XmlDocument xml = new XmlDocument();
         Character[] masterList, servantList;
@@ -123,7 +124,6 @@ namespace WindowsGame1
         List<Image> otherPlayerServantImage = new List<Image>();
         List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg;
-        //Rectangle player_card_area = new Rectangle(175,570,105,150);
         ImageButton drawButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         Label usernameLabel, ipLabel;
@@ -185,15 +185,12 @@ namespace WindowsGame1
         public InGameScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theScreenEvent, Game1 parent)
             : base("InGameScreen", theScreenEvent, parent)
         {
-            //parent.keyboard_dispatcher = new KeyboardDispatcher(main_game.Window);
             #region Load Resource
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
             shirou = Content.Load<Texture2D>("Resource/character1");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
-
-            //content loading code here
 
             #region Player Control Panel
             playerCharacterBorder[0] = new Border("Character Border 1", Color.Red, 
@@ -212,43 +209,6 @@ namespace WindowsGame1
                 new Rectangle(170, 564, 565, 156), this);
             equipZoneBorder = new Border("Equip Zone", Color.Red, 2,
                 new Rectangle(0, 564, 168, 156), this);
-            #endregion
-
-            #region Other Player location
-            oppPlayerRectangle = new Rectangle[otherPlayerCount, 2];
-            oppPlayerRectangle[0, 0] = new Rectangle(20, 320, 50, 150);
-            oppPlayerRectangle[0, 1] = new Rectangle(70, 320, 50, 150);
-            oppPlayerRectangle[1, 0] = new Rectangle(20, 100, 50, 150);
-            oppPlayerRectangle[1, 1] = new Rectangle(70, 100, 50, 150);
-            oppPlayerRectangle[2, 0] = new Rectangle(180, 30, 50, 150);
-            oppPlayerRectangle[2, 1] = new Rectangle(230, 30, 50, 150);
-            oppPlayerRectangle[3, 0] = new Rectangle(350, 30, 50, 150);
-            oppPlayerRectangle[3, 1] = new Rectangle(400, 30, 50, 150);
-            oppPlayerRectangle[4, 0] = new Rectangle(520, 30, 50, 150);
-            oppPlayerRectangle[4, 1] = new Rectangle(570, 30, 50, 150);
-            oppPlayerRectangle[5, 0] = new Rectangle(690, 30, 50, 150);
-            oppPlayerRectangle[5, 1] = new Rectangle(740, 30, 50, 150);
-            oppPlayerRectangle[6, 0] = new Rectangle(860, 100, 50, 150);
-            oppPlayerRectangle[6, 1] = new Rectangle(910, 100, 50, 150);
-            oppPlayerRectangle[7, 0] = new Rectangle(860, 320, 50, 150);
-            oppPlayerRectangle[7, 1] = new Rectangle(910, 320, 50, 150);
-            //oppPlayerBorder = new Border[otherPlayerCount, 2];
-            //oppPlayerBorder[0, 0] = new Border("Player 1 Master", Color.Red, 2, new Rectangle(30, 320, 109, 154), this);
-            //oppPlayerBorder[0, 0] = new Border("Player 1 Servant", Color.Red, 2, new Rectangle(139, 320, 109, 154), this);
-            for (int i = 0; i < otherPlayerCount; i++)
-            {
-                Image masterTemp = new Image("Opp Master Image", shirou, oppPlayerRectangle[i, 0], 0.3f, this);
-                masterTemp.Source_Rectangle = new Rectangle(0, 0, shirou.Width / 2, shirou.Height);
-                masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
-                otherPlayerMasterImage.Add(masterTemp);
-
-                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i, 1], 0.3f, this);
-                servantTemp.Source_Rectangle = new Rectangle(characterBackTexture.Width / 2, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
-                servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
-                otherPlayerServantImage.Add(servantTemp);
-            }
             #endregion
 
             #region Button
@@ -356,6 +316,153 @@ namespace WindowsGame1
             #endregion
         }
 
+        public override void Start(Command command)
+        {
+            //InitializeSender();
+            //InitializeReceiver();
+
+            int Player_Index = room.findByID(Player_ID);
+            oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
+            #region Define Ohter Player Area
+            switch (room.Player_List.Count)
+            {
+                case 2:
+                    oppPlayerRectangle[0, 0] = new Rectangle(435, 30, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(485, 30, 50, 150);
+                    break;
+                case 3:
+                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(740, 30, 50, 150);
+                    break;
+                case 4:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(435, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(485, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(910, 100, 50, 150);
+                    break;
+                case 5:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[3, 1] = new Rectangle(910, 100, 50, 150);
+                    break;
+                case 6:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(435, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(485, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[4, 1] = new Rectangle(910, 100, 50, 150);
+                    break;
+                case 7:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(350, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(400, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new Rectangle(520, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new Rectangle(570, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[5, 1] = new Rectangle(910, 100, 50, 150);
+                    break;
+                case 8:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 320, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 320, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new Rectangle(435, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new Rectangle(485, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[5, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[6, 0] = new Rectangle(860, 320, 50, 150);
+                    oppPlayerRectangle[7, 1] = new Rectangle(910, 320, 50, 150);
+                    break;
+                case 9:
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 320, 50, 150);
+                    oppPlayerRectangle[0, 1] = new Rectangle(70, 320, 50, 150);
+                    oppPlayerRectangle[1, 0] = new Rectangle(20, 100, 50, 150);
+                    oppPlayerRectangle[1, 1] = new Rectangle(70, 100, 50, 150);
+                    oppPlayerRectangle[2, 0] = new Rectangle(180, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new Rectangle(230, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new Rectangle(350, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new Rectangle(400, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new Rectangle(520, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new Rectangle(570, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new Rectangle(690, 30, 50, 150);
+                    oppPlayerRectangle[5, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[6, 0] = new Rectangle(860, 100, 50, 150);
+                    oppPlayerRectangle[6, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[7, 0] = new Rectangle(860, 320, 50, 150);
+                    oppPlayerRectangle[7, 1] = new Rectangle(910, 320, 50, 150);
+                    break;
+                default:
+                    break;
+            }
+            #endregion
+            for (int i = 0, i2 = 0; i < room.Player_List.Count; i++, i2++)
+            {
+                if (i == Player_Index)
+                {
+                    i2--;
+                    continue;
+                }
+
+                Label labelTemp = new Label("OtherPlayerNameLbel", Game1.font, room.Player_List[i].Player_name
+                    , oppPlayerRectangle[i2, 0].X
+                    , oppPlayerRectangle[i2, 0].Bottom + 20
+                    , oppPlayerRectangle[i2, 1].Left - oppPlayerRectangle[i2, 0].X
+                    , Color.White, this);
+                labelTemp.CenterAlign = true;
+                OtherPlayerNameLabel.Add(labelTemp);
+                
+                Image masterTemp = new Image("Opp Master Image", shirou, oppPlayerRectangle[i2, 0], 0.3f, this);
+                masterTemp.Source_Rectangle = new Rectangle(0, 0, shirou.Width / 2, shirou.Height);
+                masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
+                otherPlayerMasterImage.Add(masterTemp);
+
+                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i2, 1], 0.3f, this);
+                servantTemp.Source_Rectangle = new Rectangle(characterBackTexture.Width / 2, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
+                servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
+                otherPlayerServantImage.Add(servantTemp);
+            }
+        }
+        public override void End(Command command)
+        {
+            //End_Chat();
+            this.chatDisplayTextbox.Text = "";
+            this.room = null;
+            oppPlayerRectangle = null;
+            for (int i = 0; i < OtherPlayerNameLabel.Count; i++)
+            {
+                OtherPlayerNameLabel[i].Delete();
+                otherPlayerMasterImage[i].Delete();
+                otherPlayerServantImage[i].Delete();
+            }
+            OtherPlayerNameLabel.Clear();
+            otherPlayerMasterImage.Clear();
+            otherPlayerServantImage.Clear();
+        }
         #endregion
 
         #region Update
@@ -484,7 +591,7 @@ namespace WindowsGame1
         {
             Image image = (Image)sender;
             image.Rect.Width = 100;
-            image.DrawOrder = 0.2f;
+            image.DrawOrder = 0.29f;
             image.Source_Rectangle = null;
             if (image.Name == "Opp Servant Image")
             {

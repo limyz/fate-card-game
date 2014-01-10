@@ -398,7 +398,7 @@ namespace WindowsGame1
 
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();
-            spriteBatch.Begin();//Begin a new one(just to be ended immediatly) 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
         }
 
         public void RecieveTextInput(char inputChar)
