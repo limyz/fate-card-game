@@ -108,9 +108,10 @@ namespace WindowsGame1
 
         public Room room;
         public Guid Player_ID;
+        Player myPlayer;
 
         Random rand = new Random();
-        Texture2D borderTexture, characterBackTexture, shirou;
+        Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture;
         Rectangle[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -131,32 +132,32 @@ namespace WindowsGame1
         #endregion
 
         #region Character class
-        public class Character
-        {
-            private ContentManager Content;
-            public string CharTag;
-            public string CharName;
-            public string CharAsset;
-            public Texture2D CharTexture;
-            public enum char_type
-            {
-                master = 0,
-                servant = 1
-            };
-            char_type type;
-            public Character(ContentManager Content, string char_tag, string char_name, string char_asset, char_type type)
-            {
-                this.Content = Content;
-                this.CharTag = char_tag;
-                this.CharName = char_name;
-                this.CharAsset = char_asset;
-                this.type = type;
-            }
-            public void load_texture()
-            {
-                CharTexture = Content.Load<Texture2D>("Resource/character/" + CharAsset);
-            }
-        }
+        //public class Character
+        //{
+        //    private ContentManager Content;
+        //    public string CharTag;
+        //    public string CharName;
+        //    public string CharAsset;
+        //    public Texture2D CharTexture;
+        //    public enum char_type
+        //    {
+        //        master = 0,
+        //        servant = 1
+        //    };
+        //    char_type type;
+        //    public Character(ContentManager Content, string char_tag, string char_name, string char_asset, char_type type)
+        //    {
+        //        this.Content = Content;
+        //        this.CharTag = char_tag;
+        //        this.CharName = char_name;
+        //        this.CharAsset = char_asset;
+        //        this.type = type;
+        //    }
+        //    public void load_texture()
+        //    {
+        //        CharTexture = Content.Load<Texture2D>("Resource/character/" + CharAsset);
+        //    }
+        //}
         #endregion
 
         #region Card class
@@ -276,10 +277,10 @@ namespace WindowsGame1
             {
                 XmlElement temp = (XmlElement)xml_master_list[i];
                 masterList[i] = new Character(Content,
-                    xml_master_list[i].Name,
+                    //xml_master_list[i].Name,
                     xml_master_list[i].InnerText,
                     temp.GetAttribute("img"),
-                    Character.char_type.master);
+                    Character.Type.Master);
                 //MessageBox(new IntPtr(0), master_list[i].char_asset, "", 0);
                 masterList[i].load_texture();
             }
@@ -287,10 +288,10 @@ namespace WindowsGame1
             {
                 XmlElement temp = (XmlElement)xml_servant_list[i];
                 servantList[i] = new Character(Content,
-                    xml_servant_list[i].Name,
+                   // xml_servant_list[i].Name,
                     xml_servant_list[i].InnerText,
                     temp.GetAttribute("img"),
-                    Character.char_type.servant);
+                    Character.Type.Servant);
                 servantList[i].load_texture();
             }
             //End character's data load
@@ -322,37 +323,38 @@ namespace WindowsGame1
             //InitializeReceiver();
 
             int Player_Index = room.findByID(Player_ID);
+            myPlayer = room.Player_List[Player_Index];
             oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
             #region Define Ohter Player Area
             switch (room.Player_List.Count)
             {
                 case 2:
-                    oppPlayerRectangle[0, 0] = new Rectangle(435, 30, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(485, 30, 50, 150);
+                    oppPlayerRectangle[0, 0] = new Rectangle(435, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new Rectangle(435, 105, 100, 75);
                     break;
                 case 3:
-                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(740, 30, 50, 150);
+                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new Rectangle(180, 105, 100, 75);
+                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new Rectangle(690, 105, 100, 75);
                     break;
                 case 4:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(435, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(485, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 100, 75);
+                    oppPlayerRectangle[0, 1] = new Rectangle(20, 175, 100, 75);
+                    oppPlayerRectangle[1, 0] = new Rectangle(435, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new Rectangle(435, 105, 100, 75);
+                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 100, 75);
+                    oppPlayerRectangle[2, 1] = new Rectangle(860, 175, 100, 75);
                     break;
                 case 5:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(740, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[3, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 100, 75);
+                    oppPlayerRectangle[0, 1] = new Rectangle(20, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new Rectangle(180, 105, 100, 75);
+                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new Rectangle(690, 105, 100, 75);
+                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 100, 75);
+                    oppPlayerRectangle[2, 1] = new Rectangle(860, 175, 100, 75);
                     break;
                 case 6:
                     oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
@@ -428,23 +430,27 @@ namespace WindowsGame1
 
                 Label labelTemp = new Label("OtherPlayerNameLbel", Game1.font, room.Player_List[i].Player_name
                     , oppPlayerRectangle[i2, 0].X
-                    , oppPlayerRectangle[i2, 0].Bottom + 20
-                    , oppPlayerRectangle[i2, 1].Left - oppPlayerRectangle[i2, 0].X
+                    , oppPlayerRectangle[i2, 0].Top - 20
+                    , oppPlayerRectangle[i2, 1].Width
                     , Color.White, this);
                 labelTemp.CenterAlign = true;
                 OtherPlayerNameLabel.Add(labelTemp);
-                
-                Image masterTemp = new Image("Opp Master Image", shirou, oppPlayerRectangle[i2, 0], 0.3f, this);
-                masterTemp.Source_Rectangle = new Rectangle(0, 0, shirou.Width / 2, shirou.Height);
-                masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
+
+                Image masterTemp = new Image("Opp Master Image", characterBackTexture, oppPlayerRectangle[i2, 0], 0.3f, this);
+                masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
+                //masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
                 otherPlayerMasterImage.Add(masterTemp);
 
-                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, oppPlayerRectangle[i2, 1], 0.3f, this);
-                servantTemp.Source_Rectangle = new Rectangle(characterBackTexture.Width / 2, 0, characterBackTexture.Width / 2, characterBackTexture.Height);
-                servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
+                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, 
+                    oppPlayerRectangle[i2, 1], 0.3f, this);
+                servantTemp.Source_Rectangle = new Rectangle(0, 0, 
+                    characterBackTexture.Width, characterBackTexture.Height / 2);
+                //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
+                //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 otherPlayerServantImage.Add(servantTemp);
+                //randomCharacter(ref masterTemp, ref servantTemp);
+                randomCharacter();
             }
         }
         public override void End(Command command)
@@ -509,7 +515,6 @@ namespace WindowsGame1
             if (oversize > 0)
             {
                 padding = padding - (oversize / hand_area_list.Count);
-
             }
             for (int i = 1; i < hand_area_list.Count; i++)
             {
@@ -531,15 +536,25 @@ namespace WindowsGame1
             }
         }
 
-        public void randomCharacter(ref Image masterImage, ref Image servantImage)
+        //public void randomCharacter(ref Image masterImage, ref Image servantImage)
+        //{
+        //    playerRandomChar[0] = rand.Next(masterList.Length);
+        //    playerRandomChar[1] = rand.Next(servantList.Length);
+        //    Texture2D master = masterList[playerRandomChar[0]].CharTexture;
+        //    Texture2D servant = servantList[playerRandomChar[1]].CharTexture;
+
+        //    masterImage.Texture = master;
+        //    servantImage.Texture = servant;
+        //}
+
+        public void randomCharacter()
         {
             playerRandomChar[0] = rand.Next(masterList.Length);
             playerRandomChar[1] = rand.Next(servantList.Length);
-            Texture2D master = masterList[playerRandomChar[0]].CharTexture;
-            Texture2D servant = servantList[playerRandomChar[1]].CharTexture;
-
-            masterImage.Texture = master;
-            servantImage.Texture = servant;
+            myPlayer.Character1 = masterList[playerRandomChar[0]];
+            myPlayer.Character2 = masterList[playerRandomChar[1]];
+            masterImg.Texture = myPlayer.Character1.CharTexture;
+            servantImg.Texture = myPlayer.Character2.CharTexture;
         }
         #endregion
 

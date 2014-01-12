@@ -1,21 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Character>
   <Master>
-    <Kariya img="Kariya">Kariya</Kariya>
-    <Kayneth_Archibald img="Kayneth Archibald">Kayneth Archibald</Kayneth_Archibald>
-    <Kiritsugu img="Kiritsugu">Kiritsugu</Kiritsugu>
+    <Dark_Sakura img="Dark Sakura">Dark Sakura</Dark_Sakura>
+    <Illya img="Illya">Illya</Illya>
+    <Kiritsugu img="Kiritsugu">Emiya Kiritsugu</Kiritsugu>
     <Kotomine_Kirei img="Kotomine Kirei">Kotomine Kirei</Kotomine_Kirei>
-    <Ryuunosuke img="Ryuunosuke">Ryuunosuke</Ryuunosuke>
-    <Shirou img="Shirou">Shirou</Shirou>
-    <Tohsaka_Tokiomi img="Tohsaka Tokiomi">Tohsaka Tokiomi</Tohsaka_Tokiomi>
-    <Waver_Velvet img="Waver Velvet">Waver Velvet</Waver_Velvet>
+    <Shirou img="Shirou">Emiya Shirou</Shirou>
+    <Tohsaka_Rin img="Tohsaka Rin">Tohsaka Rin</Tohsaka_Rin>
   </Master>
   <Servant>
-    <Diarmuid img="Diarmuid">Diarmuid</Diarmuid>
+    <Saber_Alter img="Saber Alter">Saber Alter</Saber_Alter>
     <Gilgamesh img="Gilgamesh">Gilgamesh</Gilgamesh>
-    <Gille_de_Rais img="Gille de Rais">Gille de Rais</Gille_de_Rais>
-    <Hassan img="Hassan">Hassan</Hassan>
-    <Iskander img="Iskander">Iskander</Iskander>
+    <EMIYA img="EMIYA">HERO EMIYA</EMIYA>
+    <Heracles img="Heracles">Heracles</Heracles>
     <Lancelot img="Lancelot">Lancelot</Lancelot>
     <Saber img="Saber">Saber</Saber>
   </Servant>
