@@ -20,6 +20,8 @@ namespace WindowsGame1
         //GUID as Data1,used to set ready_status to false for player
         Cancel = 5,
         //Room as Data1,used to Start the Game
-        Start_Game = 6
+        Start_Game = 6,
+        //Character Change
+        Character_Change = 7
     };
 }

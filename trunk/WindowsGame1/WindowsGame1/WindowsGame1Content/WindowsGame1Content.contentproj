@@ -164,83 +164,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resource\character\Kariya.jpg">
-      <Name>Kariya</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Kayneth Archibald.jpg">
-      <Name>Kayneth Archibald</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Kiritsugu.jpg">
-      <Name>Kiritsugu</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Kotomine Kirei.jpg">
-      <Name>Kotomine Kirei</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Ryuunosuke.jpg">
-      <Name>Ryuunosuke</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Shirou.jpg">
-      <Name>Shirou</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Tohsaka Tokiomi.jpg">
-      <Name>Tohsaka Tokiomi</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Waver Velvet.jpg">
-      <Name>Waver Velvet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Diarmuid.jpg">
-      <Name>Diarmuid</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Gilgamesh.jpg">
-      <Name>Gilgamesh</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Gille de Rais.jpg">
-      <Name>Gille de Rais</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Hassan.jpg">
-      <Name>Hassan</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Iskander.jpg">
-      <Name>Iskander</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Lancelot.jpg">
-      <Name>Lancelot</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Resource\character\Saber.jpg">
-      <Name>Saber</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Resource\card\Alter Burst2.jpg">
       <Name>Alter Burst2</Name>
       <Importer>TextureImporter</Importer>
@@ -534,6 +457,73 @@
   <ItemGroup>
     <Compile Include="Resource\cancel_button.png">
       <Name>cancel_button</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\character\Dark Sakura.jpg">
+      <Name>Dark Sakura</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\EMIYA.jpg">
+      <Name>EMIYA</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Gilgamesh.jpg">
+      <Name>Gilgamesh</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Heracles.jpg">
+      <Name>Heracles</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Illya.jpg">
+      <Name>Illya</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Irisviel.jpg">
+      <Name>Irisviel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Kiritsugu.jpg">
+      <Name>Kiritsugu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Kotomine Kirei.jpg">
+      <Name>Kotomine Kirei</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Lancelot.jpg">
+      <Name>Lancelot</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Saber Alter.jpg">
+      <Name>Saber Alter</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Saber.jpg">
+      <Name>Saber</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Shirou.jpg">
+      <Name>Shirou</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\character\Tohsaka Rin.jpg">
+      <Name>Tohsaka Rin</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

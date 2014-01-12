@@ -19,19 +19,10 @@ Content\Resource\074_greenglow.xnb
 Content\Resource\074_starlight.xnb
 Content\Resource\chat_input.xnb
 Content\Resource\chat_screen.xnb
-Content\Resource\character\Kariya.xnb
-Content\Resource\character\Kayneth Archibald.xnb
 Content\Resource\character\Kiritsugu.xnb
 Content\Resource\character\Kotomine Kirei.xnb
-Content\Resource\character\Ryuunosuke.xnb
 Content\Resource\character\Shirou.xnb
-Content\Resource\character\Tohsaka Tokiomi.xnb
-Content\Resource\character\Waver Velvet.xnb
-Content\Resource\character\Diarmuid.xnb
 Content\Resource\character\Gilgamesh.xnb
-Content\Resource\character\Gille de Rais.xnb
-Content\Resource\character\Hassan.xnb
-Content\Resource\character\Iskander.xnb
 Content\Resource\character\Lancelot.xnb
 Content\Resource\character\Saber.xnb
 Content\Resource\card\Alter Burst2.xnb
@@ -85,5 +76,12 @@ Content\Resource\font\Arial_12_Regular.xnb
 Content\Resource\font\Arial_14_Bold.xnb
 Content\Resource\font\Arial_13_Bold.xnb
 Content\Resource\cancel_button.xnb
+Content\Resource\character\Dark Sakura.xnb
+Content\Resource\character\EMIYA.xnb
+Content\Resource\character\Heracles.xnb
+Content\Resource\character\Illya.xnb
+Content\Resource\character\Irisviel.xnb
+Content\Resource\character\Saber Alter.xnb
+Content\Resource\character\Tohsaka Rin.xnb
 Data\Character.xml
 Data\Card.xml
