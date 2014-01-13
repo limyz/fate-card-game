@@ -19,82 +19,82 @@ namespace WindowsGame1
     public class InGameScreen : Screen
     {
         #region chat_stuff
-        delegate void AddMessage(string message);
+        //delegate void AddMessage(string message);
 
-        string userName = "";
+        //string userName = "";
 
-        const int send_port = 51000;
-        const int receive_port = 51000;
-        string Address = "255.255.255.255";
+        //const int send_port = 51000;
+        //const int receive_port = 51000;
+        //string Address = "255.255.255.255";
 
-        UdpClient receivingClient;
-        UdpClient sendingClient;
+        //UdpClient receivingClient;
+        //UdpClient sendingClient;
 
-        Thread receivingThread;
+        //Thread receivingThread;
 
-        public void SetUsername()
-        {
-            userName = usernameTextbox.Text.Replace("\n", "");
-        }
+        //public void SetUsername()
+        //{
+        //    userName = usernameTextbox.Text.Replace("\n", "");
+        //}
 
-        public void SetIP()
-        {
-            if (string.IsNullOrEmpty(ipTextbox.Text))
-            {
-                Address = "255.255.255.255";
-            }
-            /*else if (textbox_IP.Text == "all")
-            {
-                Address = IPAddress.Broadcast.ToString();
-            }*/
-            else
-            {
-                Address = ipTextbox.Text.Replace("\n", "");
-            }
-        }
+        //public void SetIP()
+        //{
+        //    if (string.IsNullOrEmpty(ipTextbox.Text))
+        //    {
+        //        Address = "255.255.255.255";
+        //    }
+        //    /*else if (textbox_IP.Text == "all")
+        //    {
+        //        Address = IPAddress.Broadcast.ToString();
+        //    }*/
+        //    else
+        //    {
+        //        Address = ipTextbox.Text.Replace("\n", "");
+        //    }
+        //}
 
-        public void InitializeSender()
-        {
-            sendingClient = new UdpClient();
-            sendingClient.EnableBroadcast = true;
-        }
+        //public void InitializeSender()
+        //{
+        //    sendingClient = new UdpClient();
+        //    sendingClient.EnableBroadcast = true;
+        //}
 
-        public void InitializeReceiver()
-        {
-            receivingClient = new UdpClient(receive_port);
-            receivingClient.EnableBroadcast = true;
+        //public void InitializeReceiver()
+        //{
+        //    receivingClient = new UdpClient(receive_port);
+        //    receivingClient.EnableBroadcast = true;
 
-            ThreadStart start = new ThreadStart(Receiver);
-            receivingThread = new Thread(start);
-            receivingThread.IsBackground = true;
-            receivingThread.Start();
-        }
+        //    ThreadStart start = new ThreadStart(Receiver);
+        //    receivingThread = new Thread(start);
+        //    receivingThread.IsBackground = true;
+        //    receivingThread.Start();
+        //}
 
-        private void Receiver()
-        {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, receive_port);
-            AddMessage messageDelegate = MessageReceived;
+        //private void Receiver()
+        //{
+        //    IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, receive_port);
+        //    AddMessage messageDelegate = MessageReceived;
 
-            while (true)
-            {
-                byte[] data = receivingClient.Receive(ref endPoint);
-                string message = Encoding.Unicode.GetString(data);
-                //messageDelegate.Invoke(endPoint.Address.ToString()+":"+endPoint.Port+">>"+message);
-                messageDelegate.Invoke(message);
-                //Invoke(messageDelegate, message);
-            }
-        }
+        //    while (true)
+        //    {
+        //        byte[] data = receivingClient.Receive(ref endPoint);
+        //        string message = Encoding.Unicode.GetString(data);
+        //        //messageDelegate.Invoke(endPoint.Address.ToString()+":"+endPoint.Port+">>"+message);
+        //        messageDelegate.Invoke(message);
+        //        //Invoke(messageDelegate, message);
+        //    }
+        //}
 
-        private void MessageReceived(string message)
-        {
-            chatDisplayTextbox.Text += (message + "\n");
-        }
-        public void End_Chat()
-        {
-            receivingThread.Abort();
-            sendingClient.Close();
-            receivingClient.Close();
-        }
+        //private void MessageReceived(string message)
+        //{
+        //    chatDisplayTextbox.Text += (message + "\n");
+        //}
+        //public void End_Chat()
+        //{
+        //    receivingThread.Abort();
+        //    sendingClient.Close();
+        //    receivingClient.Close();
+        //}
 
         #endregion
 
@@ -182,6 +182,266 @@ namespace WindowsGame1
         }
         #endregion
 
+        #region Synchonize Thread
+        Thread joinResponseThread;
+        List<TcpClient> tcpServerClient = new List<TcpClient>();
+        bool synchronizeRun = true;
+        NetworkStream networkStream;
+        TcpClient tcpClient;
+
+        public void StartSynch()
+        {
+            synchronizeRun = true;
+            if (isHost())
+            {
+                int Player_Index = room.findByID(Player_ID);
+                for (int i = 0; i < room.Player_List.Count; i++)
+                {
+                    if (i == Player_Index)
+                    {
+                        //dummy client for host to balance the size of
+                        // Player_List and tcpServerClient
+                        tcpServerClient.Add(new TcpClient());
+                        continue;
+                    }
+                    Player temp_player = room.Player_List[i];
+                    tcpServerClient.Add(new TcpClient(temp_player.Address, 51003));
+                }
+                joinResponseThread = new Thread(() => ServerRespond());
+                joinResponseThread.IsBackground = true;
+                joinResponseThread.Start();
+            }
+            else
+            {
+                //ClientJoin();
+            }
+        }
+        private bool isHost()
+        {
+            int Player_Index = room.findByID(Player_ID);
+            if (room.owner_index == Player_Index)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private void ServerRespond()
+        {
+            while (synchronizeRun)
+            {
+                Command c = new Command(CommandCode.Standby);
+                byte[] data = c.Serialize();
+                int Player_Index = room.findByID(Player_ID);
+                bool update_room = false;
+                for (int i = 0; i < tcpServerClient.Count; i++)
+                {
+                    try
+                    {
+                        if (i == Player_Index) continue;
+                        tcpServerClient[i].GetStream().Write(data, 0, data.Length);
+                    }
+                    //couldn't send message because the client has disconnected
+                    //so we remove that tcp client and player from the list
+                    catch
+                    {
+                        string s = room.Player_List[i].Player_name + " had left the room!" + "\n";
+                        this.tcpServerClient.RemoveAt(i);
+                        this.room.Player_List.RemoveAt(i);
+                        i--;
+                        //UpdateRoom();
+                        //update_room = true;
+
+                        SendChatMessage(s);
+                    }
+                }
+
+                if (update_room)
+                {
+                    Command c2 = new Command(CommandCode.Update_Room, room);
+                    byte[] data2 = c2.Serialize();
+                    for (int i = 0; i < tcpServerClient.Count; i++)
+                    {
+                        try
+                        {
+                            if (i == Player_Index) continue;
+                            tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+        public void EndSynch()
+        {
+            synchronizeRun = false;
+            foreach (TcpClient tcpclient in tcpServerClient)
+            {
+                tcpclient.Close();
+            }
+            tcpServerClient.Clear();
+            //if (tcpClient != null)
+            //{
+            //joinResponseThread.Abort();
+            //tcpClient.Close();
+            //}
+        }
+        #endregion
+
+        #region Receiver
+        TcpListener receiveTcp;
+        Thread receivingThread;
+        bool receiverRun = true;
+        bool connect_to_host = true;
+        bool StoppedTcp = false;
+        DateTime LastReceiveTimeFromHost = DateTime.Now;
+
+        public void InitializeReceiver()
+        {
+            receiverRun = true;
+            connect_to_host = true;
+            StoppedTcp = false;
+            LastReceiveTimeFromHost = DateTime.Now;
+
+            if (isHost())
+            {
+                IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
+                receiveTcp = new TcpListener(endPoint);
+                receiveTcp.Start();
+
+                ThreadStart start = new ThreadStart(ServerReceiver);
+                receivingThread = new Thread(start);
+                receivingThread.IsBackground = true;
+                receivingThread.Start();
+            }
+            else
+            {
+                IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51003);
+                receiveTcp = new TcpListener(endPoint);
+                receiveTcp.Start();
+
+                ThreadStart start = new ThreadStart(ClientReceiver);
+                receivingThread = new Thread(start);
+                receivingThread.IsBackground = true;
+                receivingThread.Start();
+            }
+
+        }
+
+        private void ServerReceiver()
+        {
+            Byte[] bytes = new Byte[1024 * 16];
+            while (receiverRun)
+            {
+                if (StoppedTcp)
+                {
+                    break;
+                }
+                else if (receiveTcp.Pending())
+                {
+                    TcpClient client = receiveTcp.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        Command c = new Command(bytes);
+                        if (c.Command_Code == CommandCode.Chat_Message)
+                        {
+                            SendChatMessage(c.Message);
+                        }
+                        else if (c.Command_Code == CommandCode.Character_Change)
+                        {
+                            Character character1 = (Character)c.Data1;
+                            Character character2 = (Character)c.Data2;
+                            Guid id = (Guid)c.Data3;
+                            CharacterChange(character1, character2, id);
+                            int Player_Index = room.findByID(Player_ID);
+                            Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
+                            byte[] data2 = c2.Serialize();
+                            for (int j = 0; j < tcpServerClient.Count; j++)
+                            {
+                                try
+                                {
+                                    if (j == Player_Index) continue;
+                                    tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                    client.Close();
+                }
+            }
+        }
+        private void ClientReceiver()
+        {
+            Byte[] bytes = new Byte[1024 * 16];
+            while (receiverRun)
+            {
+                if (StoppedTcp)
+                {
+                    break;
+                }
+                else if (receiveTcp.Pending())
+                {
+                    LastReceiveTimeFromHost = DateTime.Now;
+                    TcpClient client = receiveTcp.AcceptTcpClient();
+                    NetworkStream stream = client.GetStream();
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        if (!connect_to_host)
+                        {
+                            client.Close();
+                            break;
+                        }
+                        /*BinaryFormatter bin = new BinaryFormatter();
+                        MemoryStream mem = new MemoryStream(bytes);*/
+                        Command c = new Command(bytes);
+                        if (c.Command_Code == CommandCode.Standby)
+                        {
+                            //do nothing
+                        }
+                        else if (c.Command_Code == CommandCode.Chat_Message)
+                        {
+                            chatDisplayTextbox.Text += c.Message;
+                        }
+                        else if (c.Command_Code == CommandCode.Character_Change)
+                        {
+                            Character character1 = (Character)c.Data1;
+                            Character character2 = (Character)c.Data2;
+                            Guid id = (Guid)c.Data3;
+                            CharacterChange(character1, character2, id);
+                        }
+                    }
+                }
+                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
+                {
+                    Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
+                    ScreenEvent.Invoke(this, new SivEventArgs(0));
+                }
+            }
+        }
+
+        public void End_Receive()
+        {
+            receiverRun = false;
+            connect_to_host = false;
+            StoppedTcp = true;
+            if (receiveTcp != null)
+            {
+                receiveTcp.Stop();
+                //receivingThread.Abort();
+            }
+        }
+        #endregion
+
         #region Load Content
         public InGameScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theScreenEvent, Game1 parent)
             : base("InGameScreen", theScreenEvent, parent)
@@ -194,16 +454,16 @@ namespace WindowsGame1
             #endregion
 
             #region Player Control Panel
-            playerCharacterBorder[0] = new Border("Character Border 1", Color.Red, 
+            playerCharacterBorder[0] = new Border("Character Border 1", Color.Red,
                 2, new Rectangle(731, 564, 111, 156), this);
-            playerCharacterBorder[1] = new Border("Character Border 2", Color.Red, 
+            playerCharacterBorder[1] = new Border("Character Border 2", Color.Red,
                 2, new Rectangle(842, 564, 111, 156), this);
 
-            playerControlPanel = new Div("PlayerControlPanel", 
+            playerControlPanel = new Div("PlayerControlPanel",
                 new Rectangle(0, 564, 1000, 156), Color.White, this);
-            masterImg = new Image("Player Master Image", characterBackTexture, 
+            masterImg = new Image("Player Master Image", characterBackTexture,
                 new Rectangle(734, 567, 105, 150), 0.3f, this);
-            servantImg = new Image("Player Servant Image", characterBackTexture, 
+            servantImg = new Image("Player Servant Image", characterBackTexture,
                 new Rectangle(845, 567, 105, 150), 0.3f, this);
 
             handZoneBorder = new Border("Hand Zone", Color.Red, 2,
@@ -288,7 +548,7 @@ namespace WindowsGame1
             {
                 XmlElement temp = (XmlElement)xml_servant_list[i];
                 servantList[i] = new Character(Content,
-                   // xml_servant_list[i].Name,
+                    // xml_servant_list[i].Name,
                     xml_servant_list[i].InnerText,
                     temp.GetAttribute("img"),
                     Character.Type.Servant);
@@ -319,8 +579,8 @@ namespace WindowsGame1
 
         public override void Start(Command command)
         {
-            //InitializeSender();
-            //InitializeReceiver();
+            InitializeReceiver();
+            StartSynch();
 
             int Player_Index = room.findByID(Player_ID);
             myPlayer = room.Player_List[Player_Index];
@@ -442,9 +702,9 @@ namespace WindowsGame1
                 //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
                 otherPlayerMasterImage.Add(masterTemp);
 
-                Image servantTemp = new Image("Opp Servant Image", characterBackTexture, 
+                Image servantTemp = new Image("Opp Servant Image", characterBackTexture,
                     oppPlayerRectangle[i2, 1], 0.3f, this);
-                servantTemp.Source_Rectangle = new Rectangle(0, 0, 
+                servantTemp.Source_Rectangle = new Rectangle(0, 0,
                     characterBackTexture.Width, characterBackTexture.Height / 2);
                 //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
@@ -552,9 +812,45 @@ namespace WindowsGame1
             playerRandomChar[0] = rand.Next(masterList.Length);
             playerRandomChar[1] = rand.Next(servantList.Length);
             myPlayer.Character1 = masterList[playerRandomChar[0]];
-            myPlayer.Character2 = masterList[playerRandomChar[1]];
+            myPlayer.Character2 = servantList[playerRandomChar[1]];
             masterImg.Texture = myPlayer.Character1.CharTexture;
             servantImg.Texture = myPlayer.Character2.CharTexture;
+            if (!isHost())
+            {
+                try
+                {
+                    Command c = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
+                    byte[] data = c.Serialize();
+                    tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                    networkStream = tcpClient.GetStream();
+                    networkStream.Write(data, 0, data.Length);
+                    tcpClient.Close();
+                }
+                catch { }
+            }
+            else
+            {
+                int Player_Index = room.findByID(Player_ID);
+                Command c2 = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
+                byte[] data2 = c2.Serialize();
+                for (int j = 0; j < tcpServerClient.Count; j++)
+                {
+                    try
+                    {
+                        if (j == Player_Index) continue;
+                        tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void CharacterChange(Character char1, Character char2, Guid id)
+        {
+            //int Player_Index = room.findByID(id);
+            int Player_Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
+            otherPlayerMasterImage[Player_Index].Texture = char1.CharTexture;
+            otherPlayerServantImage[Player_Index].Texture = char2.CharTexture;
         }
         #endregion
 
@@ -574,16 +870,22 @@ namespace WindowsGame1
 
         private void chat_textbox_onEnterPressed(TextBox sender)
         {
-            SetIP();
-            SetUsername();
-            if (!string.IsNullOrEmpty(chatInputTextbox.Text))
+            string s = room.findPlayerByID(Player_ID).Player_name + ": " + chatInputTextbox.Text + "\n";
+            if (isHost())
             {
-                string toSend = userName + ": " + chatInputTextbox.Text;
-                byte[] data = Encoding.Unicode.GetBytes(toSend);
-                chatDisplayTextbox.Text += toSend + "\n";
-                sendingClient.Send(data, data.Length, Address, send_port);
-                chatInputTextbox.Text = "";
+                SendChatMessage(s);
             }
+            else
+            {
+                Command c = new Command(CommandCode.Chat_Message, s);
+                byte[] data = c.Serialize();
+
+                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+                tcpClient.Close();
+            }
+            this.chatInputTextbox.Text = "";
         }
 
         private void textbox_onShiftEnterPressed(TextBox sender)
@@ -595,11 +897,6 @@ namespace WindowsGame1
         {
             draw_card();
             resize_hand();
-            //randomCharacter(ref masterImg, ref servantImg);
-            //Image master = otherPlayerMasterImage[0];
-            //Image servant = otherPlayerServantImage[0];
-            //randomCharacter(ref master, ref servant);
-            //otherPlayerMasterImage[0].Visible = false;
         }
 
         private void hoverChar(object sender, FormEventData e)
@@ -628,6 +925,24 @@ namespace WindowsGame1
             image.DrawOrder = 0.3f;
             image.Rect.X = image.Rect.X + 50;
             image.Source_Rectangle = new Rectangle(image.Texture.Width / 2, 0, image.Texture.Width / 2, image.Texture.Height);
+        }
+
+        private void SendChatMessage(string message)
+        {
+            Command c = new Command(CommandCode.Chat_Message, message);
+            byte[] data = c.Serialize();
+            for (int i = 0; i < tcpServerClient.Count; i++)
+            {
+                try
+                {
+                    if (room.Player_List[i].id == this.Player_ID) continue;
+                    tcpServerClient[i].GetStream().Write(data, 0, data.Length);
+                }
+                catch
+                {
+                }
+            }
+            chatDisplayTextbox.Text += message;
         }
         #endregion
 
