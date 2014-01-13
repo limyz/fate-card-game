@@ -33,6 +33,12 @@ namespace WindowsGame1
             this.Command_Code = Command_Code;
             this.Data1 = Data1;
         }
+        public Command(CommandCode Command_Code, object Data1, object Data2)
+        {
+            this.Command_Code = Command_Code;
+            this.Data1 = Data1;
+            this.Data2 = Data2;
+        }
         public Command(CommandCode Command_Code, object Data1, object Data2, object Data3)
         {
             this.Command_Code = Command_Code;

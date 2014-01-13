@@ -56,5 +56,22 @@ namespace WindowsGame1
             }
             return null;
         }
+
+        public int findByID_ExcludeMainPlayer(Guid guid, Guid MainPlayer_Guid)
+        {
+            for (int i = 0, i2 = 0; i < this.player_List.Count; i++, i2++)
+            {
+                if (player_List[i].id == MainPlayer_Guid)
+                {
+                    i2--;
+                    continue;
+                }
+                if (player_List[i].id == guid)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

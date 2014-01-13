@@ -34,8 +34,7 @@ namespace WindowsGame1
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
         Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture;
-        
-        
+
         #endregion
 
         #region Broadcast Thread
