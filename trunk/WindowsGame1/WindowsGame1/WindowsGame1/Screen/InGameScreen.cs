@@ -110,6 +110,7 @@ namespace WindowsGame1
         public Guid Player_ID;
         Player myPlayer;
 
+        private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture;
         Rectangle[,] oppPlayerRectangle;
@@ -216,6 +217,7 @@ namespace WindowsGame1
                 //ClientJoin();
             }
         }
+
         private bool isHost()
         {
             int Player_Index = room.findByID(Player_ID);
@@ -228,6 +230,7 @@ namespace WindowsGame1
                 return false;
             }
         }
+
         private void ServerRespond()
         {
             while (synchronizeRun)
@@ -248,12 +251,12 @@ namespace WindowsGame1
                     catch
                     {
                         string s = room.Player_List[i].Player_name + " had left the room!" + "\n";
-                        this.tcpServerClient.RemoveAt(i);
-                        this.room.Player_List.RemoveAt(i);
-                        i--;
-                        //UpdateRoom();
-                        //update_room = true;
-
+                        //this.tcpServerClient.RemoveAt(i);
+                        //this.room.Player_List.RemoveAt(i);
+                        //i--;
+                        room.Player_List[i].Status = false;
+                        UpdateRoom(room.Player_List[i].GraphicIndex, i);
+                        update_room = true;
                         SendChatMessage(s);
                     }
                 }
@@ -267,6 +270,7 @@ namespace WindowsGame1
                         try
                         {
                             if (i == Player_Index) continue;
+                            if (!room.Player_List[i].Status) continue;
                             tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
                         }
                         catch
@@ -278,6 +282,7 @@ namespace WindowsGame1
                 Thread.Sleep(1000);
             }
         }
+
         public void EndSynch()
         {
             synchronizeRun = false;
@@ -369,6 +374,7 @@ namespace WindowsGame1
                                 try
                                 {
                                     if (j == Player_Index) continue;
+                                    if (!room.Player_List[j].Status) continue;
                                     tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
                                 }
                                 catch { }
@@ -379,6 +385,7 @@ namespace WindowsGame1
                 }
             }
         }
+
         private void ClientReceiver()
         {
             Byte[] bytes = new Byte[1024 * 16];
@@ -447,6 +454,7 @@ namespace WindowsGame1
             : base("InGameScreen", theScreenEvent, parent)
         {
             #region Load Resource
+            this.Content = Content;
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
             shirou = Content.Load<Texture2D>("Resource/character1");
@@ -684,10 +692,11 @@ namespace WindowsGame1
             {
                 if (i == Player_Index)
                 {
+                    room.Player_List[Player_Index].GraphicIndex = -1;
                     i2--;
                     continue;
                 }
-
+                room.Player_List[i].GraphicIndex = i2;
                 Label labelTemp = new Label("OtherPlayerNameLbel", Game1.font, room.Player_List[i].Player_name
                     , oppPlayerRectangle[i2, 0].X
                     , oppPlayerRectangle[i2, 0].Top - 20
@@ -796,17 +805,6 @@ namespace WindowsGame1
             }
         }
 
-        //public void randomCharacter(ref Image masterImage, ref Image servantImage)
-        //{
-        //    playerRandomChar[0] = rand.Next(masterList.Length);
-        //    playerRandomChar[1] = rand.Next(servantList.Length);
-        //    Texture2D master = masterList[playerRandomChar[0]].CharTexture;
-        //    Texture2D servant = servantList[playerRandomChar[1]].CharTexture;
-
-        //    masterImage.Texture = master;
-        //    servantImage.Texture = servant;
-        //}
-
         public void randomCharacter()
         {
             playerRandomChar[0] = rand.Next(masterList.Length);
@@ -830,27 +828,44 @@ namespace WindowsGame1
             }
             else
             {
-                int Player_Index = room.findByID(Player_ID);
-                Command c2 = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
-                byte[] data2 = c2.Serialize();
-                for (int j = 0; j < tcpServerClient.Count; j++)
+                try
                 {
-                    try
+                    int Player_Index = room.findByID(Player_ID);
+                    Command c2 = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
+                    byte[] data2 = c2.Serialize();
+                    for (int j = 0; j < tcpServerClient.Count; j++)
                     {
+
                         if (j == Player_Index) continue;
                         tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+
                     }
-                    catch { }
                 }
+                catch { }
             }
         }
 
-        private void CharacterChange(Character char1, Character char2, Guid id)
+        private void CharacterChange(Character character1, Character character2, Guid id)
         {
-            //int Player_Index = room.findByID(id);
-            int Player_Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
-            otherPlayerMasterImage[Player_Index].Texture = char1.CharTexture;
-            otherPlayerServantImage[Player_Index].Texture = char2.CharTexture;
+            int Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
+            int Player = room.findByID(id);
+            room.Player_List[Player].Character1 = character1;
+            room.Player_List[Player].Character2 = character2;
+
+            UpdateRoom(Index, Player);
+        }
+
+        private void UpdateRoom(int index, int player)
+        {
+            if (room.Player_List[player].Status)
+            {
+                otherPlayerMasterImage[index].Texture = GetTexture(room.Player_List[player].Character1.CharAsset);
+                otherPlayerServantImage[index].Texture = GetTexture(room.Player_List[player].Character2.CharAsset);
+            }
+            else
+            {
+                OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
+            }
         }
         #endregion
 
@@ -918,6 +933,7 @@ namespace WindowsGame1
             image.DrawOrder = 0.3f;
             image.Source_Rectangle = new Rectangle(0, 0, image.Texture.Width / 2, image.Texture.Height);
         }
+
         private void unHoverServantChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -943,6 +959,11 @@ namespace WindowsGame1
                 }
             }
             chatDisplayTextbox.Text += message;
+        }
+
+        private Texture2D GetTexture(string asset)
+        {
+            return Content.Load<Texture2D>("Resource/character/" + asset);
         }
         #endregion
 
