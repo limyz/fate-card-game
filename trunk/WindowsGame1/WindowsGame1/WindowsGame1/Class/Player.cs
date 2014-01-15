@@ -15,7 +15,7 @@ namespace WindowsGame1
         Character character1;
         Character character2;
         public Guid id;
-        int graphicIndex;
+        //int graphicIndex;
         public int HandLimit, HandCurrent, MaxHealth, CurrentHealth;
         //Card equipment1, equipment2, equipment3, equipment4;
         public Card[] Equipment = new Card[4];
@@ -50,11 +50,6 @@ namespace WindowsGame1
         {
             get { return address; }
             set { address = value; }
-        }
-        public int GraphicIndex
-        {
-            get { return graphicIndex; }
-            set { graphicIndex = value; }
         }
         #endregion
 

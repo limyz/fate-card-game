@@ -16,6 +16,7 @@ namespace WindowsGame1
             get { return texture; }
             set { texture = value; }
         }
+
         public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
         public Nullable<Rectangle> Source_Rectangle = null;//A rectangle that specifies (in texels) the source texels from a texture. Use null to draw the entire texture.
         public Single Rotation = 0f;//Specifies the angle (in radians) to rotate the sprite about its center.

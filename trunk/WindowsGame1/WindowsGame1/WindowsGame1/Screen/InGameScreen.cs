@@ -244,6 +244,7 @@ namespace WindowsGame1
                     try
                     {
                         if (i == Player_Index) continue;
+                        if (!room.Player_List[i].Status) continue;
                         tcpServerClient[i].GetStream().Write(data, 0, data.Length);
                     }
                     //couldn't send message because the client has disconnected
@@ -255,7 +256,7 @@ namespace WindowsGame1
                         //this.room.Player_List.RemoveAt(i);
                         //i--;
                         room.Player_List[i].Status = false;
-                        UpdateRoom(room.Player_List[i].GraphicIndex, i);
+                        UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), i);
                         update_room = true;
                         SendChatMessage(s);
                     }
@@ -375,9 +376,23 @@ namespace WindowsGame1
                                 {
                                     if (j == Player_Index) continue;
                                     if (!room.Player_List[j].Status) continue;
+                                    if (room.Player_List[j].id == id) continue;
                                     tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
                                 }
                                 catch { }
+                            }
+                        }
+                        else if (c.Command_Code == CommandCode.Update_Room)
+                        {
+                            Room room = (Room)c.Data1;
+                            int Player_Index = room.findByID(Player_ID);
+                            for (i = 0; i < room.Player_List.Count; i++)
+                            {
+                                if (i == Player_Index) continue;
+                                if (!room.Player_List[i].Status)
+                                {
+                                    UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID),Player_Index);
+                                }
                             }
                         }
                     }
@@ -431,7 +446,7 @@ namespace WindowsGame1
                 else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
                 {
                     Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
-                    ScreenEvent.Invoke(this, new SivEventArgs(0));
+                    //ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
             }
         }
@@ -544,23 +559,23 @@ namespace WindowsGame1
             for (int i = 0; i < masterList.Length; i++)
             {
                 XmlElement temp = (XmlElement)xml_master_list[i];
-                masterList[i] = new Character(Content,
+                masterList[i] = new Character(//Content,
                     //xml_master_list[i].Name,
                     xml_master_list[i].InnerText,
                     temp.GetAttribute("img"),
                     Character.Type.Master);
                 //MessageBox(new IntPtr(0), master_list[i].char_asset, "", 0);
-                masterList[i].load_texture();
+                //masterList[i].load_texture();
             }
             for (int i = 0; i < servantList.Length; i++)
             {
                 XmlElement temp = (XmlElement)xml_servant_list[i];
-                servantList[i] = new Character(Content,
+                servantList[i] = new Character(//Content,
                     // xml_servant_list[i].Name,
                     xml_servant_list[i].InnerText,
                     temp.GetAttribute("img"),
                     Character.Type.Servant);
-                servantList[i].load_texture();
+                //servantList[i].load_texture();
             }
             //End character's data load
 
@@ -692,11 +707,9 @@ namespace WindowsGame1
             {
                 if (i == Player_Index)
                 {
-                    room.Player_List[Player_Index].GraphicIndex = -1;
                     i2--;
                     continue;
                 }
-                room.Player_List[i].GraphicIndex = i2;
                 Label labelTemp = new Label("OtherPlayerNameLbel", Game1.font, room.Player_List[i].Player_name
                     , oppPlayerRectangle[i2, 0].X
                     , oppPlayerRectangle[i2, 0].Top - 20
@@ -811,8 +824,8 @@ namespace WindowsGame1
             playerRandomChar[1] = rand.Next(servantList.Length);
             myPlayer.Character1 = masterList[playerRandomChar[0]];
             myPlayer.Character2 = servantList[playerRandomChar[1]];
-            masterImg.Texture = myPlayer.Character1.CharTexture;
-            servantImg.Texture = myPlayer.Character2.CharTexture;
+            masterImg.Texture = GetTexture(myPlayer.Character1.CharAsset);
+            servantImg.Texture = GetTexture(myPlayer.Character2.CharAsset);
             if (!isHost())
             {
                 try
@@ -824,7 +837,9 @@ namespace WindowsGame1
                     networkStream.Write(data, 0, data.Length);
                     tcpClient.Close();
                 }
-                catch { }
+                catch (Exception ex) {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
@@ -838,10 +853,11 @@ namespace WindowsGame1
 
                         if (j == Player_Index) continue;
                         tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
-
                     }
                 }
-                catch { }
+                catch (Exception ex){
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 

@@ -189,7 +189,6 @@ namespace WindowsGame1
                         }
                     }
                 }
-
                 Thread.Sleep(1000);
             }
         }
@@ -562,10 +561,10 @@ namespace WindowsGame1
         }
         public override void End(Command command)
         {
-            room = null;
             End_Broadcast();
             End_Receive();
             EndSynch();
+            //room = null;
         }
         #endregion
 
