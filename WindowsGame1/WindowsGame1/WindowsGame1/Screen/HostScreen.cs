@@ -122,6 +122,7 @@ namespace WindowsGame1
             }
             catch(Exception ex)
             {
+                main_game.mRoomScreen.End(new Command());
                 Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
         }
