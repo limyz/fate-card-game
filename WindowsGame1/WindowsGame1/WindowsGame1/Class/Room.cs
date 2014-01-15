@@ -68,7 +68,7 @@ namespace WindowsGame1
                 }
                 if (player_List[i].id == guid)
                 {
-                    return i;
+                    return i2;
                 }
             }
             return -1;

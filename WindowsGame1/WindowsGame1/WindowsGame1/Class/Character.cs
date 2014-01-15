@@ -25,7 +25,7 @@ namespace WindowsGame1
             Monster = 4
         };
         Type CharType;
-        public Texture2D CharTexture;
+        //public Texture2D CharTexture;
         public Character(string charName,
             string charAsset, Type type)
         {
