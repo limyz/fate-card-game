@@ -108,7 +108,7 @@ namespace WindowsGame1
 
         public Room room;
         public Guid Player_ID;
-        Player myPlayer;
+        //Player myPlayer;
 
         private ContentManager Content;
         Random rand = new Random();
@@ -366,6 +366,7 @@ namespace WindowsGame1
                             Character character1 = (Character)c.Data1;
                             Character character2 = (Character)c.Data2;
                             Guid id = (Guid)c.Data3;
+                            Thread.Sleep(200);
                             CharacterChange(character1, character2, id);
                             int Player_Index = room.findByID(Player_ID);
                             Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
@@ -391,7 +392,7 @@ namespace WindowsGame1
                                 if (i == Player_Index) continue;
                                 if (!room.Player_List[i].Status)
                                 {
-                                    UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID),Player_Index);
+                                    UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), Player_Index);
                                 }
                             }
                         }
@@ -412,41 +413,49 @@ namespace WindowsGame1
                 }
                 else if (receiveTcp.Pending())
                 {
-                    LastReceiveTimeFromHost = DateTime.Now;
-                    TcpClient client = receiveTcp.AcceptTcpClient();
-                    NetworkStream stream = client.GetStream();
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    try
                     {
-                        if (!connect_to_host)
+                        LastReceiveTimeFromHost = DateTime.Now;
+                        TcpClient client = receiveTcp.AcceptTcpClient();
+                        NetworkStream stream = client.GetStream();
+                        int i;
+                        while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
-                            client.Close();
-                            break;
+                            if (!connect_to_host)
+                            {
+                                client.Close();
+                                break;
+                            }
+                            /*BinaryFormatter bin = new BinaryFormatter();
+                            MemoryStream mem = new MemoryStream(bytes);*/
+                            Command c = new Command(bytes);
+                            if (c.Command_Code == CommandCode.Standby)
+                            {
+                                //do nothing
+                            }
+                            else if (c.Command_Code == CommandCode.Chat_Message)
+                            {
+                                chatDisplayTextbox.Text += c.Message;
+                            }
+                            else if (c.Command_Code == CommandCode.Character_Change)
+                            {
+                                Character character1 = (Character)c.Data1;
+                                Character character2 = (Character)c.Data2;
+                                Guid id = (Guid)c.Data3;
+                                CharacterChange(character1, character2, id);
+                            }
                         }
-                        /*BinaryFormatter bin = new BinaryFormatter();
-                        MemoryStream mem = new MemoryStream(bytes);*/
-                        Command c = new Command(bytes);
-                        if (c.Command_Code == CommandCode.Standby)
-                        {
-                            //do nothing
-                        }
-                        else if (c.Command_Code == CommandCode.Chat_Message)
-                        {
-                            chatDisplayTextbox.Text += c.Message;
-                        }
-                        else if (c.Command_Code == CommandCode.Character_Change)
-                        {
-                            Character character1 = (Character)c.Data1;
-                            Character character2 = (Character)c.Data2;
-                            Guid id = (Guid)c.Data3;
-                            CharacterChange(character1, character2, id);
-                        }
+                    }
+                    catch
+                    {
+                        Game1.MessageBox(new IntPtr(0), "Connection Error!", "Connection Error!", 0);
+                        ScreenEvent.Invoke(this, new SivEventArgs(0));
                     }
                 }
                 else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
                 {
                     Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
-                    //ScreenEvent.Invoke(this, new SivEventArgs(0));
+                    ScreenEvent.Invoke(this, new SivEventArgs(0));
                 }
             }
         }
@@ -606,7 +615,7 @@ namespace WindowsGame1
             StartSynch();
 
             int Player_Index = room.findByID(Player_ID);
-            myPlayer = room.Player_List[Player_Index];
+            //myPlayer = room.Player_List[Player_Index];
             oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
             #region Define Ohter Player Area
             switch (room.Player_List.Count)
@@ -732,12 +741,15 @@ namespace WindowsGame1
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 otherPlayerServantImage.Add(servantTemp);
                 //randomCharacter(ref masterTemp, ref servantTemp);
+                //Thread.Sleep(1000);
                 randomCharacter();
             }
         }
         public override void End(Command command)
         {
             //End_Chat();
+            End_Receive();
+            EndSynch();
             this.chatDisplayTextbox.Text = "";
             this.room = null;
             oppPlayerRectangle = null;
@@ -820,24 +832,28 @@ namespace WindowsGame1
 
         public void randomCharacter()
         {
+            NetworkStream networkStream2;
+            TcpClient tcpClient2;
+            int Player = room.findByID(Player_ID);
             playerRandomChar[0] = rand.Next(masterList.Length);
             playerRandomChar[1] = rand.Next(servantList.Length);
-            myPlayer.Character1 = masterList[playerRandomChar[0]];
-            myPlayer.Character2 = servantList[playerRandomChar[1]];
-            masterImg.Texture = GetTexture(myPlayer.Character1.CharAsset);
-            servantImg.Texture = GetTexture(myPlayer.Character2.CharAsset);
+            room.Player_List[Player].Character1 = masterList[playerRandomChar[0]];
+            room.Player_List[Player].Character2 = servantList[playerRandomChar[1]];
+            masterImg.Texture = GetTexture(room.Player_List[Player].Character1.CharAsset);
+            servantImg.Texture = GetTexture(room.Player_List[Player].Character2.CharAsset);
             if (!isHost())
             {
                 try
                 {
-                    Command c = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
+                    Command c = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
                     byte[] data = c.Serialize();
-                    tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
-                    networkStream = tcpClient.GetStream();
-                    networkStream.Write(data, 0, data.Length);
-                    tcpClient.Close();
+                    tcpClient2 = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                    networkStream2 = tcpClient2.GetStream();
+                    networkStream2.Write(data, 0, data.Length);
+                    tcpClient2.Close();
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }
@@ -846,7 +862,7 @@ namespace WindowsGame1
                 try
                 {
                     int Player_Index = room.findByID(Player_ID);
-                    Command c2 = new Command(CommandCode.Character_Change, myPlayer.Character1, myPlayer.Character2, Player_ID);
+                    Command c2 = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
                     byte[] data2 = c2.Serialize();
                     for (int j = 0; j < tcpServerClient.Count; j++)
                     {
@@ -855,7 +871,8 @@ namespace WindowsGame1
                         tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
                     }
                 }
-                catch (Exception ex){
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }

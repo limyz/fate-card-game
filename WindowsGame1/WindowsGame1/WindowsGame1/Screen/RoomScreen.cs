@@ -561,10 +561,10 @@ namespace WindowsGame1
         }
         public override void End(Command command)
         {
+            //room = null;
             End_Broadcast();
             End_Receive();
             EndSynch();
-            //room = null;
         }
         #endregion
 
