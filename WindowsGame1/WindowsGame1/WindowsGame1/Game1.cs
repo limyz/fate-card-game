@@ -156,6 +156,7 @@ namespace WindowsGame1
         public HostScreen mHostScreen;
         public RoomScreen mRoomScreen;
         public JoinScreen mJoinScreen;
+        public CharacterSelectScreen mCharacterSelectScreen;
 
         public Screen mCurrentScreen;
         public Debug debugger = new Debug();
@@ -446,6 +447,7 @@ namespace WindowsGame1
             mHostScreen = new HostScreen(graphics, this.Content, new SivEventHandler(HostScreenEvent), this);
             mRoomScreen = new RoomScreen(graphics, this.Content, new SivEventHandler(RoomScreenEvent), this);
             mJoinScreen = new JoinScreen(graphics, this.Content, new SivEventHandler(JoinScreenEvent), this);
+            mCharacterSelectScreen = new CharacterSelectScreen(graphics, this.Content, new SivEventHandler(CharacterSelectScreenEvent), this);
 
             mCurrentScreen = mMenuScreen;
 
@@ -459,6 +461,7 @@ namespace WindowsGame1
             //Menu to Ingame
             if (e.Command_code == 1)
             {
+                mCurrentScreen = mCharacterSelectScreen;
                 /*mInGameScreen.Start();
                 mCurrentScreen = mInGameScreen;*/
             }
@@ -548,6 +551,14 @@ namespace WindowsGame1
 
                 mRoomScreen.Start(new Command(CommandCode.Standby, 1));
                 mCurrentScreen = mRoomScreen;
+            }
+        }
+        //code = 5
+        public void CharacterSelectScreenEvent(object obj, SivEventArgs e)
+        {
+            if (e.Command_code == 0)
+            {
+                mCurrentScreen = mMenuScreen;
             }
         }
         #endregion
