@@ -10,7 +10,7 @@ namespace WindowsGame1
     [Serializable]
     public class Card
     {
-        private ContentManager Content;
+        //private ContentManager Content;
         public string CardType;
         public string CardName;
         public string CardAsset;
@@ -31,11 +31,11 @@ namespace WindowsGame1
             Jack = 11, Queen = 12, King = 13
         }
         Number cardNumber;
-        public Texture2D texture;
-        public Card(ContentManager Content, string type, string name, string asset, string effect,
+        //public Texture2D texture;
+        public Card(string type, string name, string asset, string effect,
             Suit suit, Number number)
         {
-            this.Content = Content;
+            //this.Content = Content;
             this.CardType = type;
             this.CardName = name;
             this.CardAsset = asset;
@@ -43,9 +43,9 @@ namespace WindowsGame1
             this.cardSuit = suit;
             this.cardNumber = number;
         }
-        public void load_texture()
-        {
-            this.texture = Content.Load<Texture2D>("Resource/card/" + CardAsset);
-        }
+        //public void load_texture()
+        //{
+        //    this.texture = Content.Load<Texture2D>("Resource/card/" + CardAsset);
+        //}
     }
 }

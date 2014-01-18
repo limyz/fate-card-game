@@ -382,6 +382,7 @@ namespace WindowsGame1
                 }
             }
         }
+
         private void ClientReceiver()
         {
             Byte[] bytes = new Byte[1024 * 16];
@@ -390,7 +391,7 @@ namespace WindowsGame1
                 if (StoppedTcp)
                 {
                     break;
-                }     
+                }
                 else if (receiveTcp.Pending())
                 {
                     LastReceiveTimeFromHost = DateTime.Now;
@@ -435,6 +436,7 @@ namespace WindowsGame1
                 }
             }
         }
+
         public void End_Receive()
         {
             receiverRun = false;
@@ -561,10 +563,10 @@ namespace WindowsGame1
         }
         public override void End(Command command)
         {
-            //room = null;
             End_Broadcast();
-            End_Receive();
             EndSynch();
+            End_Receive();
+            this.room = null;
         }
         #endregion
 

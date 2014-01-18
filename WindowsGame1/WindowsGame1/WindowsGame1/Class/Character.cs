@@ -24,7 +24,7 @@ namespace WindowsGame1
             Homunculus = 3,
             Monster = 4
         };
-        Type CharType;
+        public Type CharType;
         //public Texture2D CharTexture;
         public Character(string charName,
             string charAsset, Type type)
