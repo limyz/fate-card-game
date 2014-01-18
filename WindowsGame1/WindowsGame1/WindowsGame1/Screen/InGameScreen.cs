@@ -108,6 +108,7 @@ namespace WindowsGame1
 
         public Room room;
         public Guid Player_ID;
+        int Player_Index;
         //Player myPlayer;
 
         private ContentManager Content;
@@ -128,7 +129,7 @@ namespace WindowsGame1
         Image masterImg, servantImg;
         ImageButton drawButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
-        Label usernameLabel, ipLabel;
+        //Label usernameLabel, ipLabel;
         Div playerControlPanel;
         #endregion
 
@@ -191,7 +192,6 @@ namespace WindowsGame1
 
         private bool isHost()
         {
-            int Player_Index = room.findByID(Player_ID);
             if (room.owner_index == Player_Index)
             {
                 return true;
@@ -208,7 +208,6 @@ namespace WindowsGame1
             {
                 Command c = new Command(CommandCode.Standby);
                 byte[] data = c.Serialize();
-                int Player_Index = room.findByID(Player_ID);
                 bool update_room = false;
                 for (int i = 0; i < tcpServerClient.Count; i++)
                 {
@@ -227,7 +226,7 @@ namespace WindowsGame1
                         //this.room.Player_List.RemoveAt(i);
                         //i--;
                         room.Player_List[i].Status = false;
-                        UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), i);
+                        UpdatePlayer(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), i);
                         update_room = true;
                         SendChatMessage(s);
                     }
@@ -339,7 +338,6 @@ namespace WindowsGame1
                             Guid id = (Guid)c.Data3;
                             Thread.Sleep(200);
                             CharacterChange(character1, character2, id);
-                            int Player_Index = room.findByID(Player_ID);
                             Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
                             byte[] data2 = c2.Serialize();
                             for (int j = 0; j < tcpServerClient.Count; j++)
@@ -363,7 +361,7 @@ namespace WindowsGame1
                                 if (i == Player_Index) continue;
                                 if (!room.Player_List[i].Status)
                                 {
-                                    UpdateRoom(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), Player_Index);
+                                    UpdatePlayer(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), Player_Index);
                                 }
                             }
                         }
@@ -581,10 +579,10 @@ namespace WindowsGame1
 
         public override void Start(Command command)
         {
-            InitializeReceiver();
+            Player_Index = room.findByID(Player_ID);
             StartSynch();
+            InitializeReceiver();
 
-            int Player_Index = room.findByID(Player_ID);
             oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
             #region Define Ohter Player Area
             switch (room.Player_List.Count)
@@ -696,20 +694,22 @@ namespace WindowsGame1
                 labelTemp.CenterAlign = true;
                 OtherPlayerNameLabel.Add(labelTemp);
 
-                Image masterTemp = new Image("Opp Master Image", characterBackTexture, oppPlayerRectangle[i2, 0], 0.3f, this);
+                Image masterTemp = new Image("Opp Master Image", GetTexture(room.Player_List[i].Character1.CharAsset),
+                    oppPlayerRectangle[i2, 0], 0.3f, this);
                 masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
                 //masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
                 otherPlayerMasterImage.Add(masterTemp);
 
-                Image servantTemp = new Image("Opp Servant Image", characterBackTexture,
+                Image servantTemp = new Image("Opp Servant Image", GetTexture(room.Player_List[i].Character2.CharAsset),
                     oppPlayerRectangle[i2, 1], 0.3f, this);
                 servantTemp.Source_Rectangle = new Rectangle(0, 0,
                     characterBackTexture.Width, characterBackTexture.Height / 2);
                 //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 otherPlayerServantImage.Add(servantTemp);
-                randomCharacter();
+                masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
+                servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             }
         }
 
@@ -800,50 +800,42 @@ namespace WindowsGame1
 
         public void randomCharacter()
         {
-            NetworkStream networkStream2;
-            TcpClient tcpClient2;
-            int Player = room.findByID(Player_ID);
-            playerRandomChar[0] = rand.Next(masterList.Length);
-            playerRandomChar[1] = rand.Next(servantList.Length);
-            room.Player_List[Player].Character1 = masterList[playerRandomChar[0]];
-            room.Player_List[Player].Character2 = servantList[playerRandomChar[1]];
-            masterImg.Texture = GetTexture(room.Player_List[Player].Character1.CharAsset);
-            servantImg.Texture = GetTexture(room.Player_List[Player].Character2.CharAsset);
-            if (!isHost())
-            {
-                try
-                {
-                    Command c = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
-                    byte[] data = c.Serialize();
-                    tcpClient2 = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
-                    networkStream2 = tcpClient2.GetStream();
-                    networkStream2.Write(data, 0, data.Length);
-                    tcpClient2.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    int Player_Index = room.findByID(Player_ID);
-                    Command c2 = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
-                    byte[] data2 = c2.Serialize();
-                    for (int j = 0; j < tcpServerClient.Count; j++)
-                    {
+            //NetworkStream networkStream2;
+            //TcpClient tcpClient2;
+            //if (!isHost())
+            //{
+            //    try
+            //    {
+            //        Command c = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
+            //        byte[] data = c.Serialize();
+            //        tcpClient2 = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+            //        networkStream2 = tcpClient2.GetStream();
+            //        networkStream2.Write(data, 0, data.Length);
+            //        tcpClient2.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        Command c2 = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
+            //        byte[] data2 = c2.Serialize();
+            //        for (int j = 0; j < tcpServerClient.Count; j++)
+            //        {
 
-                        if (j == Player_Index) continue;
-                        tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            //            if (j == Player_Index) continue;
+            //            tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
         }
 
         private void CharacterChange(Character character1, Character character2, Guid id)
@@ -853,10 +845,10 @@ namespace WindowsGame1
             room.Player_List[Player].Character1 = character1;
             room.Player_List[Player].Character2 = character2;
 
-            UpdateRoom(Index, Player);
+            UpdatePlayer(Index, Player);
         }
 
-        private void UpdateRoom(int index, int player)
+        private void UpdatePlayer(int index, int player)
         {
             if (room.Player_List[player].Status)
             {

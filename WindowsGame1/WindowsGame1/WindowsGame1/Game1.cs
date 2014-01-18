@@ -518,11 +518,16 @@ namespace WindowsGame1
             //RoomScreen to InGameScreen
             else if (e.Command_code == 1)
             {
-                mInGameScreen.room = mRoomScreen.room;
-                mInGameScreen.Player_ID = mRoomScreen.Player_ID;
+                //mInGameScreen.room = mRoomScreen.room;
+                //mInGameScreen.Player_ID = mRoomScreen.Player_ID;
+                //mRoomScreen.End(new Command());
+                //mInGameScreen.Start(new Command());
+                //mCurrentScreen = mInGameScreen;
+                mCharacterSelectScreen.room = mRoomScreen.room;
+                mCharacterSelectScreen.Player_ID = mRoomScreen.Player_ID;
                 mRoomScreen.End(new Command());
-                mInGameScreen.Start(new Command());
-                mCurrentScreen = mInGameScreen;
+                mCharacterSelectScreen.Start(new Command());
+                mCurrentScreen = mCharacterSelectScreen;
             }
             
         }
@@ -559,8 +564,18 @@ namespace WindowsGame1
         {
             if (e.Command_code == 0)
             {
+                mCharacterSelectScreen.End(new Command());
                 mCurrentScreen = mMenuScreen;
             }
+            else if (e.Command_code == 1)
+            {
+                mInGameScreen.room = mCharacterSelectScreen.room;
+                mInGameScreen.Player_ID = mCharacterSelectScreen.Player_ID;
+                mCharacterSelectScreen.End(new Command());
+                mInGameScreen.Start(new Command());
+                mCurrentScreen = mInGameScreen;
+            }
+
         }
         #endregion
 
