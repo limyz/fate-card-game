@@ -1,19 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Character>
   <Master>
-    <Dark_Sakura img="Dark Sakura">Dark Sakura</Dark_Sakura>
-    <Illya img="Illya">Illya</Illya>
-    <Kiritsugu img="Kiritsugu">Emiya Kiritsugu</Kiritsugu>
-    <Kotomine_Kirei img="Kotomine Kirei">Kotomine Kirei</Kotomine_Kirei>
-    <Shirou img="Shirou">Emiya Shirou</Shirou>
-    <Tohsaka_Rin img="Tohsaka Rin">Tohsaka Rin</Tohsaka_Rin>
+    <Dark_Sakura img="Dark Sakura" health="1.5" perfect="Saber Alter">Dark Sakura</Dark_Sakura>
+    <Illya img="Illya" health="1.5" perfect="Heracles">Illya von Einzbern</Illya>
+    <Kiritsugu img="Kiritsugu" health="2" perfect="Irisviel">Emiya Kiritsugu</Kiritsugu>
+    <Kotomine_Kirei img="Kotomine Kirei" health="2" perfect="Gilgamesh">Kotomine Kirei</Kotomine_Kirei>
+    <Shirou img="Shirou" health="2" perfect="Athur Pendragon">Emiya Shirou</Shirou>
+    <Tohsaka_Rin img="Tohsaka Rin" health="2" perfect="HERO EMIYA">Tohsaka Rin</Tohsaka_Rin>
+    <Kariya img="Kariya" health="1.5" perfect="Lancelot">Matou Kariya</Kariya>
+    <Ryuunosuke img="Ryuunosuke" health="1.5" perfect="Gille de Rais">Uryuu Ryuunosuke</Ryuunosuke>
+    <Matou_Shinji img="Matou Shinji" health="1.5" perfect="null">Matou Shinji</Matou_Shinji>
+    <Waver_Velvet img="Waver Velvet" health="1.5" perfect="Iskander">Waver Velvet</Waver_Velvet>
+    <Matou_Sakura img="Matou Sakura" health="1.5" perfect="Medusa">Matou Sakura</Matou_Sakura>
+    <Kuzuki_Souichirou img="Kuzuki Souichirou" health="2" perfect="Medea">Kuzuki Souichirou</Kuzuki_Souichirou>
+    <Tohsaka_Tokiomi img="Tohsaka Tokiomi" health="1.5" perfect="null">Tohsaka Tokiomi</Tohsaka_Tokiomi>
+    <Kayneth_Archibald img="Kayneth Archibald" health="1.5" perfect="null">Kayneth Archibald</Kayneth_Archibald>
+
   </Master>
   <Servant>
-    <Saber_Alter img="Saber Alter">Saber Alter</Saber_Alter>
-    <Gilgamesh img="Gilgamesh">Gilgamesh</Gilgamesh>
-    <EMIYA img="EMIYA">HERO EMIYA</EMIYA>
-    <Heracles img="Heracles">Heracles</Heracles>
-    <Lancelot img="Lancelot">Lancelot</Lancelot>
-    <Saber img="Saber">Saber</Saber>
+    <Saber_Alter img="Saber Alter" health="3" perfect="Dark Sakura">Saber Alter</Saber_Alter>
+    <Gilgamesh img="Gilgamesh" health="3" perfect="Kotomine Kirei">Gilgamesh</Gilgamesh>
+    <EMIYA img="EMIYA" health="3" perfect="Tohsaka Rin">HERO EMIYA</EMIYA>
+    <Heracles img="Heracles" health="3.5" perfect="Illya von Einzbern">Heracles</Heracles>
+    <Lancelot img="Lancelot" health="3.5" perfect="Matou Kariya">Lancelot</Lancelot>
+    <Saber img="Saber" health="3" perfect="Emiya Shirou">Athur Pendragon</Saber>
+    <Sasaki_Kojirou img="Sasaki Kojirou" health="3" perfect="null">Sasaki Kojirou</Sasaki_Kojirou>
+    <Gille_de_Rais img="Gille de Rais" health="2.5" perfect="Uryuu Ryuunosuke">Gille de Rais</Gille_de_Rais>
+    <Cu_Chulainn img="Cu Chulainn" health="3" perfect="null">Cu Chulainn</Cu_Chulainn>
+    <Medusa img="Medusa" health="3" perfect="Matou Sakura">Medusa</Medusa>
+    <Medea img="Medea" health="3" perfect="Kuzuki Souichirou">Medea</Medea>
+    <Iskander img ="Iskander" health="3" perfect="Waver Velvet">Iskander</Iskander>
+    <Diarmuid img="Diarmuid" health="3" perfect="null">Diarmuid Ua Duibhne</Diarmuid>
   </Servant>
+
+  <Homunculus>
+    <Irisviel img="Irisviel">Irisviel von Einzbern</Irisviel>
+  </Homunculus>
 </Character>

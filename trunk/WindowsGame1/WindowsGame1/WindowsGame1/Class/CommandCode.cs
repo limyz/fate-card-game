@@ -22,6 +22,10 @@ namespace WindowsGame1
         //Room as Data1,used to Start the Game
         Start_Game = 6,
         //Character Change
-        Character_Change = 7
+        Character_Change = 7,
+        //Character 1 as Data1, Character2 as Data2, Guid as Data3, used to send Selected Character to host
+        Character_Select = 8,
+        //Character List asData1, used to send Character List to client
+        Character_Distribute = 9
     };
 }
