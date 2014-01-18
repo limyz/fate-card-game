@@ -462,6 +462,7 @@ namespace WindowsGame1
             if (e.Command_code == 1)
             {
                 mCurrentScreen = mCharacterSelectScreen;
+                mCharacterSelectScreen.Start(new Command());
                 /*mInGameScreen.Start();
                 mCurrentScreen = mInGameScreen;*/
             }

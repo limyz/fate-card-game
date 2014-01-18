@@ -132,35 +132,6 @@ namespace WindowsGame1
         Div playerControlPanel;
         #endregion
 
-        #region Character class
-        //public class Character
-        //{
-        //    private ContentManager Content;
-        //    public string CharTag;
-        //    public string CharName;
-        //    public string CharAsset;
-        //    public Texture2D CharTexture;
-        //    public enum char_type
-        //    {
-        //        master = 0,
-        //        servant = 1
-        //    };
-        //    char_type type;
-        //    public Character(ContentManager Content, string char_tag, string char_name, string char_asset, char_type type)
-        //    {
-        //        this.Content = Content;
-        //        this.CharTag = char_tag;
-        //        this.CharName = char_name;
-        //        this.CharAsset = char_asset;
-        //        this.type = type;
-        //    }
-        //    public void load_texture()
-        //    {
-        //        CharTexture = Content.Load<Texture2D>("Resource/character/" + CharAsset);
-        //    }
-        //}
-        #endregion
-
         #region Card class
         public class Card
         {
@@ -536,21 +507,21 @@ namespace WindowsGame1
             #endregion
 
             #region IP Test
-            usernameLabel = new Label("label_username", Game1.font, "Username"
-                , 1010, 580, 1198 - 1010, Color.White, this);
+            //usernameLabel = new Label("label_username", Game1.font, "Username"
+            //    , 1010, 580, 1198 - 1010, Color.White, this);
 
-            ipLabel = new Label("label_IP", Game1.font, "IP Address"
-                , 1010, 630, 1198 - 1010, Color.White, this);
+            //ipLabel = new Label("label_IP", Game1.font, "IP Address"
+            //    , 1010, 630, 1198 - 1010, Color.White, this);
 
-            usernameTextbox = new TextBox("textbox_username"
-                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , Game1.font, new Rectangle(1010, 600, 188, 20), this);
-            usernameTextbox.Text = "Siv";
+            //usernameTextbox = new TextBox("textbox_username"
+            //    , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+            //    , Game1.font, new Rectangle(1010, 600, 188, 20), this);
+            //usernameTextbox.Text = "Siv";
 
-            ipTextbox = new TextBox("textbox_IP"
-                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , Game1.font, new Rectangle(1010, 650, 188, 20), this);
-            ipTextbox.Text = "255.255.255.255";
+            //ipTextbox = new TextBox("textbox_IP"
+            //    , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+            //    , Game1.font, new Rectangle(1010, 650, 188, 20), this);
+            //ipTextbox.Text = "255.255.255.255";
             #endregion
 
             #region inGameScreen_RegisterHandler
@@ -562,7 +533,6 @@ namespace WindowsGame1
             xml.Load("Data/Character.xml");
             XmlNodeList xml_master_list = xml.GetElementsByTagName("Master")[0].ChildNodes;
             XmlNodeList xml_servant_list = xml.GetElementsByTagName("Servant")[0].ChildNodes;
-            //MessageBox(new IntPtr(0), xml_master_list.Count.ToString(), "", 0);
             masterList = new Character[xml_master_list.Count];
             servantList = new Character[xml_servant_list.Count];
             for (int i = 0; i < masterList.Length; i++)
@@ -615,7 +585,6 @@ namespace WindowsGame1
             StartSynch();
 
             int Player_Index = room.findByID(Player_ID);
-            //myPlayer = room.Player_List[Player_Index];
             oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
             #region Define Ohter Player Area
             switch (room.Player_List.Count)
@@ -740,16 +709,15 @@ namespace WindowsGame1
                 //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 otherPlayerServantImage.Add(servantTemp);
-                //randomCharacter(ref masterTemp, ref servantTemp);
-                //Thread.Sleep(1000);
                 randomCharacter();
             }
         }
+
         public override void End(Command command)
         {
             //End_Chat();
-            End_Receive();
             EndSynch();
+            End_Receive();
             this.chatDisplayTextbox.Text = "";
             this.room = null;
             oppPlayerRectangle = null;
@@ -900,6 +868,11 @@ namespace WindowsGame1
                 OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
             }
         }
+
+        private Texture2D GetTexture(string asset)
+        {
+            return Content.Load<Texture2D>("Resource/character/" + asset);
+        }
         #endregion
 
         #region HANDLER
@@ -993,11 +966,6 @@ namespace WindowsGame1
             }
             chatDisplayTextbox.Text += message;
         }
-
-        private Texture2D GetTexture(string asset)
-        {
-            return Content.Load<Texture2D>("Resource/character/" + asset);
-        }
         #endregion
 
         #region Draw
@@ -1006,15 +974,7 @@ namespace WindowsGame1
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
             DrawText(spriteBatch);
-            //for (int x = 0; x < otherPlayerCount; x++)
-            //{
-            //    for (int y = 0; y < 2; y++)
-            //    {
-            //        spriteBatch.Draw(borderTexture, oppPlayerRectangle[x, y], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
-            //    }
-            //}
-            //spriteBatch.Draw(player_control_texture, playerControlRectangle, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.5f);
-
+            
             if (hand_hovered_index == -1)
             {
                 for (int i = 0; i < handList.Count; i++)
