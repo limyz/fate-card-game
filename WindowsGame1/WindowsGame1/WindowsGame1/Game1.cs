@@ -47,6 +47,18 @@ public static class My_Extension
         //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
     }
 
+    public static Vector2 moveSpeedCacl(Vector2 position, Vector2 destination, float speed)
+    {
+        Vector2 result;
+        float a = position.X - destination.X;
+        float b = destination.Y - position.Y;
+        float x = a / speed;
+        float y = b / speed;
+        result = new Vector2(x, y);
+        return result;
+        
+    }
+
     public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
     {
         if (rec.X == new_x && rec.Y == new_y)
@@ -97,6 +109,26 @@ public static class My_Extension
             rec.Y -= Math.Min(rec.Y - new_y, speed_y);
         }
         return;
+    }
+}
+
+public static class Helper_Direction
+{
+    public static double FaceObject(Vector2 position, Vector2 target)
+    {
+        return (Math.Atan2(position.Y - target.Y, position.X - target.X) * (180 / Math.PI));
+    }
+
+    public static Vector2 MoveTowards(Vector2 position, Vector2 target, float speed)
+    {
+        double direction = (float)(Math.Atan2(target.Y - position.Y, target.X - position.X) * 180 / Math.PI);
+
+        Vector2 move = new Vector2(0, 0);
+
+        move.X = (float)Math.Cos(direction * Math.PI / 180) * speed;
+        move.Y = (float)Math.Sin(direction * Math.PI / 180) * speed;
+
+        return move;
     }
 }
 #endregion

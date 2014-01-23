@@ -131,6 +131,7 @@ namespace WindowsGame1
             }
 
         }
+
         private bool isHost()
         {
             int Player_Index = room.findByID(Player_ID);
@@ -143,6 +144,7 @@ namespace WindowsGame1
                 return false;
             }
         }
+
         private void ServerRespond()
         {
             while (synchronizeRun)
@@ -192,6 +194,7 @@ namespace WindowsGame1
                 Thread.Sleep(1000);
             }
         }
+
         private void ClientJoin()
         {
             Command c = new Command(CommandCode.Join_Game, room.Player_List.Last());
@@ -202,6 +205,7 @@ namespace WindowsGame1
             networkStream.Write(data, 0, data.Length);
             tcpClient.Close();
         }
+
         public void EndSynch()
         {
             synchronizeRun = false;
@@ -700,18 +704,19 @@ namespace WindowsGame1
         #endregion
 
         #region Update's function
-        /*private void play_animation(ref Rectangle rec)
+        private void play_animation(ref Rectangle rec)
         {
-            int x = 255;
-            int y = 270;
-            int speed = 2;
-            if (rec.X == x && rec.Y == y)
-                play_animation_state = false;
-            else
-            {
-                My_Extension.move_rec(ref rec, x, y, speed, speed);
-            }
-        }*/
+            //int x = 255;
+            //int y = 270;
+            //int speed = 2;
+            //if (rec.X == x && rec.Y == y)
+            //    play_animation_state = false;
+            //else
+            //{
+            //    My_Extension.move_rec(ref rec, x, y, speed, speed);
+            //}
+        }
+
         public void UpdateRoom()
         {
             String s = "Owner index: " + room.owner_index + "\n";
@@ -801,4 +806,6 @@ namespace WindowsGame1
         }
         #endregion
     }
+
+    
 }
