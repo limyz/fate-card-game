@@ -16,11 +16,11 @@ namespace WindowsGame1
 {
     public class CharacterSelectScreen : Screen
     {
-        #region Variable Declaration\
+        #region Variable Declaration
         public Room room;
         public Guid Player_ID;
         int Player_Index;
-        Player mainPlayer;
+        bool select1 = false, select2 = false;
         Background bg;
         ContentManager Content;
         XmlDocument xml = new XmlDocument();
@@ -429,7 +429,7 @@ namespace WindowsGame1
                 p.Status = false;
             }
             CharacterDistribute();
-            mainPlayer = new Player("test player", "0.0.0.0");
+            //mainPlayer = new Player("test player", "0.0.0.0");
             UpdateRoom();
         }
 
@@ -548,6 +548,8 @@ namespace WindowsGame1
                         int count = CountSelectChar();
                         if (count < 2)
                         {
+                            Vector2 newPos = new Vector2(300, 300);
+                            characterImage[i].Move = newPos;
                             charSelectBorder[i].Width = 4;
                             charSelectBorder[i].color = Color.BlueViolet;
                         }
@@ -590,7 +592,7 @@ namespace WindowsGame1
                         tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
                     }
                     UpdateRoom();
-                    CheckStartGame();
+                    //CheckStartGame();
                 }
                 catch (Exception ex)
                 {
