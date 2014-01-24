@@ -55,7 +55,8 @@ namespace WindowsGame1
         {
             if (sender as ImageButton == start_button)
             {
-                ScreenEvent.Invoke(this, new SivEventArgs(1));
+                //ScreenEvent.Invoke(this, new SivEventArgs(1));
+                this.start_button.Move(100, 100, 200);
                 return;
             }
             else if (sender as ImageButton == host_button)
