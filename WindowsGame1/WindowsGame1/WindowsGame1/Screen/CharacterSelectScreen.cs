@@ -550,6 +550,7 @@ namespace WindowsGame1
                         {
                             Vector2 newPos = new Vector2(300, 300);
                             characterImage[i].Move = newPos;
+                            characterImage[i].MoveSpeed = 100;
                             charSelectBorder[i].Width = 4;
                             charSelectBorder[i].color = Color.BlueViolet;
                         }

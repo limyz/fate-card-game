@@ -24,6 +24,7 @@ namespace WindowsGame1
         public SpriteEffects effects = SpriteEffects.None;//Effects to apply.
         public Vector2 Scale;
         public Vector2 Move;
+        public float MoveSpeed = 0;
 
         public Image(string name, Texture2D texture, Rectangle rec
             , float draw_order, Screen parent)
@@ -41,12 +42,18 @@ namespace WindowsGame1
 
         public override void Update(GameTime theTime)
         {
-            if (Convert.ToInt32(this.Move.X) != Convert.ToInt32(this.Location.X) && Convert.ToInt32(this.Move.Y) != Convert.ToInt32(this.Location.Y))
+            //if (Convert.ToInt32(this.Move.X) != Convert.ToInt32(this.Location.X) && Convert.ToInt32(this.Move.Y) != Convert.ToInt32(this.Location.Y))
+            //{
+            //    Vector2 speed = Helper_Direction.MoveTowards(this.Location, this.Move, 2f);
+            //    this.Location.X += speed.X;
+            //    this.Location.Y += speed.Y;
+            //    Console.WriteLine("X:" + Convert.ToInt32(this.Location.X) + "/Y:" + Convert.ToInt32(this.Location.Y));
+            //}
+            if (MoveSpeed > 0)
             {
-                Vector2 speed = Helper_Direction.MoveTowards(this.Location, this.Move, 2f);
-                this.Location.X += speed.X;
-                this.Location.Y += speed.Y;
-                Console.WriteLine("X:" + Convert.ToInt32(this.Location.X) + "/Y:" + Convert.ToInt32(this.Location.Y));
+                this.Location.X += ((this.Move.X - this.Location.X) / MoveSpeed);
+                this.Location.Y += ((this.Move.Y - this.Location.Y) / MoveSpeed);
+                MoveSpeed--;
             }
         }
 
