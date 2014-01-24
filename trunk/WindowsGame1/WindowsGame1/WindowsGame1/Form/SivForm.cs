@@ -95,15 +95,44 @@ namespace WindowsGame1
         public void Delete(){
             Parent.FormsUpdate -= Update;
             Parent.FormsDraw -= Draw;
-            Parent.FormsUpdate += Remove_From_Forms_List;           
+            Parent.FormsUpdate += this.Remove_From_Forms_List;           
         }
 
         private void Remove_From_Forms_List(GameTime gameTime)
         {
-            //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "before", 0);
+            //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "before", 0);
             Parent.Form_list.Remove(this);        
             Parent.FormsUpdate -= Remove_From_Forms_List;
-            //Game1.MessageBox(new IntPtr(0), parent.Form_list.Count.ToString(), "after", 0);
+            //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "after", 0);
+        }
+
+        public int NewX;
+        public int NewY;
+        public float realX;
+        public float realY;
+        public float MoveTime = 0;
+        public void Move(int NewX, int NewY, float move_time)
+        {
+            this.NewX = NewX;
+            this.NewY = NewY;
+            this.MoveTime = move_time;
+            this.realX = Rect.X;
+            this.realY = Rect.Y;
+
+            Parent.FormsUpdate += this.Mover;
+        }
+        private void Mover(GameTime gameTime)
+        {
+            if (MoveTime == 0)
+            {
+                Parent.FormsUpdate -= this.Mover;
+                return;
+            }
+            this.realX += ((this.NewX - this.realX) / MoveTime);
+            this.realY += ((this.NewY - this.realY) / MoveTime);
+            this.Rect.X = (int)realX;
+            this.Rect.Y = (int)realY;
+            this.MoveTime--;
         }
 
         public virtual void Update(GameTime gameTime)

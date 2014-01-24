@@ -548,9 +548,10 @@ namespace WindowsGame1
                         int count = CountSelectChar();
                         if (count < 2)
                         {
-                            Vector2 newPos = new Vector2(300, 300);
-                            characterImage[i].Move = newPos;
-                            characterImage[i].MoveSpeed = 100;
+                            //Vector2 newPos = new Vector2(300, 300);
+                            //characterImage[i].Move = newPos;
+                            //characterImage[i].MoveSpeed = 100;
+                            characterImage[i].Move(300, 300, 100);
                             charSelectBorder[i].Width = 4;
                             charSelectBorder[i].color = Color.BlueViolet;
                         }
