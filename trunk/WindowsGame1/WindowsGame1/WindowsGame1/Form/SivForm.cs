@@ -123,7 +123,7 @@ namespace WindowsGame1
         }
         private void Mover(GameTime gameTime)
         {
-            if (MoveTime == 0)
+            if (MoveTime == 0 || (Rect.X == NewX && Rect.Y == NewY ))
             {
                 Parent.FormsUpdate -= this.Mover;
                 return;
