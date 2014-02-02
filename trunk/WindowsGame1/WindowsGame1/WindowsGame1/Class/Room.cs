@@ -33,6 +33,19 @@ namespace WindowsGame1
             this.Player_List.Capacity = Number_of_Player;
         }
 
+        public bool isHost(Guid Player_ID)
+        {
+            int Player_Index = this.findByID(Player_ID);
+            if (this.owner_index == Player_Index)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public int findByID(Guid guid)
         {
             for (int i = 0; i < this.player_List.Count; i++)
