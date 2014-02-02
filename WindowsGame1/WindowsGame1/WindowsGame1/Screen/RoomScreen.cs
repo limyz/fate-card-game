@@ -106,7 +106,7 @@ namespace WindowsGame1
         public void StartSynch()
         {
             synchronizeRun = true;
-            if (isHost())
+            if (room.isHost(Player_ID))
             {
                 int Player_Index = room.findByID(Player_ID);
                 for (int i = 0; i < room.Player_List.Count; i++)
@@ -132,18 +132,7 @@ namespace WindowsGame1
 
         }
 
-        private bool isHost()
-        {
-            int Player_Index = room.findByID(Player_ID);
-            if (room.owner_index == Player_Index)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
 
         private void ServerRespond()
         {
@@ -237,7 +226,7 @@ namespace WindowsGame1
             StoppedTcp = false;
             LastReceiveTimeFromHost = DateTime.Now;
 
-            if (isHost())
+            if (room.isHost(Player_ID))
             {
                 IPEndPoint endPoint = new IPEndPoint(System.Net.IPAddress.Any, 51002);
                 receiveTcp = new TcpListener(endPoint);
@@ -660,7 +649,7 @@ namespace WindowsGame1
         private void ChatBox_EnterPressed(object sender)
         {
             string s = room.findPlayerByID(Player_ID).Player_name + ": " + chat.Text + "\n";
-            if (isHost())
+            if (room.isHost(Player_ID))
             {
                 SendChatMessage(s);
             }

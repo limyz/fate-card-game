@@ -106,11 +106,11 @@ namespace WindowsGame1
             //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "after", 0);
         }
 
-        public int NewX;
-        public int NewY;
-        public float realX;
-        public float realY;
-        public float MoveTime = 0;
+        int NewX;
+        int NewY;
+        float realX;
+        float realY;
+        float MoveTime = 0;
         public void Move(int NewX, int NewY, float move_time)
         {
             this.NewX = NewX;
