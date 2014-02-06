@@ -123,9 +123,10 @@ namespace WindowsGame1
         Character[] masterList, servantList;
         List<Card> cardList = new List<Card>();
         List<Card> handList = new List<Card>();
+        List<Image> Hand_Image_List = new List<Image>();
         List<Image> otherPlayerMasterImage = new List<Image>();
         List<Image> otherPlayerServantImage = new List<Image>();
-        List<Rectangle> hand_area_list = new List<Rectangle>();
+        //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg;
         ImageButton drawButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
@@ -739,11 +740,12 @@ namespace WindowsGame1
             //randomCharacter();
             if (hand_hovered_index == -1)
             {
-                for (int i = hand_area_list.Count - 1; i >= 0; i--)
+                for (int i = Hand_Image_List.Count - 1; i >= 0; i--)
                 {
-                    if (main_game.mouse_hover(hand_area_list[i]))
+                    if (main_game.mouse_hover(Hand_Image_List[i].Rect))
                     {
                         hand_hovered_index = i;
+                        Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
                         break;
                     }
                     hand_hovered_index = -1;
@@ -751,18 +753,20 @@ namespace WindowsGame1
             }
             else
             {
-                if (!main_game.mouse_hover(hand_area_list[hand_hovered_index]))
+                if (!main_game.mouse_hover(Hand_Image_List[hand_hovered_index].Rect))
                 {
-                    for (int i = hand_area_list.Count - 1; i >= 0; i--)
+                    for (int i = Hand_Image_List.Count - 1; i >= 0; i--)
                     {
-                        if (main_game.mouse_hover(hand_area_list[i]))
+                        if (main_game.mouse_hover(Hand_Image_List[i].Rect))
                         {
+                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
                             hand_hovered_index = i;
+                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
                             break;
                         }
-                        hand_hovered_index = -1;
                     }
-
+                    Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
+                    hand_hovered_index = -1;
                 }
             }
             base.Update(theTime);
@@ -772,32 +776,33 @@ namespace WindowsGame1
         #region Update's Function
         private void resize_hand()
         {
-            int net_width = (hand_area_list[hand_area_list.Count - 1].Right - hand_area_list[0].Left);
+            int net_width = (Hand_Image_List.Last().Rect.Right - Hand_Image_List[0].Rect.Left);
             int oversize = net_width - handWitdh;
             if (oversize > 0)
             {
-                padding = padding - (oversize / hand_area_list.Count);
+                padding = padding - (oversize / Hand_Image_List.Count);
             }
-            for (int i = 1; i < hand_area_list.Count; i++)
+            for (int i = 1; i < Hand_Image_List.Count; i++)
             {
-                hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                Hand_Image_List[i].Rect = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
             }
         }
-
         private void draw_card()
         {
             try
             {
                 handList.Add(cardList[0]);
                 cardList.RemoveAt(0);
-                hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+                Image temp_image = new Image("", handList.Last().texture, new Rectangle(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+                Hand_Image_List.Add(temp_image);
+                //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
             }
             catch (Exception ex)
             {
                 Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
         }
-
         public void randomCharacter()
         {
             //NetworkStream networkStream2;
@@ -837,7 +842,6 @@ namespace WindowsGame1
             //    }
             //}
         }
-
         private void CharacterChange(Character character1, Character character2, Guid id)
         {
             int Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
@@ -847,7 +851,6 @@ namespace WindowsGame1
 
             UpdatePlayer(Index, Player);
         }
-
         private void UpdatePlayer(int index, int player)
         {
             if (room.Player_List[player].Status)
@@ -860,7 +863,6 @@ namespace WindowsGame1
                 OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
             }
         }
-
         private Texture2D GetTexture(string asset)
         {
             return Content.Load<Texture2D>("Resource/character/" + asset);
@@ -880,7 +882,6 @@ namespace WindowsGame1
                 return;
             }
         }
-
         private void chat_textbox_onEnterPressed(TextBox sender)
         {
             string s = room.findPlayerByID(Player_ID).Player_name + ": " + chatInputTextbox.Text + "\n";
@@ -900,18 +901,15 @@ namespace WindowsGame1
             }
             this.chatInputTextbox.Text = "";
         }
-
         private void textbox_onShiftEnterPressed(TextBox sender)
         {
             sender.RecieveTextInput('\n');
         }
-
         private void draw_button_clicked(object sender, FormEventData e)
         {
             draw_card();
             resize_hand();
         }
-
         private void hoverChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -923,7 +921,6 @@ namespace WindowsGame1
                 image.Rect.X = image.Rect.X - 50;
             }
         }
-
         private void unHoverMasterChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -931,7 +928,6 @@ namespace WindowsGame1
             image.DrawOrder = 0.3f;
             image.Source_Rectangle = new Rectangle(0, 0, image.Texture.Width / 2, image.Texture.Height);
         }
-
         private void unHoverServantChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -940,7 +936,6 @@ namespace WindowsGame1
             image.Rect.X = image.Rect.X + 50;
             image.Source_Rectangle = new Rectangle(image.Texture.Width / 2, 0, image.Texture.Width / 2, image.Texture.Height);
         }
-
         private void SendChatMessage(string message)
         {
             Command c = new Command(CommandCode.Chat_Message, message);
@@ -967,7 +962,7 @@ namespace WindowsGame1
 
             DrawText(spriteBatch);
             
-            if (hand_hovered_index == -1)
+            /*if (hand_hovered_index == -1)
             {
                 for (int i = 0; i < handList.Count; i++)
                 {
@@ -980,13 +975,13 @@ namespace WindowsGame1
                 {
                     if (i == hand_hovered_index)
                     {
-                        spriteBatch.Draw(handList[i].texture/*main_game.white_texture*/, hand_area_list[i], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.301f);
+                        spriteBatch.Draw(handList[i].texture, hand_area_list[i], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.301f);
                         spriteBatch.Draw(handList[i].texture, hand_area_list[i], null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, 0.3f);
                     }
                     else
                         spriteBatch.Draw(handList[i].texture, hand_area_list[i], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f - i * 0.001f);
                 }
-            }
+            }*/
             base.Draw(graphics, spriteBatch, gameTime);
             //spriteBatch.Draw(card_list[0].texture, player_card_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.0f);
             spriteBatch.End();
