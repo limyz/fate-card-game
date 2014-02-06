@@ -84,12 +84,17 @@ namespace WindowsGame1
             this.Parent = parent;
             this.original_type = original_type;
             this.Rect = rec;
-            parent.Form_list.Add(this);
-            parent.FormsUpdate += Update;
-            parent.FormsDraw += Draw;
+            Parent.FormsUpdate += Update;
+            Parent.FormsDraw += Draw;
+            Parent.FormsUpdate += this.Adder;
 
             //Debugger
             //parent.main_game.debugger.Register_For_Debug(this);
+        }
+        private void Adder(GameTime gameTime)
+        {
+            Parent.Form_list.Add(this);
+            Parent.FormsUpdate -= this.Adder;
         }
 
         public void Delete(){
@@ -97,7 +102,6 @@ namespace WindowsGame1
             Parent.FormsDraw -= Draw;
             Parent.FormsUpdate += this.Remove_From_Forms_List;           
         }
-
         private void Remove_From_Forms_List(GameTime gameTime)
         {
             //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "before", 0);
