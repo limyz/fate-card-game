@@ -113,7 +113,8 @@ namespace WindowsGame1
 
         private ContentManager Content;
         Random rand = new Random();
-        Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture;
+        Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
+            view_detail_button_textture;
         Rectangle[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -127,7 +128,7 @@ namespace WindowsGame1
         List<Image> otherPlayerMasterImage = new List<Image>();
         List<Image> otherPlayerServantImage = new List<Image>();
         //List<Rectangle> hand_area_list = new List<Rectangle>();
-        Image masterImg, servantImg;
+        Image masterImg, servantImg, Card_Detail_Image;
         ImageButton drawButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         //Label usernameLabel, ipLabel;
@@ -452,6 +453,7 @@ namespace WindowsGame1
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
             shirou = Content.Load<Texture2D>("Resource/character1");
+            view_detail_button_textture = Content.Load<Texture2D>("Resource/view_detail_button");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
@@ -472,6 +474,10 @@ namespace WindowsGame1
                 new Rectangle(170, 564, 565, 156), this);
             equipZoneBorder = new Border("Equip Zone", Color.Red, 2,
                 new Rectangle(0, 564, 168, 156), this);
+
+            Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
+                , new Rectangle(900, 10, 300, 600), 0.1f, this);
+            Card_Detail_Image.Visible = false;
             #endregion
 
             #region Button
@@ -745,7 +751,9 @@ namespace WindowsGame1
                     if (main_game.mouse_hover(Hand_Image_List[i].Rect))
                     {
                         hand_hovered_index = i;
+
                         Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
+                        Hand_Image_List[hand_hovered_index].OnClick += CardImage_Onlick;
                         break;
                     }
                     hand_hovered_index = -1;
@@ -760,12 +768,22 @@ namespace WindowsGame1
                         if (main_game.mouse_hover(Hand_Image_List[i].Rect))
                         {
                             Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
+                            Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
+                            if (View_Detail_Button != null)
+                                ClearDetailButtonAndImage();
+
                             hand_hovered_index = i;
+
                             Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
+                            Hand_Image_List[hand_hovered_index].OnClick += CardImage_Onlick;
                             break;
                         }
                     }
                     Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
+                    Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
+                    if (View_Detail_Button != null)
+                        ClearDetailButtonAndImage();
+
                     hand_hovered_index = -1;
                 }
             }
@@ -952,6 +970,41 @@ namespace WindowsGame1
                 }
             }
             chatDisplayTextbox.Text += message;
+        }
+        
+        bool Card_Clicked = false;
+        ImageButton View_Detail_Button;
+        private void CardImage_Onlick(object sender, FormEventData e)
+        {
+            if (!Card_Clicked)
+            {
+                Image image = (Image)sender;
+                View_Detail_Button = new ImageButton("view_detail_button"
+                    , view_detail_button_textture
+                    , new Rectangle(image.Rect.X, image.Rect.Y, 87, 20), this);
+                View_Detail_Button.DrawOrder = 0.48f;
+                View_Detail_Button.Value = image;
+                View_Detail_Button.OnClick += ViewDetailButton_Onclick;
+                Card_Clicked = true;
+            }
+            else
+            {
+                MouseState ms = (MouseState)e.args;
+                if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
+                ClearDetailButtonAndImage();
+            }
+        }
+        private void ClearDetailButtonAndImage()
+        {
+            View_Detail_Button.Delete();
+            Card_Detail_Image.Visible = false;
+            Card_Clicked = false;
+        }
+        private void ViewDetailButton_Onclick(object sender, FormEventData e)
+        {
+            Image image = (Image)((ImageButton)sender).Value;
+            Card_Detail_Image.Texture = image.Texture;
+            Card_Detail_Image.Visible = true;
         }
         #endregion
 
