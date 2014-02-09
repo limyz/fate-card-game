@@ -126,20 +126,6 @@ namespace WindowsGame1
                     return;
                 }
                 _readonly = value;
-                if (_readonly)
-                {
-                    this.OnClick -= textbox_clicked;
-                    this.OnClick += textbox_clicked_Readonly;
-                    this.OnMouseEnter -= textbox_OnMouseEnter;
-                    this.OnMouseLeave -= textbox_OnMouseLeave;
-                }
-                else
-                {
-                    this.OnClick -= textbox_clicked_Readonly;
-                    this.OnClick += textbox_clicked;
-                    this.OnMouseEnter += textbox_OnMouseEnter;
-                    this.OnMouseLeave += textbox_OnMouseLeave;
-                }
             }
         }
 
@@ -157,9 +143,11 @@ namespace WindowsGame1
             _font = font;           
             hscrollbar_width = rec.Width;
             vscrollbar_height = rec.Height;
-            this.Parent = parent;  
+            this.Activable = true;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
+            OnActive += new FormEventHandler(Textbox_OnActive);
+            OnDeactive += new FormEventHandler(textbox_OnDeActive);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
             OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
@@ -175,9 +163,11 @@ namespace WindowsGame1
             _HighlightedTexture = highlightedTexture;
             _caretTexture = caretTexture;
             _font = font;
-            this.Parent = parent;
+            this.Activable = true;
             //Form event register
             OnClick += new FormEventHandler(textbox_clicked);
+            OnActive += new FormEventHandler(Textbox_OnActive);
+            OnDeactive += new FormEventHandler(textbox_OnDeActive);
             OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
             OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
             OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
@@ -610,15 +600,19 @@ namespace WindowsGame1
         #endregion
         #region FormEventHandler
         private void textbox_clicked(object sender, FormEventData e)
-        {
-            Parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
-            Parent.ActiveForm = (SivForm)sender;
+        {       
             check_textbox_clicked((MouseState)e.args);
         }
-        private void textbox_clicked_Readonly(object sender, FormEventData e)
+        private void Textbox_OnActive(object sender, FormEventData e)
         {
-            Parent.ActiveForm = (SivForm)sender;
-            check_textbox_clicked((MouseState)e.args);
+            if (!ReadOnly)
+            {
+                Parent.main_game.keyboard_text_dispatcher.Subscriber = (TextBox)sender;
+            }
+        }
+        private void textbox_OnDeActive(object sender, FormEventData e)
+        {
+            Parent.main_game.keyboard_text_dispatcher.Subscriber = null;
         }
         private void textbox_OnMouseEnter(object sender, FormEventData e)
         {

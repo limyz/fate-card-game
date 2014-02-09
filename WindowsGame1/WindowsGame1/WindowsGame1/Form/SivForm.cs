@@ -45,18 +45,11 @@ namespace WindowsGame1
             {
                 if (_visible == value) return;
                 _visible = value;
-                if (_visible)
-                {
-                    Parent.FormsUpdate += Update;
-                    Parent.FormsDraw += Draw;
-                }
-                else
-                {
-                    Parent.FormsUpdate -= Update;
-                    Parent.FormsDraw -= Draw;
-                }
             }
         }
+        public float Priority = 0.5f;
+        public float Active_Priority = 0.5f;
+        public bool Activable = false;
 
         public FormEventHandler OnClick;
         public FormEventHandler OnMouseUp;
@@ -77,6 +70,8 @@ namespace WindowsGame1
         public FormEventHandler OnKeyPress;
         public FormEventHandler OnKeyDown;
         public FormEventHandler OnKeyUp;
+        public FormEventHandler OnActive;
+        public FormEventHandler OnDeactive;
 
         public SivForm(string _name, Screen parent, Type original_type,Rectangle rec)
         {
@@ -84,30 +79,27 @@ namespace WindowsGame1
             this.Parent = parent;
             this.original_type = original_type;
             this.Rect = rec;
-            Parent.FormsUpdate += Update;
-            Parent.FormsDraw += Draw;
-            Parent.FormsUpdate += this.Adder;
+            Parent.FormAddindList.Add(this);
 
             //Debugger
             //parent.main_game.debugger.Register_For_Debug(this);
         }
-        private void Adder(GameTime gameTime)
+        public SivForm(string _name, Screen parent, Type original_type, Rectangle rec, float priority, float active_priority)
         {
-            Parent.Form_list.Add(this);
-            Parent.FormsUpdate -= this.Adder;
+            Name = _name;
+            this.Parent = parent;
+            this.original_type = original_type;
+            this.Rect = rec;
+            this.Priority = priority;
+            this.Active_Priority = active_priority;
+            Parent.FormAddindList.Add(this);
+
+            //Debugger
+            //parent.main_game.debugger.Register_For_Debug(this);
         }
 
         public void Delete(){
-            Parent.FormsUpdate -= Update;
-            Parent.FormsDraw -= Draw;
-            Parent.FormsUpdate += this.Remove_From_Forms_List;           
-        }
-        private void Remove_From_Forms_List(GameTime gameTime)
-        {
-            //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "before", 0);
-            Parent.Form_list.Remove(this);        
-            Parent.FormsUpdate -= Remove_From_Forms_List;
-            //Game1.MessageBox(new IntPtr(0), Parent.Form_list.Count.ToString(), "after", 0);
+            Parent.FormDeletingList.Add(this);       
         }
 
         int NewX;

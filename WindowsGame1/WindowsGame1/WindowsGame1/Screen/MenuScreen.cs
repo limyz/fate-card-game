@@ -47,10 +47,13 @@ namespace WindowsGame1
 
             bg_rec = new Rectangle(0, 0, main_game.window_width, main_game.window_height);
             bg_texture = theContent.Load<Texture2D>("Resource/menu_background_2");
+
+            #region Screen_RegisterHandler    
+            #endregion
         }
         #endregion
 
-        #region forms's handler
+        #region Handler
         private void Menu_button_click_handler(object sender, FormEventData e = null)
         {
             if (sender as ImageButton == start_button)
