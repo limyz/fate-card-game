@@ -88,6 +88,15 @@ namespace WindowsGame1
             ls.Add("Sakuraba Neku");
             ls.Add("Yayyyyy");
             ls.Add("I'm so powerful");
+            ls.Add("Sakuraba Neku");
+            ls.Add("Yayyyyy");
+            ls.Add("I'm so powerful");
+            ls.Add("Sakuraba Neku");
+            ls.Add("Yayyyyy");
+            ls.Add("I'm so powerful");
+            ls.Add("Sakuraba Neku");
+            ls.Add("Yayyyyy");
+            ls.Add("I'm so powerful");
             test_menu = new Menu("test_menu", font, ls, this);
             test_menu.MenuItemSelected += Test_Menu_Item_Selected;
 

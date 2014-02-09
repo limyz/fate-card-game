@@ -43,7 +43,7 @@ namespace WindowsGame1
                 }
             }
             if (maxwidth > 0)
-                maxwidth += (int)(Font.Spacing * 2);
+                maxwidth += Font.LineSpacing * 2;
             this.Rect = new Rectangle(x, y, maxwidth, sumheight);
             Shown = true;
             Parent.ActiveForm = this;
@@ -88,17 +88,19 @@ namespace WindowsGame1
             {
                 if (ItemsList.Count > 0)
                 {
-                    sb.Draw(Game1.whiteTexture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.013f);
+                    var cc = System.Drawing.SystemColors.Menu;
+                    sb.Draw(Game1.whiteTexture, Rect, null, new Color(cc.R, cc.G, cc.B, cc.A), 0f, new Vector2(0, 0), SpriteEffects.None, 0.013f);
                     if (Hoverring_Item_Index != -1)
                     {
+                        var hc = System.Drawing.SystemColors.MenuHighlight;
                         Rectangle rec = new Rectangle(Rect.X
                             , Rect.Y + Hoverring_Item_Index * Font.LineSpacing
                             , Rect.Width, Font.LineSpacing + (int)Font.Spacing);
-                        sb.Draw(Game1.highlightedTextbox, rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.012f);
+                        sb.Draw(Game1.whiteTexture, rec, null, new Color(hc.R, hc.G, hc.B, hc.A), 0f, new Vector2(0, 0), SpriteEffects.None, 0.012f);
                     }
                     for (int i = 0; i < ItemsList.Count; i++)
                     {
-                        Vector2 pos = new Vector2(Rect.X + Font.Spacing, Rect.Y + i * Font.LineSpacing + Font.Spacing);
+                        Vector2 pos = new Vector2(Rect.X + Font.LineSpacing, Rect.Y + i * Font.LineSpacing + Font.Spacing);
                         sb.DrawString(Font, ItemsList[i], pos, Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.011f);
                     }
                 }
