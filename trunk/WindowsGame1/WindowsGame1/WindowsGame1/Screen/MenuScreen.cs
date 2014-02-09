@@ -54,12 +54,22 @@ namespace WindowsGame1
         #endregion
 
         #region Handler
+        bool moved = false;
         private void Menu_button_click_handler(object sender, FormEventData e = null)
         {
             if (sender as ImageButton == start_button)
             {
                 //ScreenEvent.Invoke(this, new SivEventArgs(1));
-                this.start_button.Move(100, 100, 200);
+                if (!moved)
+                {
+                    this.start_button.Move(100, 100, 200);
+                    moved = true;
+                }
+                else
+                {
+                    this.start_button.Move(38, 653, 200);
+                    moved = false;
+                }
                 return;
             }
             else if (sender as ImageButton == host_button)
