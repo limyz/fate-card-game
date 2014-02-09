@@ -16,7 +16,24 @@ namespace WindowsGame1
         protected SivEventHandler ScreenEvent;        
         public Game1 main_game;
         public List<SivForm> Form_list=new List<SivForm>();
-        public SivForm ActiveForm;
+        private SivForm activeform;
+        public SivForm ActiveForm
+        {
+            get { return activeform; }
+            set
+            {
+                if (activeform == value) return;
+                if (value != null)
+                    if (!value.Activable) return;
+                if (activeform != null)
+                    if (activeform.OnDeactive != null)
+                        activeform.OnDeactive.Invoke(activeform, null);
+                activeform = value;
+                if (activeform != null)
+                    if (activeform.OnActive != null)
+                        activeform.OnActive.Invoke(activeform, null);
+            }
+        }
 
         public Screen(String _name, SivEventHandler theScreenEvent, Game1 parent)
         {
@@ -75,6 +92,20 @@ namespace WindowsGame1
                     }
                 }
             }
+
+            List<SivForm> lsf = Form_list.OrderBy(sv => sv.Active_Priority).ToList();
+            foreach (SivForm form in lsf)
+            {
+                if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                {
+                    if (form.Activable)
+                    {
+                        ActiveForm = form;
+                        return;
+                    }
+                }
+            }
+            ActiveForm = null;
         }
         private void On_Mouse_Up_Dispatcher(MouseState ms, MouseState last_ms)
         {
@@ -207,7 +238,10 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-
+                if (form.Rect.Contains(new Point(ms.X, ms.Y)) && form.OnMouseMove != null)
+                {
+                    form.OnMouseMove.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                }
                 if (!form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
                     && form.Rect.Contains(new Point(ms.X, ms.Y))
                     && form.OnMouseEnter != null)
@@ -254,9 +288,6 @@ namespace WindowsGame1
         }
         #endregion
 
-        public UpdateDelegate FormsUpdate;
-        public DrawDelegate FormsDraw;
-
         public virtual void Start(Command command)
         {
         }
@@ -264,16 +295,48 @@ namespace WindowsGame1
         {
         }
 
+        public UpdateDelegate FormsUpdate;
+        public DrawDelegate FormsDraw;
+
+        public List<SivForm> FormAddindList = new List<SivForm>();
+        public List<SivForm> FormDeletingList = new List<SivForm>();
         public virtual void Update(GameTime theTime)
         {
+            if (FormAddindList.Count > 0)
+            {
+                foreach (SivForm sv in FormAddindList)
+                    this.Form_list.Add(sv);
+                FormAddindList.Clear();
+                Form_list = Form_list.OrderBy(sv => sv.Priority).ToList();
+            }
+            if (FormDeletingList.Count > 0)
+            {
+                foreach (SivForm sv in FormDeletingList)
+                    this.Form_list.Remove(sv);
+                FormDeletingList.Clear();
+            }
+
+            foreach (SivForm sv in Form_list)
+            {
+                if (sv.Visible)
+                {
+                    sv.Update(theTime);
+                }
+            }
             if (FormsUpdate != null)
             {
                 FormsUpdate.Invoke(theTime);
             }
         }
-
-        public virtual void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch,GameTime gameTime)
+        public virtual void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
+            foreach (SivForm sv in Form_list)
+            {
+                if (sv.Visible)
+                {
+                    sv.Draw(spriteBatch, gameTime);
+                }
+            }
             if (FormsDraw != null)
             {
                 FormsDraw.Invoke(spriteBatch, gameTime);

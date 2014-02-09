@@ -477,6 +477,7 @@ namespace WindowsGame1
 
             Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
                 , new Rectangle(900, 10, 300, 600), 0.1f, this);
+            Card_Detail_Image.Priority = 0.6f;
             Card_Detail_Image.Visible = false;
             #endregion
 

@@ -22,6 +22,7 @@ namespace WindowsGame1
         Background bg;
         Image saber, dialog;
         TextBox ipTextBox;
+        Menu test_menu;
         #endregion
 
         #region Load Content
@@ -83,8 +84,16 @@ namespace WindowsGame1
             Canel_button.OnClick += Cancel_button_clicked;
             #endregion
 
+            List<string> ls = new List<string>();
+            ls.Add("Sakuraba Neku");
+            ls.Add("Yayyyyy");
+            ls.Add("I'm so powerful");
+            test_menu = new Menu("test_menu", font, ls, this);
+            test_menu.MenuItemSelected += Test_Menu_Item_Selected;
+
             #region HostScreen_RegisterHandler
             OnKeysDown += HostScreen_OnKeysDown;
+            OnRightMouseClick += HostScreen_OnRightMouseClick;
             #endregion
         }
         #endregion
@@ -98,6 +107,10 @@ namespace WindowsGame1
                     ScreenEvent.Invoke(this, new SivEventArgs(0));
                 return;
             }
+        }
+        private void HostScreen_OnRightMouseClick(MouseState mouseState, MouseState lastMouseState)
+        {
+            test_menu.Show(mouseState.X, mouseState.Y);
         }
         public void Ok_button_clicked(object sender, FormEventData e)
         {
@@ -130,7 +143,11 @@ namespace WindowsGame1
         {
             ScreenEvent.Invoke(this, new SivEventArgs(0));
         }
-        
+        public void Test_Menu_Item_Selected(object sender, int index)
+        {
+            Menu m = (Menu)sender;
+            Game1.MessageBox(new IntPtr(0), m.ItemsList[index], "Menu Item Selected", 0);
+        }
         #endregion
 
         #region update
