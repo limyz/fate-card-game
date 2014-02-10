@@ -115,6 +115,7 @@ namespace WindowsGame1
             this.realX = Rect.X;
             this.realY = Rect.Y;
 
+            Parent.FormsUpdate -= this.Mover;
             Parent.FormsUpdate += this.Mover;
         }
         private void Mover(GameTime gameTime)

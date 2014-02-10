@@ -1013,8 +1013,6 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-            DrawText(spriteBatch);
             
             /*if (hand_hovered_index == -1)
             {
@@ -1039,13 +1037,6 @@ namespace WindowsGame1
             base.Draw(graphics, spriteBatch, gameTime);
             //spriteBatch.Draw(card_list[0].texture, player_card_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.0f);
             spriteBatch.End();
-        }
-        #endregion
-
-        #region Draw's functions
-        private void DrawText(SpriteBatch spriteBatch)
-        {
-            spriteBatch.DrawString(Game1.font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
         }
         #endregion
     }

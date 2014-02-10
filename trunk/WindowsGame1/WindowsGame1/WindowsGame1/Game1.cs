@@ -433,8 +433,15 @@ namespace WindowsGame1
 
             graphics.PreferredBackBufferHeight = window_height;
             graphics.PreferredBackBufferWidth = window_width;
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.ApplyChanges();
+
             this.IsMouseVisible = true;
+
+            double d = 1d / 120;
+            long l = (long)(10000000L * d);
+            this.TargetElapsedTime = new TimeSpan(l);
+
             keyboard_text_dispatcher = new KeyboardTextDispatcher(this.Window);
 
             //register for event raiser
@@ -622,6 +629,9 @@ namespace WindowsGame1
             //white_texture.Dispose();
         }
 
+        int frameRate = 0;
+        int frameCounter = 0;
+        TimeSpan elapsedTime = TimeSpan.Zero;
         protected override void Update(GameTime gameTime)
         {
             if (this.IsActive)
@@ -639,18 +649,33 @@ namespace WindowsGame1
                 }
                 mCurrentScreen.Update(gameTime);
 
+                //for fps counter
+                elapsedTime += gameTime.ElapsedGameTime;
+                if (elapsedTime > TimeSpan.FromSeconds(1))
+                {
+                    elapsedTime -= TimeSpan.FromSeconds(1);
+                    frameRate = frameCounter;
+                    frameCounter = 0;
+                }
+                //end for fps counter
+
                 base.Update(gameTime);
             }
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            frameCounter++;
+
             GraphicsDevice.Clear(Color.Black);
             if (this.IsActive)
             {
                 mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
-
                 base.Draw(gameTime);
+                spriteBatch.Begin();
+                spriteBatch.DrawString(arial14Bold, mouse_pos.ToString(), new Vector2(0, 0), Color.White);
+                spriteBatch.DrawString(arial14Bold, "Fps: " + frameRate.ToString(), new Vector2(1100, 0), Color.White);
+                spriteBatch.End();
             }
         }
     }
