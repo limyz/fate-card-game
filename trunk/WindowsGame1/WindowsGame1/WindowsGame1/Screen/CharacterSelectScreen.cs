@@ -331,47 +331,31 @@ namespace WindowsGame1
             : base("JoinScreen", theEvent, parent)
         {
             #region Load Resource
-            bg = new Background(Content.Load<Texture2D>("Resource/graphic/CharSelectBG"), this);
+            bg = new Background(Content.Load<Texture2D>("Resource/graphic/BG7"), this);
             this.Content = Content;
             #endregion
 
             #region Character Select
-            charSelectBorder[0] = new Border("Char 1 Border", Color.Black, 2,
-                new Rectangle(100, 500, 149, 208), this);
-            charSelectBorder[1] = new Border("Char 2 Border", Color.Black, 2,
-                new Rectangle(250, 500, 149, 208), this);
-            charSelectBorder[2] = new Border("Char 3 Border", Color.Black, 2,
-                new Rectangle(400, 500, 149, 208), this);
-            charSelectBorder[3] = new Border("Char 4 Border", Color.Black, 2,
-                new Rectangle(550, 500, 149, 208), this);
-            charSelectBorder[4] = new Border("Char 5 Border", Color.Black, 2,
-                new Rectangle(700, 500, 149, 208), this);
-            charSelectBorder[5] = new Border("Char 6 Border", Color.Black, 2,
-                new Rectangle(850, 500, 149, 208), this);
-            charSelectBorder[6] = new Border("Char 7 Border", Color.Black, 2,
-                new Rectangle(1000, 500, 149, 208), this);
-
-            characterImage[0] = new Image("Char 1 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(102, 502, 147, 206), 0.3f, this);
-            characterImage[1] = new Image("Char 2 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(252, 502, 147, 206), 0.3f, this);
-            characterImage[2] = new Image("Char 3 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(402, 502, 147, 206), 0.3f, this);
-            characterImage[3] = new Image("Char 4 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(552, 502, 147, 206), 0.3f, this);
-            characterImage[4] = new Image("Char 5 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(702, 502, 147, 206), 0.3f, this);
-            characterImage[5] = new Image("Char 6 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(852, 502, 147, 206), 0.3f, this);
-            characterImage[6] = new Image("Char 7 Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle(1002, 502, 147, 206), 0.3f, this);
+            int x = 80;
+            int y = 80;
+            for (int i = 0; i < 7; i++)
+            {
+                charSelectBorder[i] = new Border("Char " + i + " Border", Color.Black, 2,
+                new Rectangle(x + 150 * i, y, 149, 208), this);
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                characterImage[i] = new Image("Char" +i+" Image", Content.Load<Texture2D>("Resource/character_back"),
+                new Rectangle((x+2)+150*i, y + 2, 147, 206), 0.3f, this);
+            }
+            
             #endregion
 
-            roomInfoLabel = new Label("Room Info", Game1.arial12Bold, "Test Test Test", 50, 50, 1000, Color.White, this);
+            roomInfoLabel = new Label("Room Info", Game1.arial12Bold, "Test Test Test", 50, 500, 1000, Color.White, this);
 
             #region Button
             okButton = new ImageButton("OK Button", Content.Load<Texture2D>("Resource/ok_button"),
-                new Rectangle(500, 400, 180, 70), this);
+                new Rectangle(500, 300, 180, 70), this);
             //okButton = new ImageButton("Cancel Button", Content.Load<Texture2D>("Resource/ok_button"),
             //    new Rectangle(500, 450, 180, 70), this);
             #endregion
@@ -379,12 +363,12 @@ namespace WindowsGame1
             #region inGameScreen_RegisterHandler
             OnKeysDown += CharacterSelectScreen_OnKeysDown;
 
-            foreach (var img in characterImage)
-            {
-                img.OnClick += new FormEventHandler(CharacterClick);
-            }
+            //foreach (var img in characterImage)
+            //{
+            //    img.OnClick = new FormEventHandler(CharacterClick);
+            //}
 
-            okButton.OnClick += new FormEventHandler(OkClick);
+            //okButton.OnClick = new FormEventHandler(OkClick);
             #endregion
 
             #region XML loading
@@ -423,6 +407,20 @@ namespace WindowsGame1
             Player_Index = room.findByID(Player_ID);
             InitializeReceiver();
             StartSynch();
+            okButton.Visible = true;
+            okButton.OnClick = new FormEventHandler(OkClick);
+            foreach (var item in charSelectBorder)
+            {
+                item.Visible = true;
+                item.Width = 2;
+                item.color = Color.Black;
+            }
+            foreach (Image item in characterImage)
+            {
+                item.Visible = true;
+                item.OnClick = new FormEventHandler(CharacterClick);
+                //item.Texture = GetTexture("character_back");
+            }
 
             foreach (var p in room.Player_List)
             {
@@ -523,15 +521,18 @@ namespace WindowsGame1
                     {
                         if (charSelectBorder[i].Width == 2)
                         {
-                            charSelectBorder[i].Delete();
-                            characterImage[i].Delete();
+                            //charSelectBorder[i].Delete();
+                            //characterImage[i].Delete();
+                            charSelectBorder[i].Visible = false;
+                            characterImage[i].Visible = false;
                         }
                         if (charSelectBorder[i].Width == 4)
                         {
                             characterImage[i].OnClick = null;
                         }
                     }
-                    okButton.Delete();
+                    //okButton.Delete();
+                    okButton.Visible = false;
                 }
             }
         }
