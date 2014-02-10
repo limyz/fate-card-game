@@ -106,12 +106,12 @@ namespace WindowsGame1
         int NewY;
         float realX;
         float realY;
-        float MoveTime = 0;
-        public void Move(int NewX, int NewY, float move_time)
+        float MoveSpeed = 0f;
+        public void Move(int NewX, int NewY, float Speed/*move_time*/)
         {
             this.NewX = NewX;
             this.NewY = NewY;
-            this.MoveTime = move_time;
+            this.MoveSpeed = Speed;
             this.realX = Rect.X;
             this.realY = Rect.Y;
 
@@ -120,16 +120,17 @@ namespace WindowsGame1
         }
         private void Mover(GameTime gameTime)
         {
-            if (MoveTime == 0 || (Rect.X == NewX && Rect.Y == NewY ))
+            if ((Rect.X == NewX && Rect.Y == NewY ))
             {
                 Parent.FormsUpdate -= this.Mover;
                 return;
             }
-            this.realX += ((this.NewX - this.realX) / MoveTime);
-            this.realY += ((this.NewY - this.realY) / MoveTime);
+            double direction = (float)(Math.Atan2(NewY- Rect.Y, NewX - Rect.X) * 180 / Math.PI);
+            this.realX += (float)Math.Cos(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.realY += (float)Math.Sin(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.Rect.X = (int)realX;
             this.Rect.Y = (int)realY;
-            this.MoveTime--;
+            
         }
 
         public virtual void Update(GameTime gameTime)
