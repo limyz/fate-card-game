@@ -19,6 +19,7 @@ namespace WindowsGame1
         ImageButton join_button;
         ImageButton quit_button;
         SpriteFont font;
+        Menu ContextMenu;
         #endregion
 
         #region load content
@@ -48,12 +49,47 @@ namespace WindowsGame1
             bg_rec = new Rectangle(0, 0, main_game.window_width, main_game.window_height);
             bg_texture = theContent.Load<Texture2D>("Resource/menu_background_2");
 
-            #region Screen_RegisterHandler    
+            List<string> ls = new List<string>();
+            ls.Add("30 fps");
+            ls.Add("60 fps");
+            ls.Add("120 fps");
+            ls.Add("Unlimited fps");
+            ContextMenu = new Menu("ContextMenu", font, ls, this);
+            ContextMenu.MenuItemSelected += ContextMenu_Item_Selected;
+
+            #region Screen_RegisterHandler 
+            this.OnRightMouseClick += MenuScreen_OnRightMouseClick;
             #endregion
         }
         #endregion
 
         #region Handler
+        private void MenuScreen_OnRightMouseClick(MouseState mouseState, MouseState lastMouseState)
+        {
+            ContextMenu.Show(mouseState.X, mouseState.Y);
+        }
+        private void ContextMenu_Item_Selected(object sender, int index)
+        {
+            if (index == 3)
+            {
+                this.main_game.IsFixedTimeStep = false;
+            }
+            else
+            {
+                this.main_game.IsFixedTimeStep = true;
+                float fps = 0f;
+                if (index == 0)
+                    fps = 30f;
+                else if (index == 1)
+                    fps = 60f;
+                else if (index == 2)
+                    fps = 120f;
+
+                double d = 1d / fps;
+                long l = (long)(10000000L * d);
+                this.main_game.TargetElapsedTime = new TimeSpan(l);
+            }
+        }
         bool moved = false;
         private void Menu_button_click_handler(object sender, FormEventData e = null)
         {
@@ -62,12 +98,12 @@ namespace WindowsGame1
                 //ScreenEvent.Invoke(this, new SivEventArgs(1));
                 if (!moved)
                 {
-                    this.start_button.Move(100, 100, 200);
+                    this.start_button.Move(100, 100, 300);
                     moved = true;
                 }
                 else
                 {
-                    this.start_button.Move(38, 653, 200);
+                    this.start_button.Move(38, 653, 300);
                     moved = false;
                 }
                 return;
