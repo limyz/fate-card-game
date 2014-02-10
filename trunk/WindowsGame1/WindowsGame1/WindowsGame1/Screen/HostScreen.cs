@@ -156,6 +156,7 @@ namespace WindowsGame1
         {
             Menu m = (Menu)sender;
             Game1.MessageBox(new IntPtr(0), m.ItemsList[index], "Menu Item Selected", 0);
+            test_menu.Hide();
         }
         #endregion
 

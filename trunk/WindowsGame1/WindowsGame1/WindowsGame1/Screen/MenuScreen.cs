@@ -89,6 +89,7 @@ namespace WindowsGame1
                 long l = (long)(10000000L * d);
                 this.main_game.TargetElapsedTime = new TimeSpan(l);
             }
+            ContextMenu.Hide();
         }
         bool moved = false;
         private void Menu_button_click_handler(object sender, FormEventData e = null)
