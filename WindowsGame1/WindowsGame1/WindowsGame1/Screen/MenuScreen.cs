@@ -99,7 +99,6 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            spriteBatch.DrawString(font, main_game.mouse_pos.ToString(), new Vector2(0, 0), Color.White);
             spriteBatch.Draw(bg_texture, bg_rec,null,Color.White,0f,new Vector2(0,0),SpriteEffects.None,1f);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
