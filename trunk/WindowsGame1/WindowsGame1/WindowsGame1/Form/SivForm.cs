@@ -95,7 +95,7 @@ namespace WindowsGame1
 
         Vector2 NewXY;
         float MoveSpeed = 0f;
-        public void Move(float NewX, float NewY, float Speed/*move_time*/)
+        public void MoveBySpeed(float NewX, float NewY, float Speed/*move_time*/)
         {
             this.NewXY.X = NewX;
             this.NewXY.Y = NewY;
@@ -104,25 +104,35 @@ namespace WindowsGame1
             Parent.FormsUpdate -= this.Mover;
             Parent.FormsUpdate += this.Mover;
         }
+        public void MoveBySecond(float NewX, float NewY, float Second/*move_time*/)
+        {
+            this.NewXY.X = NewX;
+            this.NewXY.Y = NewY;
+            this.MoveSpeed = (NewXY - Rect.getXY()).Length() / Second;
+            //this.MoveSecond = Second;
+
+            Parent.FormsUpdate -= this.Mover;
+            Parent.FormsUpdate += this.Mover;
+        }
         private void Mover(GameTime gameTime)
         {
-            Vector2 true_speed = NewXY - Rect.getXY();
-            true_speed.Normalize();
-            if (float.IsNaN(true_speed.X) || float.IsNaN(true_speed.Y))
-                true_speed = Vector2.One;
-            float move_modifier = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            Vector2 moveby = true_speed * move_modifier;
-
-            if ((Math.Abs(Rect.X - NewXY.X) < Math.Abs(moveby.X))
-                && (Math.Abs(Rect.Y - NewXY.Y) < Math.Abs(moveby.Y)))
+            Vector2 move_speed = (NewXY - Rect.getXY());
+            move_speed.Normalize();
+            if (float.IsNaN(move_speed.X) || float.IsNaN(move_speed.Y))
+                move_speed = Vector2.One;
+            float move_time = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 move_distance = move_speed * move_time;
+            Console.WriteLine(move_distance.ToString());
+            if ((Math.Abs(Rect.X - NewXY.X) < Math.Abs(move_distance.X))
+                && (Math.Abs(Rect.Y - NewXY.Y) < Math.Abs(move_distance.Y)))
             {
                 Rect.X = NewXY.X;
                 Rect.Y = NewXY.Y;
                 Parent.FormsUpdate -= this.Mover;
                 return;
             }
-            this.Rect.X += moveby.X;
-            this.Rect.Y += moveby.Y;
+            this.Rect.X += move_distance.X;
+            this.Rect.Y += move_distance.Y;
             /*double direction = (float)(Math.Atan2(NewY- Rect.Y, NewX - Rect.X) * 180 / Math.PI);
             this.Rect.X += (float)Math.Cos(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.Rect.Y += (float)Math.Sin(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;*/

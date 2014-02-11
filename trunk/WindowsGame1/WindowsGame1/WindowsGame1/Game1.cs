@@ -686,8 +686,10 @@ namespace WindowsGame1
                 mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
                 base.Draw(gameTime);
                 spriteBatch.Begin();
-                spriteBatch.DrawString(arial14Bold, mouse_pos.ToString(), new Vector2(0, 0), Color.White);
-                spriteBatch.DrawString(arial14Bold, "Fps: " + frameRate.ToString(), new Vector2(1100, 0), Color.White);
+                String s = "Mouse Position: " + mouse_pos.ToString();
+                s += " | " + "In Game Time: " + gameTime.TotalGameTime.ToString();
+                s += " | " + "FPS : " + frameRate.ToString();
+                spriteBatch.DrawString(arial14Bold, s, new Vector2(0, 0), Color.White);
                 spriteBatch.End();
             }
         }
