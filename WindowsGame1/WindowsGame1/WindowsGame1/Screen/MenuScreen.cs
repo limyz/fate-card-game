@@ -99,12 +99,12 @@ namespace WindowsGame1
                 //ScreenEvent.Invoke(this, new SivEventArgs(1));
                 if (!moved)
                 {
-                    this.start_button.Move(100, 100, 300);
+                    this.start_button.MoveBySpeed(100, 100, 300);
                     moved = true;
                 }
                 else
                 {
-                    this.start_button.Move(38, 653, 300);
+                    this.start_button.MoveBySecond(38, 653, 3);
                     moved = false;
                 }
                 return;
