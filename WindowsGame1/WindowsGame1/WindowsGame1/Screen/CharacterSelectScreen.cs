@@ -341,12 +341,12 @@ namespace WindowsGame1
             for (int i = 0; i < 7; i++)
             {
                 charSelectBorder[i] = new Border("Char " + i + " Border", Color.Black, 2,
-                new Rectangle(x + 150 * i, y, 149, 208), this);
+                new RectangleF(x + 150 * i, y, 149, 208), this);
             }
             for (int i = 0; i < 7; i++)
             {
                 characterImage[i] = new Image("Char" +i+" Image", Content.Load<Texture2D>("Resource/character_back"),
-                new Rectangle((x+2)+150*i, y + 2, 147, 206), 0.3f, this);
+                new RectangleF((x+2)+150*i, y + 2, 147, 206), 0.3f, this);
             }
             
             #endregion
@@ -355,7 +355,7 @@ namespace WindowsGame1
 
             #region Button
             okButton = new ImageButton("OK Button", Content.Load<Texture2D>("Resource/ok_button"),
-                new Rectangle(500, 300, 180, 70), this);
+                new RectangleF(500, 300, 180, 70), this);
             //okButton = new ImageButton("Cancel Button", Content.Load<Texture2D>("Resource/ok_button"),
             //    new Rectangle(500, 450, 180, 70), this);
             #endregion

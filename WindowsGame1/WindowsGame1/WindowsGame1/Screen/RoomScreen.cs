@@ -24,7 +24,7 @@ namespace WindowsGame1
         public int numberOfPlayer = 0;
         Border div_border, chat_box_border, chat_input_border, div_info_border, MainPlayer_Boder;
         Border[] div_char_border = new Border[8];
-        Rectangle[] div_char = new Rectangle[8];
+        RectangleF[] div_char = new RectangleF[8];
         Label[] playerName = new Label[8];
         Label roomInfoContent, roomInfoTitle;
         Background backGround;
@@ -454,24 +454,24 @@ namespace WindowsGame1
             #endregion
 
             #region Player Content
-            div_char[0] = new Rectangle(55, 40, 180, 180);
-            div_char[1] = new Rectangle(265, 40, 180, 180);
-            div_char[2] = new Rectangle(475, 40, 180, 180);
-            div_char[3] = new Rectangle(685, 40, 180, 180);
-            div_char[4] = new Rectangle(55, 270, 180, 180);
-            div_char[5] = new Rectangle(265, 270, 180, 180);
-            div_char[6] = new Rectangle(475, 270, 180, 180);
-            div_char[7] = new Rectangle(685, 270, 180, 180);
+            div_char[0] = new RectangleF(55, 40, 180, 180);
+            div_char[1] = new RectangleF(265, 40, 180, 180);
+            div_char[2] = new RectangleF(475, 40, 180, 180);
+            div_char[3] = new RectangleF(685, 40, 180, 180);
+            div_char[4] = new RectangleF(55, 270, 180, 180);
+            div_char[5] = new RectangleF(265, 270, 180, 180);
+            div_char[6] = new RectangleF(475, 270, 180, 180);
+            div_char[7] = new RectangleF(685, 270, 180, 180);
 
             div_border = new Border("player_border", borderColor, 2
-               , new Rectangle(20, 20, 900, 480), this);
+               , new RectangleF(20, 20, 900, 480), this);
 
             #endregion
 
             #region Room Information
             div_info_border = new Border("div_info", borderColor, 2
-                , new Rectangle(930, 20, 250, 480), this);
-            roomInfoDiv = new Div("Room Info", new Rectangle(932, 22, 246, 476), Color.DarkRed, this);
+                , new RectangleF(930, 20, 250, 480), this);
+            roomInfoDiv = new Div("Room Info", new RectangleF(932, 22, 246, 476), Color.DarkRed, this);
             roomInfoContent = new Label("Room Info", Game1.font, "", 960, 80, 300, Color.White, this);
             roomInfoTitle = new Label("Info Label", Game1.arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
             #endregion
@@ -494,7 +494,7 @@ namespace WindowsGame1
                     playerName[i].CenterAlign = true;
                 }
             }
-            MainPlayer_Boder = new Border("MainPlayer_Border", Color.Purple, 2, new Rectangle(0, 0, 0, 0), this);
+            MainPlayer_Boder = new Border("MainPlayer_Border", Color.Purple, 2, new RectangleF(0, 0, 0, 0), this);
             #endregion
 
             #region Button
@@ -503,31 +503,31 @@ namespace WindowsGame1
             startButtonTexture = Content.Load<Texture2D>("Resource/start_button");
 
             start_button = new ImageButton("Start", startButtonTexture
-                , new Rectangle(980, 540, 180, 70), this);
+                , new RectangleF(980, 540, 180, 70), this);
             start_button.OnClick += Start_button_clicked;
 
             quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
-                , new Rectangle(980, 620, 180, 70), this);
+                , new RectangleF(980, 620, 180, 70), this);
             quit_button.OnClick += Quit_button_clicked;
             #endregion
 
             #region Chat
             //Border
             chat_box_border = new Border("chat_screen", borderColor, 2
-                , new Rectangle(20, 520, 950, 130), this);
+                , new RectangleF(20, 520, 950, 130), this);
             chat_input_border = new Border("chat_input", borderColor, 2
-                , new Rectangle(20, 660, 950, 24), this);
+                , new RectangleF(20, 660, 950, 24), this);
 
             //Textbox
             chat = new TextBox("Chat Input"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , Game1.font, new Rectangle(22, 662, 946, 20), this);
+                , Game1.font, new RectangleF(22, 662, 946, 20), this);
             chat.OnEnterPressed += ChatBox_EnterPressed;
 
             chatDisplay = new TextBox("Chat Display"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar
-                , Game1.font, new Rectangle(22, 522, 946, 126), this);
+                , Game1.font, new RectangleF(22, 522, 946, 126), this);
             chatDisplay.ReadOnly = true;
             chatDisplay.vscrollable = true;
             #endregion

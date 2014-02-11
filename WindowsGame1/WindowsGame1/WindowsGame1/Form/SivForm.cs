@@ -35,18 +35,9 @@ namespace WindowsGame1
         public string Name;
         public Screen Parent;
         public Type original_type;
-        public Rectangle Rect;
+        public RectangleF Rect;
         public object Value;
-        private bool _visible = true;
-        public bool Visible
-        {
-            get { return _visible; }
-            set
-            {
-                if (_visible == value) return;
-                _visible = value;
-            }
-        }
+        public bool Visible = true;
         public float Priority = 0.5f;
         public float Active_Priority = 0.5f;
         public bool Activable = false;
@@ -73,7 +64,7 @@ namespace WindowsGame1
         public FormEventHandler OnActive;
         public FormEventHandler OnDeactive;
 
-        public SivForm(string _name, Screen parent, Type original_type,Rectangle rec)
+        public SivForm(string _name, Screen parent, Type original_type,RectangleF rec)
         {
             Name = _name;
             this.Parent = parent;
@@ -84,7 +75,7 @@ namespace WindowsGame1
             //Debugger
             //parent.main_game.debugger.Register_For_Debug(this);
         }
-        public SivForm(string _name, Screen parent, Type original_type, Rectangle rec, float priority, float active_priority)
+        public SivForm(string _name, Screen parent, Type original_type, RectangleF rec, float priority, float active_priority)
         {
             Name = _name;
             this.Parent = parent;
@@ -102,35 +93,39 @@ namespace WindowsGame1
             Parent.FormDeletingList.Add(this);       
         }
 
-        int NewX;
-        int NewY;
-        float realX;
-        float realY;
+        Vector2 NewXY;
         float MoveSpeed = 0f;
-        public void Move(int NewX, int NewY, float Speed/*move_time*/)
+        public void Move(float NewX, float NewY, float Speed/*move_time*/)
         {
-            this.NewX = NewX;
-            this.NewY = NewY;
+            this.NewXY.X = NewX;
+            this.NewXY.Y = NewY;
             this.MoveSpeed = Speed;
-            this.realX = Rect.X;
-            this.realY = Rect.Y;
 
             Parent.FormsUpdate -= this.Mover;
             Parent.FormsUpdate += this.Mover;
         }
         private void Mover(GameTime gameTime)
         {
-            if ((Rect.X == NewX && Rect.Y == NewY ))
+            Vector2 true_speed = NewXY - Rect.getXY();
+            true_speed.Normalize();
+            if (float.IsNaN(true_speed.X) || float.IsNaN(true_speed.Y))
+                true_speed = Vector2.One;
+            float move_modifier = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 moveby = true_speed * move_modifier;
+
+            if ((Math.Abs(Rect.X - NewXY.X) < Math.Abs(moveby.X))
+                && (Math.Abs(Rect.Y - NewXY.Y) < Math.Abs(moveby.Y)))
             {
+                Rect.X = NewXY.X;
+                Rect.Y = NewXY.Y;
                 Parent.FormsUpdate -= this.Mover;
                 return;
             }
-            double direction = (float)(Math.Atan2(NewY- Rect.Y, NewX - Rect.X) * 180 / Math.PI);
-            this.realX += (float)Math.Cos(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.realY += (float)Math.Sin(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.Rect.X = (int)realX;
-            this.Rect.Y = (int)realY;
-            
+            this.Rect.X += moveby.X;
+            this.Rect.Y += moveby.Y;
+            /*double direction = (float)(Math.Atan2(NewY- Rect.Y, NewX - Rect.X) * 180 / Math.PI);
+            this.Rect.X += (float)Math.Cos(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.Rect.Y += (float)Math.Sin(direction * Math.PI / 180) * MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;*/
         }
 
         public virtual void Update(GameTime gameTime)

@@ -120,6 +120,7 @@
     <Compile Include="Class\Character.cs" />
     <Compile Include="Class\CommandCode.cs" />
     <Compile Include="Class\Command.cs" />
+    <Compile Include="Class\RectangleF.cs" />
     <Compile Include="Class\Room.cs" />
     <Compile Include="Form\Background.cs" />
     <Compile Include="Form\Border.cs" />

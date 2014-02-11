@@ -23,7 +23,7 @@ namespace WindowsGame1
         public bool IsHovered = false;
         public float DrawOrder = 0.5f;
 
-        public ImageButton(string name, Texture2D button_texture, Rectangle button_rec
+        public ImageButton(string name, Texture2D button_texture, RectangleF button_rec
             , Screen parent)
             : base(name, parent, typeof(ImageButton), button_rec)
         {
@@ -32,7 +32,7 @@ namespace WindowsGame1
             imageButton_RegisterHandler();
         }
 
-        public ImageButton(string name, Texture2D button_texture, Rectangle button_rec
+        public ImageButton(string name, Texture2D button_texture, RectangleF button_rec
             , float p_draw_order, Screen parent)
             : base(name, parent, typeof(ImageButton), button_rec)
         {

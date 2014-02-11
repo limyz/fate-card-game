@@ -15,120 +15,103 @@ using System.Net;
 using System.Net.Sockets;
 
 #region MyExtension
-public static class My_Extension
+namespace WindowsGame1
 {
-    /*[DllImport("user32.dll", CharSet = CharSet.Auto)]
-    public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);*/
-
-    public static void move<T>(this List<T> list, int oldIndex, int newIndex)
+    public static class My_Extension
     {
-        var item = list[oldIndex];
-        list.RemoveAt(oldIndex);
-        if (newIndex > oldIndex) newIndex--;
-        // the actual index could have shifted due to the removal
-        list.Insert(newIndex, item);
-    }
+        /*[DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);*/
 
-    public static void swap<T>(this List<T> list, int x, int y)
-    {
-        var temp = list[x];
-        list[x] = list[y];
-        list[y] = temp;
-    }
-
-    public static void shuffle<T>(this List<T> list)
-    {
-        Random rand = new Random();
-        for (int i = 0; i < list.Count; i++)
+        public static void move<T>(this List<T> list, int oldIndex, int newIndex)
         {
-            int rd = rand.Next(i, list.Count);
-            list.move<T>(rd, i);
+            var item = list[oldIndex];
+            list.RemoveAt(oldIndex);
+            if (newIndex > oldIndex) newIndex--;
+            // the actual index could have shifted due to the removal
+            list.Insert(newIndex, item);
         }
-        //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
-    }
-
-    public static Vector2 moveSpeedCacl(Vector2 position, Vector2 destination, float speed)
-    {
-        Vector2 result;
-        float a = position.X - destination.X;
-        float b = destination.Y - position.Y;
-        float x = a / speed;
-        float y = b / speed;
-        result = new Vector2(x, y);
-        return result;
-        
-    }
-
-    public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
-    {
-        if (rec.X == new_x && rec.Y == new_y)
+        public static void swap<T>(this List<T> list, int x, int y)
         {
+            var temp = list[x];
+            list[x] = list[y];
+            list[y] = temp;
+        }
+        public static void shuffle<T>(this List<T> list)
+        {
+            Random rand = new Random();
+            for (int i = 0; i < list.Count; i++)
+            {
+                int rd = rand.Next(i, list.Count);
+                list.move<T>(rd, i);
+            }
+            //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
+        }
+
+        public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
+        {
+            if (rec.X == new_x && rec.Y == new_y)
+            {
+                return rec;
+            }
+            if (rec.X < new_x)
+            {
+                rec.X += Math.Min(new_x - rec.X, speed_x);
+            }
+            else if (rec.X > new_x)
+            {
+                rec.X -= Math.Min(rec.X - new_x, speed_x);
+            }
+
+            if (rec.Y < new_y)
+            {
+                rec.Y += Math.Min(new_y - rec.Y, speed_y);
+            }
+            else if (rec.Y > new_y)
+            {
+                rec.Y -= Math.Min(rec.Y - new_y, speed_y);
+            }
             return rec;
         }
-        if (rec.X < new_x)
+        public static void move_rec(ref Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
         {
-            rec.X += Math.Min(new_x - rec.X, speed_x);
-        }
-        else if (rec.X > new_x)
-        {
-            rec.X -= Math.Min(rec.X - new_x, speed_x);
-        }
+            if (rec.X == new_x && rec.Y == new_y)
+            {
+                return;
+            }
+            if (rec.X < new_x)
+            {
+                rec.X += Math.Min(new_x - rec.X, speed_x);
+            }
+            else if (rec.X > new_x)
+            {
+                rec.X -= Math.Min(rec.X - new_x, speed_x);
+            }
 
-        if (rec.Y < new_y)
-        {
-            rec.Y += Math.Min(new_y - rec.Y, speed_y);
-        }
-        else if (rec.Y > new_y)
-        {
-            rec.Y -= Math.Min(rec.Y - new_y, speed_y);
-        }
-        return rec;
-    }
-
-    public static void move_rec(ref Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
-    {
-        if (rec.X == new_x && rec.Y == new_y)
-        {
+            if (rec.Y < new_y)
+            {
+                rec.Y += Math.Min(new_y - rec.Y, speed_y);
+            }
+            else if (rec.Y > new_y)
+            {
+                rec.Y -= Math.Min(rec.Y - new_y, speed_y);
+            }
             return;
         }
-        if (rec.X < new_x)
+
+        public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Color color)
         {
-            rec.X += Math.Min(new_x - rec.X, speed_x);
-        }
-        else if (rec.X > new_x)
-        {
-            rec.X -= Math.Min(rec.X - new_x, speed_x);
+            sb.Draw(texture, destinationRectangle.getXY(), null, color, 0f, new Vector2(0), destinationRectangle.getScale(texture), SpriteEffects.None, 0.5f);
         }
 
-        if (rec.Y < new_y)
+        public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color)
         {
-            rec.Y += Math.Min(new_y - rec.Y, speed_y);
+            sb.Draw(texture, destinationRectangle.getXY(), sourceRectangle, color, 0f, new Vector2(0), destinationRectangle.getScale(texture), SpriteEffects.None, 0.5f);
         }
-        else if (rec.Y > new_y)
+
+        public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
-            rec.Y -= Math.Min(rec.Y - new_y, speed_y);
+            sb.Draw(texture, destinationRectangle.getXY(), sourceRectangle, color, rotation, origin, destinationRectangle.getScale(texture), effects, layerDepth);
         }
-        return;
-    }
-}
-
-public static class Helper_Direction
-{
-    public static double FaceObject(Vector2 position, Vector2 target)
-    {
-        return (Math.Atan2(position.Y - target.Y, position.X - target.X) * (180 / Math.PI));
-    }
-
-    public static Vector2 MoveTowards(Vector2 position, Vector2 target, float speed)
-    {
-        double direction = (float)(Math.Atan2(target.Y - position.Y, target.X - position.X) * 180 / Math.PI);
-
-        Vector2 move = new Vector2(0, 0);
-
-        move.X = (float)Math.Cos(direction * Math.PI / 180) * speed;
-        move.Y = (float)Math.Sin(direction * Math.PI / 180) * speed;
-
-        return move;
     }
 }
 #endregion
@@ -393,7 +376,7 @@ namespace WindowsGame1
             }
             return false;
         }
-        public bool left_mouse_release(Rectangle rec)///check ONE left mouse click
+        public bool left_mouse_release(RectangleF rec)///check ONE left mouse click
         {
             if (last_mouse_state.LeftButton == ButtonState.Pressed && mouse_state.LeftButton == ButtonState.Released)
             {
@@ -405,6 +388,14 @@ namespace WindowsGame1
             return false;
         }
         public bool mouse_hover(Rectangle rec)///check mouse hover
+        {
+            if (rec.Contains(mouse_pos))
+            {
+                return true;
+            }
+            else return false;
+        }
+        public bool mouse_hover(RectangleF rec)///check mouse hover
         {
             if (rec.Contains(mouse_pos))
             {

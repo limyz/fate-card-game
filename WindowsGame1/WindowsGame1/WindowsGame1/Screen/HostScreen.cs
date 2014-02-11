@@ -36,14 +36,14 @@ namespace WindowsGame1
 
             #region Image
             saber = new Image("saber2", Content.Load<Texture2D>("Resource/saber_trans")
-            , new Rectangle(-50, 0, 700, 735), 0.99f, this);
+            , new RectangleF(-50, 0, 700, 735), 0.99f, this);
             dialog = new Image("dialog", Content.Load<Texture2D>("Resource/dialog_menu")
-            , new Rectangle(400, 120, 400, 300), 0.98f, this);
+            , new RectangleF(400, 120, 400, 300), 0.98f, this);
             #endregion
 
             #region Host Game Panel
             ipTextBox = new TextBox("Hosting IP", Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , font, new Rectangle(470, 160, 250, 20), this);
+                , font, new RectangleF(470, 160, 250, 20), this);
             ipTextBox.Text = "255.255.255.255";
 
             Host_name_label = new Label("host_name_label",
@@ -52,7 +52,7 @@ namespace WindowsGame1
 
             Host_name_textbox = new TextBox("Host_name_textbox"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , font, new Rectangle(620, 200, 100, 20), this);
+                , font, new RectangleF(620, 200, 100, 20), this);
             Host_name_textbox.Text = "AltimaZ";
 
             Room_name_label = new Label("Room_name_label"
@@ -61,7 +61,7 @@ namespace WindowsGame1
 
             Room_name_textbox = new TextBox("Room_name_textbox"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , font, new Rectangle(620, 230, 100, 20), this);
+                , font, new RectangleF(620, 230, 100, 20), this);
             Room_name_textbox.Text = "Room Test";
 
             Number_of_player_label = new Label("Number_of_player_label"
@@ -70,17 +70,17 @@ namespace WindowsGame1
 
             Number_of_player_textbox = new TextBox("Number_of_player_textbox"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
-                , font, new Rectangle(620, 260, 100, 20), this);
+                , font, new RectangleF(620, 260, 100, 20), this);
             Number_of_player_textbox.Text = "3";
 
             OK_button = new ImageButton("OK_button"
                 , Content.Load<Texture2D>("Resource/ok_button")
-                , new Rectangle(480, 300, 120, 42), this);
+                , new RectangleF(480, 300, 120, 42), this);
             OK_button.OnClick += Ok_button_clicked;
 
             Canel_button = new ImageButton("Cancel_button"
                 , Content.Load<Texture2D>("Resource/back_button")
-                , new Rectangle(600, 300, 120, 42), this);
+                , new RectangleF(600, 300, 120, 42), this);
             Canel_button.OnClick += Cancel_button_clicked;
             #endregion
 

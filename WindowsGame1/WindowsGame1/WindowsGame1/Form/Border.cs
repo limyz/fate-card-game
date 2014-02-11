@@ -23,23 +23,40 @@ namespace WindowsGame1
                 _color = value;
             }
         }
-        public int Width;
-        public Border(string name, Color color, int width, Rectangle rec, Screen parent)
+        private float width;
+        public float Width
+        {
+            get { return width; }
+            set
+            {
+                width = value;
+                this.Set_Rect(this.Rect, value);
+            }
+        }
+
+        public Border(string name, Color color, float width, RectangleF rec, Screen parent)
             : base(name, parent, typeof(Border), rec)
         {
             texture = Game1.whiteTexture;
             this.color = color;
             this.Width = width;
+
+            this.Set_Rect(rec, width);
+        }
+
+        public void Set_Rect(RectangleF rec, float width)
+        {
+            this.Rect = new RectangleF(this.Rect.X - width, this.Rect.Y - width, this.Rect.Width + width * 2, this.Rect.Height + width * 2);
         }
 
         #region Draw's function
-        private void Draw_Horizontal_Line(SpriteBatch sb, int y)
+        private void Draw_Horizontal_Line(SpriteBatch sb, float y)
         {
-            sb.Draw(texture, new Rectangle(Rect.X, y, Rect.Width, Width), color);
+            sb.Draw(texture, new RectangleF(Rect.X, y, Rect.Width, Width), color);
         }
-        private void Draw_Vertical_Line(SpriteBatch sb, int x)
+        private void Draw_Vertical_Line(SpriteBatch sb, float x)
         {
-            sb.Draw(texture, new Rectangle(x, Rect.Y, Width, Rect.Height), color);
+            sb.Draw(texture, new RectangleF(x, Rect.Y, Width, Rect.Height), color);
         }
         #endregion
 
