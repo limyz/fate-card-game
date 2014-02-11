@@ -376,7 +376,29 @@ namespace WindowsGame1
             }
             return false;
         }
-        public bool left_mouse_release(RectangleF rec)///check ONE left mouse click
+        public bool left_mouse_click(RectangleF rec)///check ONE left mouse click
+        {
+            if (last_mouse_state.LeftButton == ButtonState.Released && mouse_state.LeftButton == ButtonState.Pressed)
+            {
+                if (rec.Contains(mouse_pos))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool left_mouse_release(Rectangle rec)///check ONE left mouse release
+        {
+            if (last_mouse_state.LeftButton == ButtonState.Pressed && mouse_state.LeftButton == ButtonState.Released)
+            {
+                if (rec.Contains(mouse_pos))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool left_mouse_release(RectangleF rec)///check ONE left mouse release
         {
             if (last_mouse_state.LeftButton == ButtonState.Pressed && mouse_state.LeftButton == ButtonState.Released)
             {
@@ -656,11 +678,11 @@ namespace WindowsGame1
 
         protected override void Draw(GameTime gameTime)
         {
-            frameCounter++;
-
             GraphicsDevice.Clear(Color.Black);
             if (this.IsActive)
             {
+                frameCounter++;
+
                 mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
                 base.Draw(gameTime);
                 spriteBatch.Begin();

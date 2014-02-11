@@ -432,9 +432,6 @@ namespace WindowsGame1
             switch (command)
             {
                 case '\b': //backspace
-                    /*if (select_end > select_start)
-                    {   
-                    }*/
                     if (Text.Length > 0)
                     {
                         if (select_count != 0)
@@ -450,11 +447,12 @@ namespace WindowsGame1
                         }
                         else if (caret_position > 0)
                         {
-                            /*int move_caret = 1;
+                            int move_caret = 1;
                             if (caret_position == _text.Length)
-                                move_caret = 0;*/
+                                move_caret = 0; 
                             Text = Text.Remove(caret_position - 1, 1);
-                            caret_position --;
+                            caret_position -= move_caret;
+                            //caret_position --;
                         }
 
                     }
