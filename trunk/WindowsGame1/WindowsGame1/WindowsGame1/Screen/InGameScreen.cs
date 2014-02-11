@@ -99,10 +99,10 @@ namespace WindowsGame1
         #endregion
 
         #region Variable Decleration
-        int cardWidth = 105;
-        int cardHeight = 150;
-        int handWitdh = 535;
-        int padding = 5;
+        float cardWidth = 105;
+        float cardHeight = 150;
+        float handWitdh = 535;
+        float padding = 5;
         int hand_hovered_index = -1;
         int[] playerRandomChar = new int[2];
 
@@ -115,7 +115,7 @@ namespace WindowsGame1
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
             view_detail_button_textture;
-        Rectangle[,] oppPlayerRectangle;
+        RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
         List<Label> OtherPlayerNameLabel = new List<Label>();
@@ -459,53 +459,53 @@ namespace WindowsGame1
 
             #region Player Control Panel
             playerCharacterBorder[0] = new Border("Character Border 1", Color.Red,
-                2, new Rectangle(731, 564, 111, 156), this);
+                2, new RectangleF(731, 564, 111, 156), this);
             playerCharacterBorder[1] = new Border("Character Border 2", Color.Red,
-                2, new Rectangle(842, 564, 111, 156), this);
+                2, new RectangleF(842, 564, 111, 156), this);
 
             playerControlPanel = new Div("PlayerControlPanel",
-                new Rectangle(0, 564, 1000, 156), Color.White, this);
+                new RectangleF(0, 564, 1000, 156), Color.White, this);
             masterImg = new Image("Player Master Image", characterBackTexture,
-                new Rectangle(734, 567, 105, 150), 0.3f, this);
+                new RectangleF(734, 567, 105, 150), 0.3f, this);
             servantImg = new Image("Player Servant Image", characterBackTexture,
-                new Rectangle(845, 567, 105, 150), 0.3f, this);
+                new RectangleF(845, 567, 105, 150), 0.3f, this);
 
             handZoneBorder = new Border("Hand Zone", Color.Red, 2,
-                new Rectangle(170, 564, 565, 156), this);
+                new RectangleF(170, 564, 565, 156), this);
             equipZoneBorder = new Border("Equip Zone", Color.Red, 2,
-                new Rectangle(0, 564, 168, 156), this);
+                new RectangleF(0, 564, 168, 156), this);
 
             Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
-                , new Rectangle(900, 10, 372, 520), 0.1f, this);
+                , new RectangleF(900, 10, 372, 520), 0.1f, this);
             Card_Detail_Image.Priority = 0.6f;
             Card_Detail_Image.Visible = false;
             #endregion
 
             #region Button
             drawButton = new ImageButton("draw_button", Content.Load<Texture2D>("Resource/draw")
-                , new Rectangle(740, 520, 130, 35), 0.5f, this);
+                , new RectangleF(740, 520, 130, 35), 0.5f, this);
             drawButton.OnClick += draw_button_clicked;
             #endregion
 
             #region Chat
             chatDisplayBorder = new Border("chatDisplayBorder", borderColor, 2
-                , new Rectangle(1008, 10, 190, 404), this);
+                , new RectangleF(1008, 10, 190, 404), this);
 
             chatDisplayTextbox = new TextBox("chatDisplayTextbox"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
-                , new Rectangle(1010, 12, 186, 400), this);
+                , new RectangleF(1010, 12, 186, 400), this);
             chatDisplayTextbox.hscrollable = true;
             chatDisplayTextbox.vscrollable = true;
             chatDisplayTextbox.ReadOnly = true;
 
             chatInputBorder = new Border("chatInputBorder", borderColor, 2
-               , new Rectangle(1008, 438, 190, 104), this);
+               , new RectangleF(1008, 438, 190, 104), this);
 
             chatInputTextbox = new TextBox("chatInputTextbox"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
-                , new Rectangle(1010, 440, 186, 100), this);
+                , new RectangleF(1010, 440, 186, 100), this);
             chatInputTextbox.hscrollable = true;
             chatInputTextbox.vscrollable = true;
             chatInputTextbox.OnEnterPressed += chat_textbox_onEnterPressed;
@@ -591,97 +591,97 @@ namespace WindowsGame1
             StartSynch();
             InitializeReceiver();
 
-            oppPlayerRectangle = new Rectangle[room.Player_List.Count - 1, 2];
+            oppPlayerRectangle = new RectangleF[room.Player_List.Count - 1, 2];
             #region Define Ohter Player Area
             switch (room.Player_List.Count)
             {
                 case 2:
-                    oppPlayerRectangle[0, 0] = new Rectangle(435, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new Rectangle(435, 105, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(435, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new RectangleF(435, 105, 100, 75);
                     break;
                 case 3:
-                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new Rectangle(180, 105, 100, 75);
-                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new Rectangle(690, 105, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, 100, 75);
+                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, 100, 75);
                     break;
                 case 4:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 100, 75);
-                    oppPlayerRectangle[0, 1] = new Rectangle(20, 175, 100, 75);
-                    oppPlayerRectangle[1, 0] = new Rectangle(435, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new Rectangle(435, 105, 100, 75);
-                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 100, 75);
-                    oppPlayerRectangle[2, 1] = new Rectangle(860, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 100, 75);
+                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, 100, 75);
+                    oppPlayerRectangle[1, 0] = new RectangleF(435, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new RectangleF(435, 105, 100, 75);
+                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, 100, 75);
+                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, 100, 75);
                     break;
                 case 5:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 100, 75);
-                    oppPlayerRectangle[0, 1] = new Rectangle(20, 175, 100, 75);
-                    oppPlayerRectangle[0, 0] = new Rectangle(180, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new Rectangle(180, 105, 100, 75);
-                    oppPlayerRectangle[1, 0] = new Rectangle(690, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new Rectangle(690, 105, 100, 75);
-                    oppPlayerRectangle[2, 0] = new Rectangle(860, 100, 100, 75);
-                    oppPlayerRectangle[2, 1] = new Rectangle(860, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 100, 75);
+                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, 100, 75);
+                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, 100, 75);
+                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, 100, 75);
+                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, 100, 75);
+                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, 100, 75);
+                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, 100, 75);
                     break;
                 case 6:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(435, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(485, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new Rectangle(740, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[4, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(435, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(485, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(690, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(740, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(860, 100, 50, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(910, 100, 50, 150);
                     break;
                 case 7:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(350, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(400, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new Rectangle(520, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new Rectangle(570, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new Rectangle(740, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[5, 1] = new Rectangle(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 50, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, 50, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, 50, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, 50, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(350, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(400, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(520, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(570, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, 50, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, 50, 150);
                     break;
                 case 8:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 320, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 320, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new Rectangle(435, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new Rectangle(485, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new Rectangle(740, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[5, 1] = new Rectangle(910, 100, 50, 150);
-                    oppPlayerRectangle[6, 0] = new Rectangle(860, 320, 50, 150);
-                    oppPlayerRectangle[7, 1] = new Rectangle(910, 320, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, 50, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, 50, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, 50, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, 50, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(435, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(485, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, 50, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, 50, 150);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 320, 50, 150);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, 50, 150);
                     break;
                 case 9:
-                    oppPlayerRectangle[0, 0] = new Rectangle(20, 320, 50, 150);
-                    oppPlayerRectangle[0, 1] = new Rectangle(70, 320, 50, 150);
-                    oppPlayerRectangle[1, 0] = new Rectangle(20, 100, 50, 150);
-                    oppPlayerRectangle[1, 1] = new Rectangle(70, 100, 50, 150);
-                    oppPlayerRectangle[2, 0] = new Rectangle(180, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new Rectangle(230, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new Rectangle(350, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new Rectangle(400, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new Rectangle(520, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new Rectangle(570, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new Rectangle(690, 30, 50, 150);
-                    oppPlayerRectangle[5, 1] = new Rectangle(740, 30, 50, 150);
-                    oppPlayerRectangle[6, 0] = new Rectangle(860, 100, 50, 150);
-                    oppPlayerRectangle[6, 1] = new Rectangle(910, 100, 50, 150);
-                    oppPlayerRectangle[7, 0] = new Rectangle(860, 320, 50, 150);
-                    oppPlayerRectangle[7, 1] = new Rectangle(910, 320, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, 50, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, 50, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, 50, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, 50, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, 50, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, 50, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(350, 30, 50, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(400, 30, 50, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(520, 30, 50, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(570, 30, 50, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(690, 30, 50, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(740, 30, 50, 150);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 100, 50, 150);
+                    oppPlayerRectangle[6, 1] = new RectangleF(910, 100, 50, 150);
+                    oppPlayerRectangle[7, 0] = new RectangleF(860, 320, 50, 150);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, 50, 150);
                     break;
                 default:
                     break;
@@ -696,7 +696,7 @@ namespace WindowsGame1
                 }
                 Label labelTemp = new Label("OtherPlayerNameLbel", Game1.font, room.Player_List[i].Player_name
                     , oppPlayerRectangle[i2, 0].X
-                    , oppPlayerRectangle[i2, 0].Top - 20
+                    , oppPlayerRectangle[i2, 0].Y - 20
                     , oppPlayerRectangle[i2, 1].Width
                     , Color.White, this);
                 labelTemp.CenterAlign = true;
@@ -795,15 +795,15 @@ namespace WindowsGame1
         #region Update's Function
         private void resize_hand()
         {
-            int net_width = (Hand_Image_List.Last().Rect.Right - Hand_Image_List[0].Rect.Left);
-            int oversize = net_width - handWitdh;
+            float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
+            float oversize = net_width - handWitdh;
             if (oversize > 0)
             {
                 padding = padding - (oversize / Hand_Image_List.Count);
             }
             for (int i = 1; i < Hand_Image_List.Count; i++)
             {
-                Hand_Image_List[i].Rect = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                Hand_Image_List[i].Rect = new RectangleF(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
                 //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
             }
         }
@@ -813,7 +813,7 @@ namespace WindowsGame1
             {
                 handList.Add(cardList[0]);
                 cardList.RemoveAt(0);
-                Image temp_image = new Image("", handList.Last().texture, new Rectangle(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+                Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
                 Hand_Image_List.Add(temp_image);
                 //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
             }
@@ -982,7 +982,7 @@ namespace WindowsGame1
                 Image image = (Image)sender;
                 View_Detail_Button = new ImageButton("view_detail_button"
                     , view_detail_button_textture
-                    , new Rectangle(image.Rect.X, image.Rect.Y, 87, 20), this);
+                    , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
                 View_Detail_Button.DrawOrder = 0.48f;
                 View_Detail_Button.Value = image;
                 View_Detail_Button.OnClick += ViewDetailButton_Onclick;

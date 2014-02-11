@@ -14,7 +14,7 @@ namespace WindowsGame1
 
         public Background(Texture2D background_img, Screen parent)
             :base("background",parent,typeof(Background)
-            ,new Rectangle(0, 0, parent.main_game.window_width, parent.main_game.window_height))
+            ,new RectangleF(0, 0, parent.main_game.window_width, parent.main_game.window_height))
         {
             BackgroundTexture = background_img;
         }

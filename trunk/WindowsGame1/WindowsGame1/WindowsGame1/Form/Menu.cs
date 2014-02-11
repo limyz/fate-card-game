@@ -18,7 +18,7 @@ namespace WindowsGame1
         public List<string> ItemsList;
 
         public Menu(string name, SpriteFont font, List<string> items, Screen parent)
-            : base(name, parent, typeof(Menu), new Rectangle(), 0.99f, 0.01f)
+            : base(name, parent, typeof(Menu), new RectangleF(), 0.99f, 0.01f)
         {
             Font = font;
             ItemsList = items;
@@ -30,10 +30,10 @@ namespace WindowsGame1
             this.OnClick += Menu_OnClick;
         }
 
-        public void Show(int x, int y)
+        public void Show(float x, float y)
         {
-            int sumheight = ItemsList.Count * Font.LineSpacing + (int)Font.Spacing;
-            int maxwidth = 0;
+            float sumheight = ItemsList.Count * Font.LineSpacing + Font.Spacing;
+            float maxwidth = 0;
             foreach (string s in ItemsList)
             {
                 int width = (int)Font.MeasureString(s).X;
@@ -44,13 +44,13 @@ namespace WindowsGame1
             }
             if (maxwidth > 0)
                 maxwidth += Font.LineSpacing * 2;
-            this.Rect = new Rectangle(x, y, maxwidth, sumheight);
+            this.Rect = new RectangleF(x, y, maxwidth, sumheight);
             Shown = true;
             Parent.ActiveForm = this;
         }
         public void Hide()
         {
-            this.Rect = new Rectangle();
+            this.Rect = new RectangleF();
             Shown = false;
         }
 
@@ -67,7 +67,7 @@ namespace WindowsGame1
         private void Menu_OnMouseMove(object sender, FormEventData e)
         {
             MouseState ms = (MouseState)e.args;
-            Hoverring_Item_Index = (ms.Y - Rect.Y) / Font.LineSpacing;
+            Hoverring_Item_Index = (int)((ms.Y - Rect.Y) / Font.LineSpacing);
         }
         private void Menu_OnClick(object sender, FormEventData e)
         {
@@ -93,9 +93,9 @@ namespace WindowsGame1
                     if (Hoverring_Item_Index != -1)
                     {
                         var hc = System.Drawing.SystemColors.MenuHighlight;
-                        Rectangle rec = new Rectangle(Rect.X
+                        RectangleF rec = new RectangleF(Rect.X
                             , Rect.Y + Hoverring_Item_Index * Font.LineSpacing
-                            , Rect.Width, Font.LineSpacing + (int)Font.Spacing);
+                            , Rect.Width, Font.LineSpacing + Font.Spacing);
                         sb.Draw(Game1.whiteTexture, rec, null, new Color(hc.R, hc.G, hc.B, hc.A), 0f, new Vector2(0, 0), SpriteEffects.None, 0.012f);
                     }
                     for (int i = 0; i < ItemsList.Count; i++)

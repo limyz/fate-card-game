@@ -23,7 +23,7 @@ namespace WindowsGame1
         public SpriteEffects effects = SpriteEffects.None;//Effects to apply.
         public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
 
-        public Image(string name, Texture2D texture, Rectangle rec
+        public Image(string name, Texture2D texture, RectangleF rec
             , float draw_order, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {

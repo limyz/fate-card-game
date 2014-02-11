@@ -14,7 +14,7 @@ namespace WindowsGame1
         public float DrawOrder = 0.5f;
         public Color Color;
 
-        public Div(string name, Rectangle rec, Color color
+        public Div(string name, RectangleF rec, Color color
             , float draw_order, Screen parent)
             : base(name, parent, typeof(Div), rec)
         {
@@ -23,7 +23,7 @@ namespace WindowsGame1
             this.DrawOrder = draw_order;
             this.Parent = parent;
         }
-        public Div(string name, Rectangle rec, Color color, Screen parent)
+        public Div(string name, RectangleF rec, Color color, Screen parent)
             : base(name, parent, typeof(Image), rec)
         {
             this.Texture = Game1.whiteTexture;

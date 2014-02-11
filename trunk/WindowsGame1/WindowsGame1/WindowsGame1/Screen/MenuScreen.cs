@@ -12,7 +12,7 @@ namespace WindowsGame1
     public class MenuScreen : Screen
     {
         #region variable decleration
-        Rectangle bg_rec;
+        RectangleF bg_rec;
         Texture2D bg_texture;
         ImageButton start_button;
         ImageButton host_button;
@@ -28,25 +28,25 @@ namespace WindowsGame1
         {
             font = theContent.Load<SpriteFont>("SpriteFont1");
 
-            start_button = new ImageButton("start_button", theContent.Load<Texture2D>("Resource/start"), new Rectangle(38, 653, 173, 51), 0.9f, this);
+            start_button = new ImageButton("start_button", theContent.Load<Texture2D>("Resource/start"), new RectangleF(38, 653, 173, 51), 0.9f, this);
             start_button.OnClick += Menu_button_click_handler;
 
             host_button = new ImageButton("host_button"
                 , theContent.Load<Texture2D>("Resource/hostgame")
-                , new Rectangle(246, 653, 173, 51), 0.9f, this);
+                , new RectangleF(246, 653, 173, 51), 0.9f, this);
             host_button.OnClick += Menu_button_click_handler;
 
             join_button = new ImageButton("join_button"
                 , theContent.Load<Texture2D>("Resource/joingame")
-                , new Rectangle(783, 653, 173, 51), 0.9f, this);
+                , new RectangleF(783, 653, 173, 51), 0.9f, this);
             join_button.OnClick += Menu_button_click_handler;
 
             quit_button = new ImageButton("quit_button"
                 ,theContent.Load<Texture2D>("Resource/quit")
-                , new Rectangle(987, 653, 173, 51), 0.9f, this);
+                , new RectangleF(987, 653, 173, 51), 0.9f, this);
             quit_button.OnClick += Menu_button_click_handler;
 
-            bg_rec = new Rectangle(0, 0, main_game.window_width, main_game.window_height);
+            bg_rec = new RectangleF(0, 0, main_game.window_width, main_game.window_height);
             bg_texture = theContent.Load<Texture2D>("Resource/menu_background_2");
 
             List<string> ls = new List<string>();

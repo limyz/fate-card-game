@@ -48,9 +48,9 @@ namespace WindowsGame1
             set { center_align = value; }
         }
 
-        public Label(string name, SpriteFont font, string text, int x, int y, int width, Color color
+        public Label(string name, SpriteFont font, string text, float x, float y, float width, Color color
             , Screen parent)
-            : base(name, parent, typeof(Label), new Rectangle(x, y, width, font.LineSpacing))
+            : base(name, parent, typeof(Label), new RectangleF(x, y, width, font.LineSpacing))
         {
             Font = font;
             Text = text;
@@ -61,7 +61,7 @@ namespace WindowsGame1
         {
             if (center_align)
             {
-                float offset_x = ((float)Rect.Width - Font.MeasureString(Text).X) / 2;
+                float offset_x = (Rect.Width - Font.MeasureString(Text).X) / 2;
                 sb.DrawString(Font, _text, new Vector2(offset_x + Rect.X, Rect.Y), Color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.1f);
             }
             else

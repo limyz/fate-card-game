@@ -23,12 +23,12 @@ namespace WindowsGame1
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
 
-        int hscrollbar_width;
+        float hscrollbar_width;
         float hscrollbar_offset = 0;
-        Rectangle hscrollbar_rec;
-        int vscrollbar_height;
+        RectangleF hscrollbar_rec;
+        float vscrollbar_height;
         float vscrollbar_offset = 0;
-        Rectangle vscrollbar_rec;
+        RectangleF vscrollbar_rec;
 
         public bool Highlighted { get; set; }
         public bool PasswordBox { get; set; } 
@@ -71,7 +71,7 @@ namespace WindowsGame1
                     {
                         if (Rect.Width <= _font.MeasureString(filtered).X)
                         {
-                            hscrollbar_width = (int)(Rect.Width * (Rect.Width / _font.MeasureString(filtered).X));
+                            hscrollbar_width = Rect.Width * (Rect.Width / _font.MeasureString(filtered).X);
                             float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width;
                             float newoffset = maxoffset;
                             if (_font.MeasureString(_text).X != 0)
@@ -90,7 +90,7 @@ namespace WindowsGame1
                     {
                         if (Rect.Height <= _font.MeasureString(filtered).Y)
                         {
-                            vscrollbar_height = (int)(Rect.Height * (Rect.Height / _font.MeasureString(filtered).Y));
+                            vscrollbar_height = Rect.Height * (Rect.Height / _font.MeasureString(filtered).Y);
                             float maxoffset = 1 - (float)vscrollbar_height / (float)Rect.Height; 
                             float newoffset = maxoffset;
                             if (_font.MeasureString(_text).X != 0)
@@ -131,7 +131,7 @@ namespace WindowsGame1
 
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
             , Texture2D caretTexture, Texture2D scrollbarBackground
-            , Texture2D scrollbarTexture, SpriteFont font, Rectangle rec
+            , Texture2D scrollbarTexture, SpriteFont font, RectangleF rec
             , Screen parent)
             : base(name, parent, typeof(TextBox),rec)
         {
@@ -155,7 +155,7 @@ namespace WindowsGame1
         }
 
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
-            , Texture2D caretTexture, SpriteFont font, Rectangle rec
+            , Texture2D caretTexture, SpriteFont font, RectangleF rec
             , Screen parent)
             : base(name, parent, typeof(TextBox), rec)
         {
@@ -191,8 +191,8 @@ namespace WindowsGame1
                     if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
                         on_hscrollbar_drag = false;
                 }
-                int offset = (int)(hscrollbar_offset * Rect.Width);
-                hscrollbar_rec = new Rectangle(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
+                float offset = hscrollbar_offset * Rect.Width;
+                hscrollbar_rec = new RectangleF(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
             }
 
             if (vscrollable)
@@ -211,8 +211,8 @@ namespace WindowsGame1
                     if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
                         on_vscrollbar_drag = false;
                 }
-                int offset = (int)(vscrollbar_offset * Rect.Height);
-                vscrollbar_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
+                float offset = vscrollbar_offset * Rect.Height;
+                vscrollbar_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
             }
 
             if (on_select_drag)
@@ -248,7 +248,7 @@ namespace WindowsGame1
                 for (int i = 0; i < Text.Length; i++)
                     toDraw += (char)0x2022; //bullet character (make sure you include it in the font!!!!)
             }
-            Rectangle _textbox_rec = new Rectangle(Rect.X, Rect.Y, Rect.Width - (vscrollable ? _font.LineSpacing : 0), Rect.Height - (hscrollable ? _font.LineSpacing : 0));
+            RectangleF _textbox_rec = new RectangleF(Rect.X, Rect.Y, Rect.Width - (vscrollable ? _font.LineSpacing : 0), Rect.Height - (hscrollable ? _font.LineSpacing : 0));
 
             spriteBatch.End();//end current screen's spriteBatch.Begin
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
@@ -256,13 +256,13 @@ namespace WindowsGame1
             //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
             {
-                Rectangle hscroll_region_rec = new Rectangle(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
+                RectangleF hscroll_region_rec = new RectangleF(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
                 spriteBatch.Draw(_scrollbarBackground, hscroll_region_rec, Color.White);
                 spriteBatch.Draw(_scrollbarTexture, hscrollbar_rec, Color.White);
             }
             if (vscrollable)
             {
-                Rectangle vscroll_region_rec = new Rectangle(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y, _font.LineSpacing, Rect.Height);
+                RectangleF vscroll_region_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y, _font.LineSpacing, Rect.Height);
                 spriteBatch.Draw(_scrollbarBackground, vscroll_region_rec, Color.White);
                 spriteBatch.Draw(_scrollbarTexture, vscrollbar_rec, Color.White);
             }
@@ -270,7 +270,7 @@ namespace WindowsGame1
             
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, _rasterizerState);
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
-            spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec;
+            spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec.toRectangle();
             
             float hoffset = hscrollbar_offset * _font.MeasureString(_text).X * -1f;
             float voffset = vscrollbar_offset * _font.MeasureString(_text).Y * -1f;
@@ -280,8 +280,8 @@ namespace WindowsGame1
                 if (select_start + select_count > _text.Length && select_start + select_count < 0)
                     select_count = 0;
 
-                int first_line_offset_x = 0;
-                int line_offset_y = 0;
+                float first_line_offset_x = 0;
+                float line_offset_y = 0;
                 if (select_start > 0)
                 {
                     int y_line_position = 0;
@@ -293,10 +293,10 @@ namespace WindowsGame1
                             break;
                         }
                     }
-                    first_line_offset_x = (int)_font.MeasureString(_text.Substring(y_line_position, select_start - y_line_position)).X;
-                    line_offset_y = (int)_font.MeasureString(_text.Substring(0, select_start)).Y - _font.LineSpacing;
+                    first_line_offset_x = _font.MeasureString(_text.Substring(y_line_position, select_start - y_line_position)).X;
+                    line_offset_y = _font.MeasureString(_text.Substring(0, select_start)).Y - _font.LineSpacing;
                 }
-                List<Rectangle> select_recs = new List<Rectangle>();
+                List<RectangleF> select_recs = new List<RectangleF>();
                 int new_line_position = select_start;
                 for (int i = select_start; i < select_start + select_count; i++)
                 {
@@ -305,16 +305,16 @@ namespace WindowsGame1
                         Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
                         if (select_recs.Count == 0)
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset_x, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new RectangleF(Rect.X + hoffset + first_line_offset_x, Rect.Y + voffset + line_offset_y + select_recs.Count * _font.LineSpacing, WaH.X, _font.LineSpacing));
                         }
                         else
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new RectangleF(Rect.X + hoffset, Rect.Y + voffset + line_offset_y + select_recs.Count * _font.LineSpacing, WaH.X, _font.LineSpacing));
                         }
                         new_line_position = i;
                     }
                 }
-                foreach (Rectangle select_rec in select_recs)
+                foreach (RectangleF select_rec in select_recs)
                 {
                     spriteBatch.Draw(_HighlightedTexture, select_rec, null, Color.Aquamarine, 0f, new Vector2(0, 0), SpriteEffects.None, 0.23f);
                 }
@@ -325,8 +325,8 @@ namespace WindowsGame1
                 if (select_start - select_count > _text.Length && select_start - select_count < 0)
                     select_count = 0;
 
-                int first_line_offset_x = 0;
-                int line_offset_y = 0;
+                float first_line_offset_x = 0;
+                float line_offset_y = 0;
                 if (select_start + select_count > 0)
                 {
                     int y_line_position = 0;
@@ -338,10 +338,10 @@ namespace WindowsGame1
                             break;
                         }
                     }
-                    first_line_offset_x = (int)_font.MeasureString(_text.Substring(y_line_position, select_start + select_count - y_line_position)).X;
-                    line_offset_y = (int)_font.MeasureString(_text.Substring(0, select_start + select_count)).Y - _font.LineSpacing;
+                    first_line_offset_x = _font.MeasureString(_text.Substring(y_line_position, select_start + select_count - y_line_position)).X;
+                    line_offset_y = _font.MeasureString(_text.Substring(0, select_start + select_count)).Y - _font.LineSpacing;
                 }
-                List<Rectangle> select_recs = new List<Rectangle>();
+                List<RectangleF> select_recs = new List<RectangleF>();
                 int new_line_position = select_start + select_count;
                 for (int i = select_start + select_count; i < select_start; i++)
                 {
@@ -350,16 +350,16 @@ namespace WindowsGame1
                         Vector2 WaH = _font.MeasureString(_text.Substring(new_line_position, i - new_line_position + 1));
                         if (select_recs.Count == 0)
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset + first_line_offset_x, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new RectangleF(Rect.X + hoffset + first_line_offset_x, Rect.Y + voffset + line_offset_y + select_recs.Count * _font.LineSpacing, WaH.X, _font.LineSpacing));
                         }
                         else
                         {
-                            select_recs.Add(new Rectangle(Rect.X + (int)hoffset, Rect.Y + (int)voffset + line_offset_y + select_recs.Count * _font.LineSpacing, (int)WaH.X, _font.LineSpacing));
+                            select_recs.Add(new RectangleF(Rect.X + hoffset, Rect.Y + voffset + line_offset_y + select_recs.Count * _font.LineSpacing, WaH.X, _font.LineSpacing));
                         }
                         new_line_position = i;
                     }
                 }
-                foreach (Rectangle select_rec in select_recs)
+                foreach (RectangleF select_rec in select_recs)
                 {
                     spriteBatch.Draw(_HighlightedTexture, select_rec, null, Color.Aquamarine, 0f, new Vector2(0, 0), SpriteEffects.None, 0.23f);
                 }
@@ -384,7 +384,7 @@ namespace WindowsGame1
                     size.Y = _font.MeasureString(_text.Substring(0, caret_position)).Y - _font.LineSpacing;
                 }
 
-                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + (int)size.X + hoffset, Rect.Y + (int)size.Y + voffset), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); 
+                spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + size.X + hoffset, Rect.Y + size.Y + voffset), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); 
             }
             //shadow first, then the actual text            
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
@@ -560,8 +560,8 @@ namespace WindowsGame1
         }
         private int GetTextIndexByPoint(Point p)
         {
-            int relative_x = p.X - Rect.X + (int)(hscrollbar_offset * _font.MeasureString(_text).X);
-            int relative_y = p.Y - Rect.Y + (int)(vscrollbar_offset * _font.MeasureString(_text).Y);
+            float relative_x = p.X - Rect.X + (hscrollbar_offset * _font.MeasureString(_text).X);
+            float relative_y = p.Y - Rect.Y + (vscrollbar_offset * _font.MeasureString(_text).Y);
 
             int y_line_position = 0;
             int test_newline = _font.LineSpacing;

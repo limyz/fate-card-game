@@ -126,31 +126,31 @@ namespace WindowsGame1
             #region Image
             saber = new Image("saber"
                 , Content.Load<Texture2D>("Resource/SaberLily_Trans")
-                , new Rectangle(720, 110, 480, 615), 0.99f, this);
+                , new RectangleF(720, 110, 480, 615), 0.99f, this);
 
             gameList = new Image("gameList"
                 , Content.Load<Texture2D>("Resource/gamelist")
-                , new Rectangle(50, 50, 700, 650), 0.97f, this);
+                , new RectangleF(50, 50, 700, 650), 0.97f, this);
             #endregion
 
             #region Button
             ok_button = new ImageButton("Ok"
                 , Content.Load<Texture2D>("Resource/ok_button")
-                , new Rectangle(170, 650, 120, 42), this);
+                , new RectangleF(170, 650, 120, 42), this);
 
             host_button = new ImageButton("Host"
                 , Content.Load<Texture2D>("Resource/host_button")
-                , new Rectangle(320, 650, 120, 42), this);
+                , new RectangleF(320, 650, 120, 42), this);
             host_button.OnClick += HostClicked;
 
             back_button = new ImageButton("Back"
                 , Content.Load<Texture2D>("Resource/back_button")
-                , new Rectangle(470, 650, 120, 42), this);
+                , new RectangleF(470, 650, 120, 42), this);
             back_button.OnClick += BackClicked;
             #endregion
 
             playerName = new TextBox("Player Name", Game1.whiteTextbox, Game1.highlightedTextbox,
-                Game1.caret, Game1.font, new Rectangle(600, 65, 150, 20), this);
+                Game1.caret, Game1.font, new RectangleF(600, 65, 150, 20), this);
             playerNameLabel = new Label("PlayerName Label", Game1.arial13Bold, "Name: ",
                 540, 65, 100, Color.White, this);
             playerName.Text = "SivCloud";
