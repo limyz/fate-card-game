@@ -194,6 +194,7 @@ namespace WindowsGame1
         public Point mouse_pos;
         public KeyboardState last_keyboard_state;
         public KeyboardState keyboard_state;
+        public Song Background_Music;
 
         public EventRaiserDelegate Event_Raiser_Delegate;
         public KeyboardTextDispatcher keyboard_text_dispatcher;
@@ -494,6 +495,10 @@ namespace WindowsGame1
             scrollbarBackground = Content.Load<Texture2D>("Resource/ScrollbarBackground");
             scrollbar = Content.Load<Texture2D>("Resource/Scrollbar");
 
+            Background_Music = Content.Load<Song>("Resource/Music/Yui Makino - Fuwa Fuwa");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(Background_Music);
+
             mMenuScreen = new MenuScreen(graphics, this.Content, new SivEventHandler(MenuScreenEvent), this);
             mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent), this);
             mHostScreen = new HostScreen(graphics, this.Content, new SivEventHandler(HostScreenEvent), this);
@@ -649,6 +654,19 @@ namespace WindowsGame1
         {
             if (this.IsActive)
             {
+                //for fps counter
+                elapsedTime += gameTime.ElapsedGameTime;
+                if (elapsedTime > TimeSpan.FromSeconds(1))
+                {
+                    elapsedTime -= TimeSpan.FromSeconds(1);
+                    frameRate = frameCounter;
+                    frameCounter = 0;
+                }
+                //end for fps counter
+
+                //Music Player
+                //end Music Player
+
                 update_input_state();
                 Event_Raiser_Delegate.Invoke();
                 /*if (Screen.keyboard_state.GetPressedKeys().Length > 0)
@@ -661,17 +679,7 @@ namespace WindowsGame1
                     debugger.Show();
                 }
                 mCurrentScreen.Update(gameTime);
-
-                //for fps counter
-                elapsedTime += gameTime.ElapsedGameTime;
-                if (elapsedTime > TimeSpan.FromSeconds(1))
-                {
-                    elapsedTime -= TimeSpan.FromSeconds(1);
-                    frameRate = frameCounter;
-                    frameCounter = 0;
-                }
-                //end for fps counter
-
+                
                 base.Update(gameTime);
             }
         }
