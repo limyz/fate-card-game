@@ -30,7 +30,6 @@ namespace WindowsGame1
             set
             {
                 width = value;
-                this.Set_Rect(this.Rect, value);
             }
         }
 
@@ -40,22 +39,16 @@ namespace WindowsGame1
             texture = Game1.whiteTexture;
             this.color = color;
             this.Width = width;
-            this.Set_Rect(rec, width);
-        }
-
-        public void Set_Rect(RectangleF rec, float width)
-        {
-            this.Rect = new RectangleF(this.OriginalRect.X - width, this.OriginalRect.Y - width, this.OriginalRect.Width + width * 2, this.OriginalRect.Height + width * 2);
         }
 
         #region Draw's function
         private void Draw_Horizontal_Line(SpriteBatch sb, float y)
         {
-            sb.Draw(texture, new RectangleF(Rect.X, y, Rect.Width, Width), color);
+            sb.Draw(texture, new RectangleF(Rect.X - Width, y, Rect.Width + Width * 2, Width), color);
         }
         private void Draw_Vertical_Line(SpriteBatch sb, float x)
         {
-            sb.Draw(texture, new RectangleF(x, Rect.Y, Width, Rect.Height), color);
+            sb.Draw(texture, new RectangleF(x, Rect.Y - Width, Width, Rect.Height + Width * 2), color);
         }
         #endregion
 
@@ -64,10 +57,10 @@ namespace WindowsGame1
             //uncomment these lines to draw negative width/height rectangle
             //sb.End();
             //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
-            Draw_Horizontal_Line(sb, Rect.Y);
-            Draw_Horizontal_Line(sb, Rect.Y + Rect.Height - Width);
-            Draw_Vertical_Line(sb, Rect.X);
-            Draw_Vertical_Line(sb, Rect.X + Rect.Width - Width);
+            Draw_Horizontal_Line(sb, Rect.Y - Width);
+            Draw_Horizontal_Line(sb, Rect.Y + Rect.Height );
+            Draw_Vertical_Line(sb, Rect.X - Width);
+            Draw_Vertical_Line(sb, Rect.X + Rect.Width );
             //uncomment these lines to draw negative width/height rectangle
             //sb.End();
             //sb.Begin();
