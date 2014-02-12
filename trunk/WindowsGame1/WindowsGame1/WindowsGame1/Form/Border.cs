@@ -10,19 +10,14 @@ namespace WindowsGame1
 {
     class Border : SivForm
     {
-        private Texture2D texture;
-        private Color _color;
-        public Color color
-        {
-            get
-            {
-                return _color;
-            }
-            set
-            {
-                _color = value;
-            }
-        }
+        public Texture2D texture;
+        public Nullable<Rectangle> Source_Rectangle = null;//A rectangle that specifies (in texels) the source texels from a texture. Use null to draw the entire texture.
+        public Color color = Color.White;//The color to tint the sprite. Use Color.White for full color with no tinting
+        public Single Rotation = 0f;//Specifies the angle (in radians) to rotate the sprite about its center.
+        public Vector2 Origin = new Vector2(0, 0);//The sprite origin; the default is (0,0) which represents the upper-left corner.
+        public SpriteEffects effects = SpriteEffects.None;//Effects to apply.
+        public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
+        
         private float width;
         public float Width
         {
@@ -44,11 +39,11 @@ namespace WindowsGame1
         #region Draw's function
         private void Draw_Horizontal_Line(SpriteBatch sb, float y)
         {
-            sb.Draw(texture, new RectangleF(Rect.X - Width, y, Rect.Width + Width * 2, Width), color);
+            sb.Draw(texture, new RectangleF(Rect.X - Width, y, Rect.Width + Width * 2, Width), Source_Rectangle, color, Rotation, Origin, effects, DrawOrder);
         }
         private void Draw_Vertical_Line(SpriteBatch sb, float x)
         {
-            sb.Draw(texture, new RectangleF(x, Rect.Y - Width, Width, Rect.Height + Width * 2), color);
+            sb.Draw(texture, new RectangleF(x, Rect.Y - Width, Width, Rect.Height + Width * 2), Source_Rectangle, color, Rotation, Origin, effects, DrawOrder);
         }
         #endregion
 
