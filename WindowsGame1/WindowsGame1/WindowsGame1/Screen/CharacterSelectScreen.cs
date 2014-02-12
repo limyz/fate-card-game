@@ -336,19 +336,23 @@ namespace WindowsGame1
             #endregion
 
             #region Character Select
-            int x = 80;
+            int x = 70;
             int y = 80;
-            for (int i = 0; i < 7; i++)
-            {
-                charSelectBorder[i] = new Border("Char " + i + " Border", Color.Black, 2,
-                new RectangleF(x + 150 * i, y, 149, 208), this);
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                characterImage[i] = new Image("Char" +i+" Image", Content.Load<Texture2D>("Resource/character_back"),
-                new RectangleF((x+2)+150*i, y + 2, 147, 206), 0.3f, this);
-            }
             
+            for (int i = 0; i < 7; i++)
+            {
+                characterImage[i] = new Image("Char" + i + " Image", Content.Load<Texture2D>("Resource/character_back"),
+                new RectangleF((x) + 155 * i, y, 147, 206), 0.3f, this);
+            }
+
+            for (int i = 0; i < 7; i++)
+            {
+                //charSelectBorder[i] = new Border("Char " + i + " Border", Color.Red, 2,
+                //new RectangleF(x + 150 * i, y, 147, 206), this);
+                charSelectBorder[i] = new Border("Char " + i + " Border", Color.Red, 2,
+                characterImage[i].Rect, this);
+            }
+
             #endregion
 
             roomInfoLabel = new Label("Room Info", Game1.arial12Bold, "Test Test Test", 50, 500, 1000, Color.White, this);

@@ -36,6 +36,7 @@ namespace WindowsGame1
         public Screen Parent;
         public Type original_type;
         public RectangleF Rect;
+        public RectangleF OriginalRect;
         public object Value;
         public bool Visible = true;
         public float Priority = 0.5f;
@@ -69,6 +70,7 @@ namespace WindowsGame1
             Name = _name;
             this.Parent = parent;
             this.original_type = original_type;
+            this.OriginalRect = rec;
             this.Rect = rec;
             Parent.FormAddindList.Add(this);
 
@@ -80,6 +82,7 @@ namespace WindowsGame1
             Name = _name;
             this.Parent = parent;
             this.original_type = original_type;
+            this.OriginalRect = rec;
             this.Rect = rec;
             this.Priority = priority;
             this.Active_Priority = active_priority;
