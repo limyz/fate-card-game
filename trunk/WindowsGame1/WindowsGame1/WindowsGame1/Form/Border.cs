@@ -40,13 +40,12 @@ namespace WindowsGame1
             texture = Game1.whiteTexture;
             this.color = color;
             this.Width = width;
-
             this.Set_Rect(rec, width);
         }
 
         public void Set_Rect(RectangleF rec, float width)
         {
-            this.Rect = new RectangleF(this.Rect.X - width, this.Rect.Y - width, this.Rect.Width + width * 2, this.Rect.Height + width * 2);
+            this.Rect = new RectangleF(this.OriginalRect.X - width, this.OriginalRect.Y - width, this.OriginalRect.Width + width * 2, this.OriginalRect.Height + width * 2);
         }
 
         #region Draw's function
