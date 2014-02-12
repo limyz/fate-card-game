@@ -124,7 +124,7 @@ namespace WindowsGame1
         Character[] masterList, servantList;
         List<Card> cardList = new List<Card>();
         List<Card> handList = new List<Card>();
-        List<Image> Hand_Image_List = new List<Image>();
+        List<CardForm> Hand_Image_List = new List<CardForm>();
         List<Image> otherPlayerMasterImage = new List<Image>();
         List<Image> otherPlayerServantImage = new List<Image>();
         //List<Rectangle> hand_area_list = new List<Rectangle>();
@@ -136,7 +136,7 @@ namespace WindowsGame1
         #endregion
 
         #region Card class
-        public class Card
+        /*public class Card
         {
             private ContentManager Content;
             public string tag;
@@ -154,7 +154,7 @@ namespace WindowsGame1
             {
                 this.texture = Content.Load<Texture2D>("Resource/card/" + asset);
             }
-        }
+        }*/
         #endregion
 
         #region Synchonize Thread
@@ -568,7 +568,7 @@ namespace WindowsGame1
             playerRandomChar[1] = rand.Next(servantList.Length);
 
             //Card's data load            
-            xml.Load("Data/Card.xml");
+            /*xml.Load("Data/Card.xml");
             XmlNodeList xml_card_list = xml.GetElementsByTagName("Card")[0].ChildNodes;
             //card_list = new Card[xml_card_list.Count];
             for (int i = 0; i < xml_card_list.Count; i++)
@@ -579,7 +579,8 @@ namespace WindowsGame1
                     xml_card_list[i].InnerText,
                     temp.GetAttribute("img")));
                 cardList[i].load_texture();
-            }
+            }*/
+            cardList = Card.LoadFromXML(Content);
             //End card's data load
             cardList.shuffle<Card>();
             #endregion
@@ -813,8 +814,11 @@ namespace WindowsGame1
             {
                 handList.Add(cardList[0]);
                 cardList.RemoveAt(0);
-                Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
-                Hand_Image_List.Add(temp_image);
+                CardForm card = new CardForm(handList.Last()
+                    , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                    , 0.5f, main_game.Content, this);
+                //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+                Hand_Image_List.Add(card);
                 //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
             }
             catch (Exception ex)
@@ -979,7 +983,7 @@ namespace WindowsGame1
         {
             if (!Card_Clicked)
             {
-                Image image = (Image)sender;
+                CardForm image = (CardForm)sender;
                 View_Detail_Button = new ImageButton("view_detail_button"
                     , view_detail_button_textture
                     , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
@@ -1003,7 +1007,7 @@ namespace WindowsGame1
         }
         private void ViewDetailButton_Onclick(object sender, FormEventData e)
         {
-            Image image = (Image)((ImageButton)sender).Value;
+            CardForm image = (CardForm)((ImageButton)sender).Value;
             Card_Detail_Image.Texture = image.Texture;
             Card_Detail_Image.Visible = true;
         }
