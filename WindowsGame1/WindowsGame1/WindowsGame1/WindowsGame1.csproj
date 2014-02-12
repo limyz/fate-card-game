@@ -124,6 +124,7 @@
     <Compile Include="Class\Room.cs" />
     <Compile Include="Form\Background.cs" />
     <Compile Include="Form\Border.cs" />
+    <Compile Include="Form\CardForm.cs" />
     <Compile Include="Form\Image.cs" />
     <Compile Include="Form\Menu.cs" />
     <Compile Include="Form\Textbox\EventTextInput.cs" />

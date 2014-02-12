@@ -10,7 +10,6 @@ namespace WindowsGame1
     [Serializable]
     public class Character
     {
-        //private ContentManager Content;
         public string CharName;
         public string Ability1, Ability2, Ability3, Ability4, Ability5;
         public int MaxHealth;
@@ -25,11 +24,9 @@ namespace WindowsGame1
             Monster = 4
         };
         public Type CharType;
-        //public Texture2D CharTexture;
         public Character(string charName,
             string charAsset, Type type)
         {
-            //this.Content = Content;
             this.CharName = charName;
             this.CharAsset = charAsset;
             this.CharType = type;
@@ -38,7 +35,6 @@ namespace WindowsGame1
         public Character(string charName, string charClass, int maxHealth,
             string charAsset, Type type, string ability1, string ability2)
         {
-            //this.Content = Content;
             this.CharName = charName;
             this.CharAsset = charAsset;
             this.MaxHealth = maxHealth;
@@ -67,10 +63,5 @@ namespace WindowsGame1
             this.Ability4 = ability4;
             this.Ability5 = ability5;
         }
-
-        //public void load_texture()
-        //{
-        //    CharTexture = Content.Load<Texture2D>("Resource/character/" + CharAsset);
-        //}
     }
 }
