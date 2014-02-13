@@ -526,6 +526,7 @@ namespace WindowsGame1
                 , Game1.transparentTextBox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar
                 , Game1.font, new RectangleF(22, 522, 946, 126), this);
+            chatDisplay.Color = Color.White;
             chatDisplay.ReadOnly = true;
             chatDisplay.vscrollable = true;
 
