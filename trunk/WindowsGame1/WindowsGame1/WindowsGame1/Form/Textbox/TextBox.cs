@@ -23,6 +23,12 @@ namespace WindowsGame1
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
         Color color = Color.Black;
+
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
         Color Textbox_Color = Color.White;
 
         float hscrollbar_width;
