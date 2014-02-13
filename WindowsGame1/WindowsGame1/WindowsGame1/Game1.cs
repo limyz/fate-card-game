@@ -179,9 +179,9 @@ namespace WindowsGame1
         //static variable
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
-        public static Texture2D whiteTexture;
+        public static Texture2D whiteTexture, transparentTextBox;
         public static Texture2D whiteTextbox, highlightedTextbox, caret, scrollbarBackground, scrollbar;
-        public static SpriteFont font, arial14Bold, arial12Bold, arial13Bold;   
+        public static SpriteFont font, arial14Bold, arial12Bold, arial13Bold, gautami12Regular, gautami14Bold;   
         //end static variable
 
         public int window_width = 1200;
@@ -487,15 +487,18 @@ namespace WindowsGame1
             arial12Bold = Content.Load<SpriteFont>("Resource/font/Arial_12_Bold");
             arial13Bold = Content.Load<SpriteFont>("Resource/font/Arial_13_Bold");
             arial14Bold = Content.Load<SpriteFont>("Resource/font/Arial_14_Bold");
+            gautami12Regular = Content.Load<SpriteFont>("Resource/font/Gautami_12_Regular");
+            gautami14Bold = Content.Load<SpriteFont>("Resource/font/Gautami_14_Bold");
             whiteTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             whiteTexture.SetData(new[] { Color.White });
             whiteTextbox = Content.Load<Texture2D>("Resource/white_textbox");
+            transparentTextBox = Content.Load<Texture2D>("Resource/textbox");
             highlightedTextbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
             caret = Content.Load<Texture2D>("Resource/caret");
             scrollbarBackground = Content.Load<Texture2D>("Resource/ScrollbarBackground");
             scrollbar = Content.Load<Texture2D>("Resource/Scrollbar");
 
-            Background_Music = Content.Load<Song>("Resource/Music/Yui Makino - Fuwa Fuwa");
+            Background_Music = Content.Load<Song>("Resource/Music/Memoria");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(Background_Music);
 
@@ -697,7 +700,7 @@ namespace WindowsGame1
                 String s = "Mouse Position: " + mouse_pos.ToString();
                 s += " | " + "In Game Time: " + gameTime.TotalGameTime.ToString();
                 s += " | " + "FPS : " + frameRate.ToString();
-                spriteBatch.DrawString(arial14Bold, s, new Vector2(0, 0), Color.White);
+                spriteBatch.DrawString(arial12Bold, s, new Vector2(10, 0), Color.White);
                 spriteBatch.End();
             }
         }
