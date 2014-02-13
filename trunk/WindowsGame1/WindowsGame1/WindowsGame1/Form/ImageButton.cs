@@ -62,8 +62,8 @@ namespace WindowsGame1
         {
             if (IsHovered)
             {
-                spriteBatch.Draw(texture/*main_game.white_texture*/, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder + 0.0001f);
-                spriteBatch.Draw(texture, Rect, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
+                spriteBatch.Draw(texture/*main_game.white_texture*/, Rect, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder - 0.0001f);
+                spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
             }
             else
             {
