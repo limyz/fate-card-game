@@ -22,6 +22,8 @@ namespace WindowsGame1
         Texture2D _scrollbarTexture;
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
+        Color color = Color.Black;
+        Color Textbox_Color = Color.White;
 
         float hscrollbar_width;
         float hscrollbar_offset = 0;
@@ -252,7 +254,7 @@ namespace WindowsGame1
 
             spriteBatch.End();//end current screen's spriteBatch.Begin
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
+            spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Textbox_Color, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
             //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
             {
@@ -387,8 +389,8 @@ namespace WindowsGame1
                 spriteBatch.Draw(_caretTexture, new Vector2(Rect.X + size.X + hoffset, Rect.Y + size.Y + voffset), null, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.22f); 
             }
             //shadow first, then the actual text            
-            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
-            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
+            //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
+            spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
 
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();

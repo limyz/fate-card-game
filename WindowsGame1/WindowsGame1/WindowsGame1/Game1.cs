@@ -179,7 +179,7 @@ namespace WindowsGame1
         //static variable
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
-        public static Texture2D whiteTexture, transparentTextBox;
+        public static Texture2D whiteTexture, zeroTexture, transparentTextBox;
         public static Texture2D whiteTextbox, highlightedTextbox, caret, scrollbarBackground, scrollbar;
         public static SpriteFont font, arial14Bold, arial12Bold, arial13Bold, gautami12Regular, gautami14Bold;   
         //end static variable
@@ -491,6 +491,8 @@ namespace WindowsGame1
             gautami14Bold = Content.Load<SpriteFont>("Resource/font/Gautami_14_Bold");
             whiteTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             whiteTexture.SetData(new[] { Color.White });
+            zeroTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            zeroTexture.SetData(new[] { Color.Transparent });
             whiteTextbox = Content.Load<Texture2D>("Resource/white_textbox");
             transparentTextBox = Content.Load<Texture2D>("Resource/textbox");
             highlightedTextbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
