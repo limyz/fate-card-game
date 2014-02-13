@@ -30,10 +30,11 @@ namespace WindowsGame1
         Background backGround;
         ImageButton start_button, quit_button;
         List<Image> avatar_img = new List<Image>();
+        List<Image> borderAvatarList = new List<Image>();
         Color borderColor = Color.MediumAquamarine;
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
-        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture;
+        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture, panelTexture, imageBorderTexture;
 
         #endregion
 
@@ -451,6 +452,8 @@ namespace WindowsGame1
             #region Load Resource
             avatarDefault = Content.Load<Texture2D>("Resource/avatar_default");
             backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
+            panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
+            imageBorderTexture = Content.Load<Texture2D>("Resource/graphic/base2");
             #endregion
 
             #region Player Content
@@ -463,24 +466,25 @@ namespace WindowsGame1
             div_char[6] = new RectangleF(475, 270, 180, 180);
             div_char[7] = new RectangleF(685, 270, 180, 180);
 
-            div_border = new Border("player_border", borderColor, 2
-               , new RectangleF(20, 20, 900, 480), this);
-
+            //div_border = new Border("player_border", borderColor, 2
+            //   , new RectangleF(20, 20, 900, 480), this);
+            Image playerPanel = new Image("Player Panel", panelTexture, new RectangleF(10, 10, 920, 500), 0.3f, this);
             #endregion
 
             #region Room Information
-            div_info_border = new Border("div_info", borderColor, 2
-                , new RectangleF(930, 20, 250, 480), this);
-            roomInfoDiv = new Div("Room Info", new RectangleF(932, 22, 246, 476), Color.DarkRed, this);
-            roomInfoContent = new Label("Room Info", Game1.font, "", 960, 80, 300, Color.White, this);
-            roomInfoTitle = new Label("Info Label", Game1.arial14Bold, "Room Information", 970, 50, 300, Color.White, this);
+            //div_info_border = new Border("div_info", borderColor, 2
+            //    , new RectangleF(930, 20, 250, 480), this);
+            //roomInfoDiv =Image info_pane new Div("Room Info", new RectangleF(932, 22, 246, 476), Color.DarkRed, this);
+            Image infoPanel = new Image("Info Panel", panelTexture, new RectangleF(932, 22, 246, 476), 0.3f, this);
+            roomInfoContent = new Label("Room Info", Game1.gautami12Regular, "", 960, 80, 300, Color.White, this);
+            roomInfoTitle = new Label("Info Label", Game1.gautami14Bold, "Room Information", 970, 50, 300, Color.White, this);
             #endregion
 
             #region Player Name Label
             for (int i = 0; i < div_char.Length; i++)
             {
                 //String name = "div_char" + i;
-                div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
+                //div_char_border[i] = new Border(name, borderColor, 2, div_char[i], this);
                 if (i < 4)
                 {
                     playerName[i] = new Label("playerNameLabel" + i, Game1.arial12Bold, ""
@@ -512,12 +516,6 @@ namespace WindowsGame1
             #endregion
 
             #region Chat
-            //Border
-            chat_box_border = new Border("chat_screen", borderColor, 2
-                , new RectangleF(20, 520, 950, 130), this);
-            chat_input_border = new Border("chat_input", borderColor, 2
-                , new RectangleF(20, 660, 950, 24), this);
-
             //Textbox
             chat = new TextBox("Chat Input"
                 , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
@@ -525,11 +523,15 @@ namespace WindowsGame1
             chat.OnEnterPressed += ChatBox_EnterPressed;
 
             chatDisplay = new TextBox("Chat Display"
-                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.transparentTextBox, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar
                 , Game1.font, new RectangleF(22, 522, 946, 126), this);
             chatDisplay.ReadOnly = true;
             chatDisplay.vscrollable = true;
+
+            //Border
+            chat_box_border = new Border("chat_screen", Color.White, 2, chatDisplay.Rect, this);
+            chat_input_border = new Border("chat_input", Color.White, 2, chat.Rect, this);
             #endregion
 
             #region RoomScreen_RegisterHandler
@@ -722,6 +724,8 @@ namespace WindowsGame1
 
             foreach (var item in avatar_img) item.Delete();
             avatar_img.Clear();
+            foreach (var item in borderAvatarList) item.Delete();
+            borderAvatarList.Clear();
             foreach (var item in playerName)
             {
                 item.Text = "";
@@ -746,8 +750,11 @@ namespace WindowsGame1
                 {
                     playerName[i].Color = Color.Aquamarine;
                 }
-                Image newAvatar = new Image(playerNameStr, avatarDefault, div_char[i], 0.5f, this);
+                Image borderAvatar = new Image(playerNameStr + "border", imageBorderTexture, div_char[i], 0.4f, this);
+                Image newAvatar = new Image(playerNameStr, avatarDefault,
+                    new RectangleF(div_char[i].X + 18, div_char[i].Y + 16, div_char[i].Width - 38, div_char[i].Height - 38), 0.41f, this);
                 avatar_img.Add(newAvatar);
+                borderAvatarList.Add(borderAvatar);
             }
             numberOfPlayer = room.Player_List.Count;
             ButtonChange();

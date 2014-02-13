@@ -336,19 +336,15 @@ namespace WindowsGame1
             #endregion
 
             #region Character Select
-            int x = 70;
-            int y = 80;
+            int x = 70; int y = 80;
             
             for (int i = 0; i < 7; i++)
             {
                 characterImage[i] = new Image("Char" + i + " Image", Content.Load<Texture2D>("Resource/character_back"),
                 new RectangleF((x) + 155 * i, y, 147, 206), 0.3f, this);
             }
-
             for (int i = 0; i < 7; i++)
             {
-                //charSelectBorder[i] = new Border("Char " + i + " Border", Color.Red, 2,
-                //new RectangleF(x + 150 * i, y, 147, 206), this);
                 charSelectBorder[i] = new Border("Char " + i + " Border", Color.Red, 2,
                 characterImage[i].Rect, this);
             }
@@ -553,7 +549,6 @@ namespace WindowsGame1
                         int count = CountSelectChar();
                         if (count < 2)
                         {
-                            //characterImage[i].Move(300, 300, 100);
                             charSelectBorder[i].Width = 4;
                             charSelectBorder[i].color = Color.BlueViolet;
                         }
