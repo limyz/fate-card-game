@@ -70,7 +70,7 @@ namespace WindowsGame1
                 suit = "♠";
                 suit_color = Color.Black;
             }
-            spriteBatch.DrawString(Game1.arial14Bold, suit, Rect.getXY() + new Vector2(5), suit_color, Rotation, Origin, new Vector2(1.5f), effects, DrawOrder - 0.0001f);
+            spriteBatch.DrawString(Game1.arial14Bold, suit, Rect.getXY() + new Vector2(5), suit_color, Rotation, Origin, new Vector2(1.0f), effects, DrawOrder /*- 0.001f*/);
             string number = "";
             if((int)(card.CardNumber) >= 2 && (int)(card.CardNumber) <= 10)
             {
@@ -92,7 +92,7 @@ namespace WindowsGame1
             {
                 number = "A";
             }
-            spriteBatch.DrawString(Game1.arial14Bold, number, Rect.getXY() + new Vector2(20,5), Color.Black, Rotation, Origin, new Vector2(1.5f), effects, DrawOrder - 0.001f);
+            spriteBatch.DrawString(Game1.arial14Bold, number, Rect.getXY() + new Vector2(20,5), Color.Black, Rotation, Origin, new Vector2(1.5f), effects, DrawOrder /*- 0.001f*/);
         }
     }
 }

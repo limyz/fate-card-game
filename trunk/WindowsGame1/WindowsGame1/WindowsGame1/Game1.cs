@@ -502,7 +502,7 @@ namespace WindowsGame1
 
             Background_Music = Content.Load<Song>("Resource/Music/Memoria");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(Background_Music);
+            //MediaPlayer.Play(Background_Music);
 
             mMenuScreen = new MenuScreen(graphics, this.Content, new SivEventHandler(MenuScreenEvent), this);
             mInGameScreen = new InGameScreen(graphics, this.Content, new SivEventHandler(InGameEvent), this);

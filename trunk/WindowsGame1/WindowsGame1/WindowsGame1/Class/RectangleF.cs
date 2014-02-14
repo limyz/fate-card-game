@@ -7,6 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WindowsGame1
 {
+    public delegate void RectangleFPropertiesChangeEvent(RectangleF sender,RectangleFPropertiesEnum ChangedProperty,float change );
+    public enum RectangleFPropertiesEnum
+    {
+        X=1,Y=2,Width=3,Height=4
+    };
+
     public class RectangleF
     {
         protected float _x = 0.0F;
@@ -107,13 +113,18 @@ namespace WindowsGame1
             tempRect._height = tempRect._y2 - tempRect._y;
             return tempRect;
         }
+
+        public event RectangleFPropertiesChangeEvent RectangleFPropertiesChanged;
         public float X
         {
             get { return _x; }
             set
             {
+                float change = value - _x;
                 _x = value;
                 _x2 = _x + _width;
+                if (RectangleFPropertiesChanged != null)
+                    RectangleFPropertiesChanged(this, RectangleFPropertiesEnum.X, change);
             }
         }
 
@@ -122,8 +133,11 @@ namespace WindowsGame1
             get { return _y; }
             set
             {
+                float change = value - _y;
                 _y = value;
                 _y2 = _y + _height;
+                if (RectangleFPropertiesChanged != null)
+                    RectangleFPropertiesChanged(this, RectangleFPropertiesEnum.Y, change);
             }
         }
 
@@ -132,8 +146,11 @@ namespace WindowsGame1
             get { return _width; }
             set
             {
+                float change = value - _width;
                 _width = value;
                 _x2 = _x + _width;
+                if (RectangleFPropertiesChanged != null)
+                    RectangleFPropertiesChanged(this, RectangleFPropertiesEnum.Width, change);
             }
         }
 
@@ -142,8 +159,11 @@ namespace WindowsGame1
             get { return _height; }
             set
             {
+                float change = value - _height;
                 _height = value;
                 _y2 = _y + _height;
+                if (RectangleFPropertiesChanged != null)
+                    RectangleFPropertiesChanged(this, RectangleFPropertiesEnum.Height, change);
             }
         }
 
