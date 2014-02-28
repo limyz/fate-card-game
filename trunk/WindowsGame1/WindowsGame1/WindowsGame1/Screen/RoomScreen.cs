@@ -271,6 +271,20 @@ namespace WindowsGame1
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         Command c = new Command(bytes);
+                        if (c.Command_Code == CommandCode.Can_I_Join)
+                        {
+                            Command temp_c;
+                            if (room.Player_List.Count >= room.Number_of_Player)
+                            {
+                                temp_c = new Command(CommandCode.Cant_Join_Room_Full);
+                            }
+                            else
+                            {
+                                temp_c = new Command(CommandCode.OK_to_Join);
+                            }
+                            byte[] data = temp_c.Serialize();
+                            stream.Write(data, 0, data.Length);
+                        }
                         if (c.Command_Code == CommandCode.Join_Game)
                         {
                             _player = (Player)c.Data1;

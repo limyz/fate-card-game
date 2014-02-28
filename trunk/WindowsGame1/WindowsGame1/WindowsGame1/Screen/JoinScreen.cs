@@ -29,7 +29,7 @@ namespace WindowsGame1
         Label playerNameLabel;
         #endregion
 
-        #region receiver Thread
+        #region UDP receiver Thread
         UdpClient receivingClient;
         Thread receivingThread;
 
@@ -92,7 +92,7 @@ namespace WindowsGame1
                     BinaryFormatter bin = new BinaryFormatter();
                     MemoryStream mem = new MemoryStream(data);
                     Room room = (Room)bin.Deserialize(mem);
-
+                    //Game1.MessageBox(new IntPtr(0), "here", "", 0);
                     this.Check_Room_Existed(room, endPoint);
                 }
             }
@@ -188,9 +188,7 @@ namespace WindowsGame1
             int value = (int)label.Value;
             Room room = List_Room[value];
 
-            Player player = new Player(playerName.Text, Game1.getLocalIP());
-            room.Player_List.Add(player);
-            ScreenEvent.Invoke(this, new SivEventArgs(4, room));
+            this.RequestJoin(room);
         }
         private void RoomEntered(object sender, FormEventData e)
         {
@@ -227,6 +225,55 @@ namespace WindowsGame1
                 }
             }
 
+        }
+        NetworkStream networkStream;
+        TcpClient tcpClient;
+        private void RequestJoin(Room room)
+        {
+            Command c = new Command(CommandCode.Can_I_Join);
+            byte[] data = c.Serialize();
+
+            try
+            {
+                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+
+                Byte[] bytes = new Byte[1024 * 16];
+                DateTime dt = DateTime.Now;
+                while (true)
+                {
+                    int i;
+                    while ((i = networkStream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        Command c2 = new Command(bytes);
+                        if (c2.Command_Code == CommandCode.OK_to_Join)
+                        {
+                            tcpClient.Close();
+                            Player player = new Player(playerName.Text, Game1.getLocalIP());
+                            room.Player_List.Add(player);
+                            ScreenEvent.Invoke(this, new SivEventArgs(4, room));
+                            return;
+                        }
+                        else if (c2.Command_Code == CommandCode.Cant_Join_Room_Full)
+                        {
+                            tcpClient.Close();
+                            Game1.MessageBox(new IntPtr(0), "Can't join, the room is full.", "Can not Join", 0);
+                            return;
+                        }
+                    }
+                    if ((DateTime.Now - dt) > new TimeSpan(0, 0, 3))
+                    {
+                        tcpClient.Close();
+                        Game1.MessageBox(new IntPtr(0), "Host is not responding", "Can not Join", 0);
+                        return;
+                    }
+                }
+            }
+            catch
+            {
+                Game1.MessageBox(new IntPtr(0), "Host is not responding", "Can not Join", 0);
+            }
         }
         #endregion
 
