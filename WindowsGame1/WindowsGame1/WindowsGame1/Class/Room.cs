@@ -14,10 +14,10 @@ namespace WindowsGame1
             get { return player_List; }
             set
             {
-                if (this.Number_of_Player >= value.Count)
-                {
+                /*if (this.Number_of_Player >= value.Count)
+                {*/
                     player_List = value;
-                }
+                /*}*/
             }
         }
         public string Room_name;
@@ -28,7 +28,15 @@ namespace WindowsGame1
         {
             this.Player_List.Add(player);
             this.Room_name = Room_name;
-            this.Number_of_Player = Number_of_Player;
+            if (Number_of_Player < 1)
+            {
+                this.Number_of_Player = 1;
+                
+            }
+            else
+            {
+                this.Number_of_Player = Number_of_Player;
+            }
             this.owner_index = 0;
             this.Player_List.Capacity = Number_of_Player;
         }
@@ -72,6 +80,7 @@ namespace WindowsGame1
 
         public int findByID_ExcludeMainPlayer(Guid guid, Guid MainPlayer_Guid)
         {
+            if (guid == MainPlayer_Guid) return -1;
             for (int i = 0, i2 = 0; i < this.player_List.Count; i++, i2++)
             {
                 if (player_List[i].id == MainPlayer_Guid)
@@ -79,7 +88,7 @@ namespace WindowsGame1
                     i2--;
                     continue;
                 }
-                if (player_List[i].id == guid)
+                else if (player_List[i].id == guid)
                 {
                     return i2;
                 }
