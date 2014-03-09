@@ -59,9 +59,9 @@ namespace WindowsGame1
         }
 
         #region Handler
-        public MouseEventHandler OnClick;//
-        public MouseEventHandler OnMouseUp;//
-        public MouseEventHandler OnMouseDown;//
+        public MouseEventHandler OnClick;
+        public MouseEventHandler OnMouseUp;
+        public MouseEventHandler OnMouseDown;
         public MouseEventHandler OnRightMouseClick;
         public MouseEventHandler OnRightMouseUp;
         public MouseEventHandler OnRightMouseDown;
@@ -69,26 +69,29 @@ namespace WindowsGame1
         public MouseEventHandler OnMiddleMouseUp;
         public MouseEventHandler OnMiddleMouseDown;
         public MouseScrollEventHandler OnMouseScroll;
-        public MouseEventHandler OnMouseMove;//
-        public MouseEventHandler OnMouseHover;//
-        public MouseEventHandler OnMouseEnter;//
-        public MouseEventHandler OnMouseLeave;//
+        public MouseEventHandler OnMouseMove;
+        public MouseEventHandler OnMouseHover;
+        public MouseEventHandler OnMouseEnter;
+        public MouseEventHandler OnMouseLeave;
         public MouseEventHandler OnMouseDrag;
         public MouseEventHandler OnMouseDrop;
-        public KeyboardEventHandler OnKeysPress;//
-        public KeyboardEventHandler OnKeysDown;//
-        public KeyboardEventHandler OnKeysUp;//
+        public KeyboardEventHandler OnKeysPress;
+        public KeyboardEventHandler OnKeysDown;
+        public KeyboardEventHandler OnKeysUp;
         #endregion
         #region HANDLER
         private void On_Click_Dispatcher(MouseState ms, MouseState last_ms)
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnClick != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnClick != null)
                     {
-                        form.OnClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -111,11 +114,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMouseUp != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMouseUp != null)
                     {
-                        form.OnMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -124,11 +130,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMouseDown != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMouseDown != null)
                     {
-                        form.OnMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -137,11 +146,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnRightMouseClick != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnRightMouseClick != null)
                     {
-                        form.OnRightMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnRightMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -150,11 +162,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnRightMouseUp != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnRightMouseUp != null)
                     {
-                        form.OnRightMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnRightMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -163,11 +178,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnRightMouseDown != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnRightMouseDown != null)
                     {
-                        form.OnRightMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnRightMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -176,11 +194,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMiddleMouseClick != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMiddleMouseClick != null)
                     {
-                        form.OnMiddleMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMiddleMouseClick.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -189,11 +210,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMiddleMouseUp != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMiddleMouseUp != null)
                     {
-                        form.OnMiddleMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMiddleMouseUp.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -202,11 +226,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMiddleMouseDown != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMiddleMouseDown != null)
                     {
-                        form.OnMiddleMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMiddleMouseDown.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -215,9 +242,12 @@ namespace WindowsGame1
         {
             if (ActiveForm != null)
             {
-                if (ActiveForm.OnMouseScroll != null)
+                if (ActiveForm.Interactable)
                 {
-                    ActiveForm.OnMouseScroll.Invoke(ActiveForm,new FormEventData(change));
+                    if (ActiveForm.OnMouseScroll != null)
+                    {
+                        ActiveForm.OnMouseScroll.Invoke(ActiveForm, new FormEventData(change));
+                    }
                 }
             }
         }
@@ -225,11 +255,14 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.OnMouseHover != null)
+                if (form.Interactable)
                 {
-                    if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                    if (form.OnMouseHover != null)
                     {
-                        form.OnMouseHover.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        if (form.Rect.Contains(new Point(ms.X, ms.Y)))
+                        {
+                            form.OnMouseHover.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                        }
                     }
                 }
             }
@@ -238,21 +271,24 @@ namespace WindowsGame1
         {
             foreach (SivForm form in Form_list)
             {
-                if (form.Rect.Contains(new Point(ms.X, ms.Y)) && form.OnMouseMove != null)
+                if (form.Interactable)
                 {
-                    form.OnMouseMove.Invoke(form, new FormEventData(typeof(MouseState), ms));
-                }
-                if (!form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
-                    && form.Rect.Contains(new Point(ms.X, ms.Y))
-                    && form.OnMouseEnter != null)
-                {
-                    form.OnMouseEnter.Invoke(form, new FormEventData(typeof(MouseState), ms));
-                }
-                else if (!form.Rect.Contains(new Point(ms.X, ms.Y))
-                    && form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
-                    && form.OnMouseLeave != null)
-                {
-                    form.OnMouseLeave.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                    if (form.Rect.Contains(new Point(ms.X, ms.Y)) && form.OnMouseMove != null)
+                    {
+                        form.OnMouseMove.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                    }
+                    if (!form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
+                        && form.Rect.Contains(new Point(ms.X, ms.Y))
+                        && form.OnMouseEnter != null)
+                    {
+                        form.OnMouseEnter.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                    }
+                    else if (!form.Rect.Contains(new Point(ms.X, ms.Y))
+                        && form.Rect.Contains(new Point(last_ms.X, last_ms.Y))
+                        && form.OnMouseLeave != null)
+                    {
+                        form.OnMouseLeave.Invoke(form, new FormEventData(typeof(MouseState), ms));
+                    }
                 }
             }
         }                                                                         
@@ -260,9 +296,12 @@ namespace WindowsGame1
         {
             if (ActiveForm != null)
             {
-                if (ActiveForm.OnKeyPress != null)
+                if (ActiveForm.Interactable)
                 {
-                    ActiveForm.OnKeyPress.Invoke(ActiveForm, new FormEventData(keys));
+                    if (ActiveForm.OnKeyPress != null)
+                    {
+                        ActiveForm.OnKeyPress.Invoke(ActiveForm, new FormEventData(keys));
+                    }
                 }
             }
         }
@@ -270,9 +309,12 @@ namespace WindowsGame1
         {
             if (ActiveForm != null)
             {
-                if (ActiveForm.OnKeyDown != null)
+                if (ActiveForm.Interactable)
                 {
-                    ActiveForm.OnKeyDown.Invoke(ActiveForm, new FormEventData(keys));
+                    if (ActiveForm.OnKeyDown != null)
+                    {
+                        ActiveForm.OnKeyDown.Invoke(ActiveForm, new FormEventData(keys));
+                    }
                 }
             }
         }        
@@ -280,9 +322,12 @@ namespace WindowsGame1
         {
             if (ActiveForm != null)
             {
-                if (ActiveForm.OnKeyUp != null)
+                if (ActiveForm.Interactable)
                 {
-                    ActiveForm.OnKeyUp.Invoke(ActiveForm, new FormEventData(keys));
+                    if (ActiveForm.OnKeyUp != null)
+                    {
+                        ActiveForm.OnKeyUp.Invoke(ActiveForm, new FormEventData(keys));
+                    }
                 }
             }
         }
@@ -330,13 +375,16 @@ namespace WindowsGame1
         }
         public virtual void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
+            //Console.WriteLine("------------Start Drawing--------------");
             foreach (SivForm sv in Form_list)
             {
                 if (sv.Visible)
                 {
+                    //Console.WriteLine("Drawing: " + sv.Name);
                     sv.Draw(spriteBatch, gameTime);
                 }
             }
+            //Console.WriteLine("------------End Drawing--------------");
             if (FormsDraw != null)
             {
                 FormsDraw.Invoke(spriteBatch, gameTime);

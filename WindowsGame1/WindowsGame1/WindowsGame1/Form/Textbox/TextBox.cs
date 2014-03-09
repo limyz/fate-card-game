@@ -141,7 +141,7 @@ namespace WindowsGame1
             , Texture2D caretTexture, Texture2D scrollbarBackground
             , Texture2D scrollbarTexture, SpriteFont font, RectangleF rec
             , Screen parent)
-            : base(name, parent, typeof(TextBox),rec)
+            : base(name, parent, typeof(TextBox), rec, 0.5f, 0.5f)
         {
             _textBoxTexture = textBoxTexture;
             _HighlightedTexture = highlightedTexture;
@@ -165,7 +165,7 @@ namespace WindowsGame1
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
             , Texture2D caretTexture, SpriteFont font, RectangleF rec
             , Screen parent)
-            : base(name, parent, typeof(TextBox), rec)
+            : base(name, parent, typeof(TextBox), rec, 0.5f, 0.5f)
         {
             _textBoxTexture = textBoxTexture;
             _HighlightedTexture = highlightedTexture;

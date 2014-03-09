@@ -32,7 +32,7 @@ namespace WindowsGame1
         public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
 
         public CardForm(Card card, RectangleF rec, float draw_order, ContentManager content, Screen parent)
-            : base("card.CardName", parent, typeof(CardForm), rec)
+            : base(card.CardName, parent, typeof(CardForm), rec)
         {
             Card = card;
             this.LoadTexture(content);

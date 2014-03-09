@@ -18,7 +18,7 @@ namespace WindowsGame1
         public List<string> ItemsList;
 
         public Menu(string name, SpriteFont font, List<string> items, Screen parent)
-            : base(name, parent, typeof(Menu), new RectangleF(), 0.99f, 0.01f)
+            : base(name, parent, typeof(Menu), new RectangleF(), 0.98f, 0.01f)
         {
             Font = font;
             ItemsList = items;
