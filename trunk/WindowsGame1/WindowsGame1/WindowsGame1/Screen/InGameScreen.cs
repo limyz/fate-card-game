@@ -114,7 +114,7 @@ namespace WindowsGame1
         private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
-            view_detail_button_textture;
+            view_detail_button_textture,back_button_texture,foward_button_texture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -129,7 +129,7 @@ namespace WindowsGame1
         List<Image> otherPlayerServantImage = new List<Image>();
         //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg, Card_Detail_Image;
-        ImageButton drawButton;
+        ImageButton drawButton, Button_HandListBackPaging, Button_HandListFowardPaging;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         //Label usernameLabel, ipLabel;
         Div playerControlPanel;
@@ -454,6 +454,8 @@ namespace WindowsGame1
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
             shirou = Content.Load<Texture2D>("Resource/character1");
             view_detail_button_textture = Content.Load<Texture2D>("Resource/view_detail_button");
+            back_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-left-double-icon");
+            foward_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-right-double-icon");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
@@ -466,9 +468,9 @@ namespace WindowsGame1
             playerControlPanel = new Div("PlayerControlPanel",
                 new RectangleF(0, 564, 1000, 156), Color.White, this);
             masterImg = new Image("Player Master Image", characterBackTexture,
-                new RectangleF(734, 567, 105, 150), 0.3f, this);
+                new RectangleF(734, 567, 105, 150), 0.48f, this);
             servantImg = new Image("Player Servant Image", characterBackTexture,
-                new RectangleF(845, 567, 105, 150), 0.3f, this);
+                new RectangleF(845, 567, 105, 150), 0.48f, this);
 
             handZoneBorder = new Border("Hand Zone", Color.Red, 2,
                 new RectangleF(170, 564, 565, 156), this);
@@ -476,9 +478,14 @@ namespace WindowsGame1
                 new RectangleF(0, 564, 168, 156), this);
 
             Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
-                , new RectangleF(900, 10, 372, 520), 0.1f, this);
+                , new RectangleF(800, 0, 372, 520), 0.1f, this);
             Card_Detail_Image.Priority = 0.6f;
             Card_Detail_Image.Visible = false;
+
+            Button_HandListBackPaging = new ImageButton("HLBP", back_button_texture
+                , new RectangleF(155, 600, 40, 40), 0.47f, this);
+            Button_HandListFowardPaging = new ImageButton("HLFP", foward_button_texture
+                , new RectangleF(720, 600, 40, 40), 0.47f, this);
             #endregion
 
             #region Button

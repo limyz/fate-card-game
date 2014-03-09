@@ -38,6 +38,7 @@ namespace WindowsGame1
         public RectangleF Rect;
         public object Value;
         public bool Visible = true;
+        public bool Interactable = true;
         public float Priority = 0.5f;
         public float Active_Priority = 0.5f;
         public bool Activable = false;
