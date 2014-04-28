@@ -114,7 +114,7 @@ namespace WindowsGame1
         private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
-            view_detail_button_textture,back_button_texture,foward_button_texture;
+            view_detail_button_textture, back_button_texture, foward_button_texture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -122,7 +122,7 @@ namespace WindowsGame1
         Color borderColor = Color.MediumAquamarine;
         XmlDocument xml = new XmlDocument();
         Character[] masterList, servantList;
-        List<Card> cardList = new List<Card>();
+        List<Card> deck = new List<Card>();
         List<Card> handList = new List<Card>();
         List<CardForm> Hand_Image_List = new List<CardForm>();
         List<Image> otherPlayerMasterImage = new List<Image>();
@@ -587,9 +587,9 @@ namespace WindowsGame1
                     temp.GetAttribute("img")));
                 cardList[i].load_texture();
             }*/
-            cardList = Card.LoadFromXML(Content);
+            deck = Card.LoadFromXML(Content);
             //End card's data load
-            cardList.shuffle<Card>();
+            deck.shuffle<Card>();
             #endregion
         }
 
@@ -599,8 +599,20 @@ namespace WindowsGame1
             StartSynch();
             InitializeReceiver();
 
+            #region InitializeGameData
             oppPlayerRectangle = new RectangleF[room.Player_List.Count - 1, 2];
-            #region Define Ohter Player Area
+            foreach (Player player in room.Player_List)
+            {
+                player.MaxHealth = player.Character1.MaxHealth + player.Character2.MaxHealth;
+                player.CurrentHealth = Convert.ToInt32(player.MaxHealth);
+                player.HandLimit = player.CurrentHealth;
+            }
+
+            //Load Deck
+
+            #endregion
+
+            #region Define Other Player Area
             switch (room.Player_List.Count)
             {
                 case 2:
@@ -695,6 +707,8 @@ namespace WindowsGame1
                     break;
             }
             #endregion
+
+            #region Draw other Area
             for (int i = 0, i2 = 0; i < room.Player_List.Count; i++, i2++)
             {
                 if (i == Player_Index)
@@ -727,6 +741,7 @@ namespace WindowsGame1
                 masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
                 servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             }
+            #endregion
         }
 
         public override void End(Command command)
@@ -819,8 +834,8 @@ namespace WindowsGame1
         {
             try
             {
-                handList.Add(cardList[0]);
-                cardList.RemoveAt(0);
+                handList.Add(deck[0]);
+                deck.RemoveAt(0);
                 CardForm card = new CardForm(handList.Last()
                     , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
                     , 0.5f, main_game.Content, this);
@@ -872,6 +887,7 @@ namespace WindowsGame1
             //    }
             //}
         }
+
         private void CharacterChange(Character character1, Character character2, Guid id)
         {
             int Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
@@ -881,6 +897,7 @@ namespace WindowsGame1
 
             UpdatePlayer(Index, Player);
         }
+
         private void UpdatePlayer(int index, int player)
         {
             if (room.Player_List[player].Status)
@@ -893,6 +910,7 @@ namespace WindowsGame1
                 OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
             }
         }
+
         private Texture2D GetTexture(string asset)
         {
             return Content.Load<Texture2D>("Resource/character/" + asset);
@@ -912,6 +930,7 @@ namespace WindowsGame1
                 return;
             }
         }
+
         private void chat_textbox_onEnterPressed(TextBox sender)
         {
             string s = room.findPlayerByID(Player_ID).Player_name + ": " + chatInputTextbox.Text + "\n";
@@ -931,15 +950,18 @@ namespace WindowsGame1
             }
             this.chatInputTextbox.Text = "";
         }
+
         private void textbox_onShiftEnterPressed(TextBox sender)
         {
             sender.RecieveTextInput('\n');
         }
+
         private void draw_button_clicked(object sender, FormEventData e)
         {
             draw_card();
             resize_hand();
         }
+
         private void hoverChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -951,6 +973,7 @@ namespace WindowsGame1
                 image.Rect.X = image.Rect.X - 50;
             }
         }
+
         private void unHoverMasterChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -958,6 +981,7 @@ namespace WindowsGame1
             image.DrawOrder = 0.3f;
             image.Source_Rectangle = new Rectangle(0, 0, image.Texture.Width / 2, image.Texture.Height);
         }
+
         private void unHoverServantChar(object sender, FormEventData e)
         {
             Image image = (Image)sender;
@@ -966,6 +990,7 @@ namespace WindowsGame1
             image.Rect.X = image.Rect.X + 50;
             image.Source_Rectangle = new Rectangle(image.Texture.Width / 2, 0, image.Texture.Width / 2, image.Texture.Height);
         }
+
         private void SendChatMessage(string message)
         {
             Command c = new Command(CommandCode.Chat_Message, message);
@@ -983,7 +1008,7 @@ namespace WindowsGame1
             }
             chatDisplayTextbox.Text += message;
         }
-        
+
         bool Card_Clicked = false;
         ImageButton View_Detail_Button;
         private void CardImage_Onlick(object sender, FormEventData e)
@@ -1006,12 +1031,14 @@ namespace WindowsGame1
                 ClearDetailButtonAndImage();
             }
         }
+
         private void ClearDetailButtonAndImage()
         {
             View_Detail_Button.Delete();
             Card_Detail_Image.Visible = false;
             Card_Clicked = false;
         }
+
         private void ViewDetailButton_Onclick(object sender, FormEventData e)
         {
             CardForm image = (CardForm)((ImageButton)sender).Value;
@@ -1024,7 +1051,7 @@ namespace WindowsGame1
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            
+
             /*if (hand_hovered_index == -1)
             {
                 for (int i = 0; i < handList.Count; i++)

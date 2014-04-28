@@ -18,19 +18,19 @@
 
   </Master>
   <Servant>
-    <Saber_Alter img="Saber Alter" health="3" perfect="Dark Sakura">Saber Alter</Saber_Alter>
-    <Gilgamesh img="Gilgamesh" health="3" perfect="Kotomine Kirei">Gilgamesh</Gilgamesh>
-    <EMIYA img="EMIYA" health="3" perfect="Tohsaka Rin">HERO EMIYA</EMIYA>
-    <Heracles img="Heracles" health="3.5" perfect="Illya von Einzbern">Heracles</Heracles>
-    <Lancelot img="Lancelot" health="3.5" perfect="Matou Kariya">Lancelot</Lancelot>
-    <Saber img="Saber" health="3" perfect="Emiya Shirou">Athur Pendragon</Saber>
-    <Sasaki_Kojirou img="Sasaki Kojirou" health="3" perfect="null">Sasaki Kojirou</Sasaki_Kojirou>
-    <Gille_de_Rais img="Gille de Rais" health="2.5" perfect="Uryuu Ryuunosuke">Gille de Rais</Gille_de_Rais>
-    <Cu_Chulainn img="Cu Chulainn" health="3" perfect="null">Cu Chulainn</Cu_Chulainn>
-    <Medusa img="Medusa" health="3" perfect="Matou Sakura">Medusa</Medusa>
-    <Medea img="Medea" health="3" perfect="Kuzuki Souichirou">Medea</Medea>
-    <Iskander img ="Iskander" health="3" perfect="Waver Velvet">Iskander</Iskander>
-    <Diarmuid img="Diarmuid" health="3" perfect="null">Diarmuid Ua Duibhne</Diarmuid>
+    <Saber_Alter img="Saber Alter" health="3" class="Saber" perfect="Dark Sakura">Saber Alter</Saber_Alter>
+    <Gilgamesh img="Gilgamesh" health="3" class="Archer" perfect="Kotomine Kirei">Gilgamesh</Gilgamesh>
+    <EMIYA img="EMIYA" health="3" class="Archer" perfect="Tohsaka Rin">HERO EMIYA</EMIYA>
+    <Heracles img="Heracles" health="3.5" class="Berserker" perfect="Illya von Einzbern">Heracles</Heracles>
+    <Lancelot img="Lancelot" health="3.5" class="Berserker" perfect="Matou Kariya">Lancelot</Lancelot>
+    <Saber img="Saber" health="3" class="Saber" perfect="Emiya Shirou">Athur Pendragon</Saber>
+    <Sasaki_Kojirou img="Sasaki Kojirou" health="3" class="Assassin" perfect="null">Sasaki Kojirou</Sasaki_Kojirou>
+    <Gille_de_Rais img="Gille de Rais" health="2.5" class="Caster" perfect="Uryuu Ryuunosuke">Gille de Rais</Gille_de_Rais>
+    <Cu_Chulainn img="Cu Chulainn" health="3" class="Lancer" perfect="null">Cu Chulainn</Cu_Chulainn>
+    <Medusa img="Medusa" health="3" class="Rider" perfect="Matou Sakura">Medusa</Medusa>
+    <Medea img="Medea" health="3" class="Caster" perfect="Kuzuki Souichirou">Medea</Medea>
+    <Iskander img ="Iskander" health="3" class="Rider" perfect="Waver Velvet">Iskander</Iskander>
+    <Diarmuid img="Diarmuid" health="3" class="Lancer" perfect="null">Diarmuid Ua Duibhne</Diarmuid>
   </Servant>
 
   <Homunculus>

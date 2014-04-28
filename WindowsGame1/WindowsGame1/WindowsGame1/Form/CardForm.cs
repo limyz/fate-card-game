@@ -40,7 +40,11 @@ namespace WindowsGame1
 
         public void LoadTexture(ContentManager content)
         {
-            this.texture = content.Load<Texture2D>("Resource/card/" + card.CardAsset);
+            string type;
+            if (card.CardType == "basic") type = "Basic";
+            else if (card.CardType == "tool") type = "Tool";
+            else type = "Equip";
+            this.texture = content.Load<Texture2D>("Resource/Cards/"+ type + "/" + card.CardAsset);
         }
 
         public override void Update(GameTime gameTime)

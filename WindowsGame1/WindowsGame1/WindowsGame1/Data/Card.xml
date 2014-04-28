@@ -1,19 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Card>
+  <C4_Bomb img="C4 bomb" number="7" suit="4" type="tool">C4 Bomb</C4_Bomb>
+  <Alter_Burst img="Alter Burst2" number="7" suit="4" type="tool">Alter Burst</Alter_Burst>
+  <Collaboration img="Collaboration" number="7" suit="4" type="tool">Collaboration</Collaboration>
+  <Command_Spell img="Command Spell" number="7" suit="4" type="tool">Command Spell</Command_Spell>
+  <Crystal_Ball img="Crystal Ball" number="7" suit="4" type="tool">Crystal Ball</Crystal_Ball>
+  <Curse_of_Lancer img="Curse of Lancer" number="7" suit="4" type="tool">Curse of Lancer</Curse_of_Lancer>
+  <Distant_Trampling_Domination img="Distant Trampling Domination" number="7" suit="4" type="tool">Distant Trampling Domination</Distant_Trampling_Domination>
+  <Duel img="Duel" number="7" suit="4" type="tool">Duel</Duel>
+  <Enuma_Elish img="Enuma Elish" number="7" suit="4" type="tool">Enuma Elish</Enuma_Elish>
+  <Evil_Intentions img="Evil Intentions" number="7" suit="4" type="tool">Evil Intentions</Evil_Intentions>
+  <Excalibur img="Excalibur" number="7" suit="4" type="tool">Excalibur</Excalibur>
+  <GoB img="GoB" number="7" suit="4" type="tool">GoB</GoB>
+  <Grail_of_Heaven img="Grail of Heaven" number="7" suit="4" type="tool">Grail of Heaven</Grail_of_Heaven>
+  <Knight_of_Honor img="Knight of Honor" number="7" suit="4" type="tool">Knight of Honor</Knight_of_Honor>
 
-  <C4_Bomb img="C4 bomb">C4 Bomb</C4_Bomb>
-  <Alter_Burst img="Alter Burst2">Alter Burst</Alter_Burst>
-  <Collaboration img="Collaboration">Collaboration</Collaboration>
-  <Command_Spell img="Command Spell">Command Spell</Command_Spell>
-  <Crystal_Ball img="Crystal Ball">Crystal Ball</Crystal_Ball>
-  <Curse_of_Lancer img="Curse of Lancer">Curse of Lancer</Curse_of_Lancer>
-  <Distant_Trampling_Domination img="Distant Trampling Domination">Distant Trampling Domination</Distant_Trampling_Domination>
-  <Duel img="Duel">Duel</Duel>
-  <Enuma_Elish img="Enuma Elish">Enuma Elish</Enuma_Elish>
-  <Evil_Intentions img="Evil Intentions">Evil Intentions</Evil_Intentions>
-  <Excalibur img="Excalibur">Excalibur</Excalibur>
-  <GoB img="GoB">GoB</GoB>
-  <Grail_of_Heaven img="Grail of Heaven">Grail of Heaven</Grail_of_Heaven>
-  <Knight_of_Honor img="Knight of Honor">Knight of Honor</Knight_of_Honor>
-  
+  <Attack img="attack" suit="4" number="7" type="basic">ATTACK</Attack>
+  <Attack2 img="attack" suit="2" number="11" type="basic">ATTACK</Attack2>
+  <Attack3 img="attack" suit="4" number="2" type="basic">ATTACK</Attack3>
+  <Attack4 img="attack" suit="4" number="7" type="basic">ATTACK</Attack4>
+  <Attack5 img="attack" suit="4" number="13" type="basic">ATTACK</Attack5>
+  <Attack6 img="attack" suit="1" number="2" type="basic">ATTACK</Attack6>
+  <Attack7 img="attack" suit="1" number="3" type="basic">ATTACK</Attack7>
+  <Attack8 img="attack" suit="1" number="5" type="basic">ATTACK</Attack8>
+  <Attack9 img="attack" suit="1" number="8" type="basic">ATTACK</Attack9>
+  <Attack10 img="attack" suit="3" number="1" type="basic">ATTACK</Attack10>
+  <Attack11 img="attack" suit="3" number="3" type="basic">ATTACK</Attack11>
+  <Attack12 img="attack" suit="3" number="6" type="basic">ATTACK</Attack12>
+  <Attack13 img="attack" suit="2" number="6" type="basic">ATTACK</Attack13>
+  <Attack14 img="attack" suit="4" number="4" type="basic">ATTACK</Attack14>
+  <Attack15 img="MagicAtk" suit="4" number="3" type="basic">MAGIC ATTACK</Attack15>
+  <Attack16 img="MagicAtk" suit="4" number="11" type="basic">MAGIC ATTACK</Attack16>
+  <Attack17 img="MagicAtk" suit="3" number="11" type="basic">MAGIC ATTACK</Attack17>
+  <Attack18 img="MagicAtk" suit="3" number="4" type="basic">MAGIC ATTACK</Attack18>
+  <Attack19 img="MagicAtk" suit="2" number="12" type="basic">MAGIC ATTACK</Attack19>
+  <Attack20 img="MagicAtk" suit="2" number="9" type="basic">MAGIC ATTACK</Attack20>
+  <Attack21 img="MagicAtk" suit="1" number="6" type="basic">MAGIC ATTACK</Attack21>
+  <Attack22 img="MagicAtk" suit="1" number="7" type="basic">MAGIC ATTACK</Attack22>
+
+  <Dodge img="Dodge" suit="3" number="1" type="basic">DODGE</Dodge>
+  <Dodge2 img="Dodge" suit="4" number="5" type="basic">DODGE</Dodge2>
+  <Dodge3 img="Dodge" suit="4" number="2" type="basic">DODGE</Dodge3>
+  <Dodge4 img="Dodge" suit="4" number="4" type="basic">DODGE</Dodge4>
+  <Dodge5 img="Dodge" suit="1" number="4" type="basic">DODGE</Dodge5>
+  <Dodge6 img="Dodge" suit="4" number="5" type="basic">DODGE</Dodge6>
+  <Dodge7 img="Dodge" suit="2" number="6" type="basic">DODGE</Dodge7>
+  <Dodge8 img="Dodge" suit="1" number="7" type="basic">DODGE</Dodge8>
+  <Dodge9 img="Dodge" suit="3" number="9" type="basic">DODGE</Dodge9>
+  <Dodge10 img="Dodge" suit="2" number="11" type="basic">DODGE</Dodge10>
+  <Dodge11 img="Dodge" suit="3" number="12" type="basic">DODGE</Dodge11>
+
+  <Command_Seal1 img="CS1" suit="4" number="12" type="basic">COMMAND SEAL</Command_Seal1>
+  <Command_Seal2 img="CS2" suit="2" number="2" type="basic">COMMAND SEAL</Command_Seal2>
+  <Command_Seal3 img="CS3" suit="1" number="11" type="basic">COMMAND SEAL</Command_Seal3>
+  <Command_Seal4 img="CS4" suit="3" number="13" type="basic">COMMAND SEAL</Command_Seal4>
+  <Command_Seal5 img="CS5" suit="3" number="5" type="basic">COMMAND SEAL</Command_Seal5>
+  <Command_Seal6 img="CS6" suit="2" number="8" type="basic">COMMAND SEAL</Command_Seal6>
+
+  <Holy_Grail1 img="HG" suit="1" number="3" type="basic">HOLY GRAIL</Holy_Grail1>
+  <Holy_Grail2 img="HG" suit="1" number="7" type="basic">HOLY GRAIL</Holy_Grail2>
+  <Holy_Grail3 img="HG" suit="1" number="8" type="basic">HOLY GRAIL</Holy_Grail3>
+  <Holy_Grail4 img="HG" suit="1" number="10" type="basic">HOLY GRAIL</Holy_Grail4>
+  <Holy_Grail5 img="HG" suit="1" number="13" type="basic">HOLY GRAIL</Holy_Grail5>
+  <Holy_Grail6 img="HG" suit="2" number="5" type="basic">HOLY GRAIL</Holy_Grail6>
+  <Holy_Grail7 img="HG" suit="2" number="7" type="basic">HOLY GRAIL</Holy_Grail7>
+  <Holy_Grail8 img="HG" suit="2" number="11" type="basic">HOLY GRAIL</Holy_Grail8>
+
+  <Arondight img="Arondight" number="9" suit="2" type="weapon" range="2">Arondight</Arondight>
+  <Avalon img="Avalon" number="5" suit="2" type="armour">Avalon</Avalon>
+  <Azoth img="Azoth" number="2" suit="3" type="weapon" range="1">Azoth</Azoth>
+  <Berser_Car img="Berser-Car" number="8" suit="3" type="plus-vehicle" range="1">Berser-Car</Berser_Car>
+  <Berserker_Armor img="Berserker Armor" number="6" suit="3" type="armour">Berserker’s Armor</Berserker_Armor>
+  <Divine_bull img="Divine bull" number="4" suit="3" type="minus-vehicle" range="1">Divine Bull</Divine_bull>
+  <Excalibur img="Excalibur" number="8" suit="1" type="weapon" range="2">Excalibur</Excalibur>
+  <Gae_Buidhe img="Gae Buidhe" number="5" suit="4" type="weapon" range="2">Gae Buidhe</Gae_Buidhe>
+  <Gae_Dearg img="Gae Dearg" number="8" suit="4" type="weapon" range="3">Gae Dearg</Gae_Dearg>
+  <GilgameshArmor img="Gilgamesh Armor" number="4" suit="3" type="armour">Gilgamesh Armor</GilgameshArmor>
+  <GordiusWheel img="Gordius Wheel" number="11" suit="1" type="minus-vehicle" range="1">Gordius Wheel</GordiusWheel>
+  <Hrunting img="Hrunting" number="1" suit="4" type="weapon" range="5">Hrunting</Hrunting>
+  <KanshouBakuya img="KanshouBakuya" number="1" suit="1" type="weapon" range="2">Kanshou and Bakuya</KanshouBakuya>
+  <PrelatiSpellbook img="Prelati Spellbook" number="4" suit="3" type="weapon" range="0">Prelati Spellbook</PrelatiSpellbook>
+  <Monohoshizao img="Monohoshizao" number="9" suit="2" type="weapon" range="3">Monohoshizao</Monohoshizao>
+  <ThompsonContender img="Thompson Contender" number="13" suit="3" type="weapon" range="4">Thompson Contender</ThompsonContender>
+  <Pegasus img="Pegasus" number="10" suit="4" type="plus-vehicle" range="2">Pegasus</Pegasus>
+  <Vimana img="Vimana" number="13" suit="1" type="minus-vehicle" range="1">Vimana</Vimana>
+  <Yamaha_VMax img="Yamaha VMax" number="2" suit="2" type="minus-vehicle" range="2">Yamaha V-Max</Yamaha_VMax>
+  <SaberArmour img="SaberArmour" number="11" suit="3" type="armour">Saber's Armour</SaberArmour>
 </Card>

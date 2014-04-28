@@ -12,7 +12,7 @@ namespace WindowsGame1
     {
         public string CharName;
         public string Ability1, Ability2, Ability3, Ability4, Ability5;
-        public int MaxHealth;
+        public double MaxHealth;
         public string CharAsset;
         public string CharClass;
         public enum Type
@@ -25,6 +25,14 @@ namespace WindowsGame1
         };
         public Type CharType;
         public Character(string charName,
+            string charAsset, Type type)
+        {
+            this.CharName = charName;
+            this.CharAsset = charAsset;
+            this.CharType = type;
+        }
+
+        public Character(string charName, string charClass, double maxHealth,
             string charAsset, Type type)
         {
             this.CharName = charName;
