@@ -749,6 +749,366 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\Cards\Equip\Arondight.jpg">
+      <Name>Arondight</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Avalon.jpg">
+      <Name>Avalon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Axe-sword.jpg">
+      <Name>Axe-sword</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Azoth.jpg">
+      <Name>Azoth</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Berser-Car.jpg">
+      <Name>Berser-Car</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Berserker Armor.jpg">
+      <Name>Berserker Armor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Caladbolg II.jpg">
+      <Name>Caladbolg II</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Caliburn.jpg">
+      <Name>Caliburn</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Dark Excalibur.jpg">
+      <Name>Dark Excalibur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Divine bull.jpg">
+      <Name>Divine bull</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Ea.jpg">
+      <Name>Ea</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Excalibur.jpg">
+      <Name>Excalibur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Gae Bolg.jpg">
+      <Name>Gae Bolg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Gae Buidhe.jpg">
+      <Name>Gae Buidhe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Gae Dearg.jpg">
+      <Name>Gae Dearg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Gilgamesh Armor.jpg">
+      <Name>Gilgamesh Armor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Gordius Wheel.jpg">
+      <Name>Gordius Wheel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Hrunting.jpg">
+      <Name>Hrunting</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\KanshouBakuya.jpg">
+      <Name>KanshouBakuya</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Monohoshizao.jpg">
+      <Name>Monohoshizao</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Pegasus.jpg">
+      <Name>Pegasus</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Prelati Spellbook.jpg">
+      <Name>Prelati Spellbook</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\SaberArmour.jpg">
+      <Name>SaberArmour</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Sword of the Kupriotes.jpg">
+      <Name>Sword of the Kupriotes</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Thompson Contender.jpg">
+      <Name>Thompson Contender</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Vimana.jpg">
+      <Name>Vimana</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Equip\Yamaha VMax.jpg">
+      <Name>Yamaha VMax</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Alter Burst.jpg">
+      <Name>Alter Burst</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Alter Change.jpg">
+      <Name>Alter Change</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\C4 bomb.jpg">
+      <Name>C4 bomb</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Collaboration.jpg">
+      <Name>Collaboration</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Command Spell.jpg">
+      <Name>Command Spell</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Crystal Ball.jpg">
+      <Name>Crystal Ball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Curse of Lancer.jpg">
+      <Name>Curse of Lancer</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Distant Trampling Domination.jpg">
+      <Name>Distant Trampling Domination</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Duel.jpg">
+      <Name>Duel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Duel2.jpg">
+      <Name>Duel2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Enkidu2.jpg">
+      <Name>Enkidu2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Enkidu.jpg">
+      <Name>Enkidu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Enuma Elish.jpg">
+      <Name>Enuma Elish</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Evil Intentions.jpg">
+      <Name>Evil Intentions</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Excalibur.jpg">
+      <Name>Excalibur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\ExcaliburTool.jpg">
+      <Name>ExcaliburTool</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\GoB.jpg">
+      <Name>GoB</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Grail of Heaven.jpg">
+      <Name>Grail of Heaven</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Ionioi Hetairoi2.jpg">
+      <Name>Ionioi Hetairoi2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Ionioi Hetairoi.jpg">
+      <Name>Ionioi Hetairoi</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\King Treasure.jpg">
+      <Name>King Treasure</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Knight of Honor.jpg">
+      <Name>Knight of Honor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Knight of Honor2.jpg">
+      <Name>Knight of Honor2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Origin Bullet.jpg">
+      <Name>Origin Bullet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rage of Berserker.jpg">
+      <Name>Rage of Berserker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rain of Light.jpg">
+      <Name>Rain of Light</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rho Aias2.jpg">
+      <Name>Rho Aias2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rho Aias.jpg">
+      <Name>Rho Aias</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rule Breaker.jpg">
+      <Name>Rule Breaker</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Rule Breaker2.jpg">
+      <Name>Rule Breaker2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Soaring Spear that Strikes with Death.jpg">
+      <Name>Soaring Spear that Strikes with Death</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\UBW.jpg">
+      <Name>UBW</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Tool\Verg Avesta.jpg">
+      <Name>Verg Avesta</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\Cards\Basic\attack.jpg">
+      <Name>attack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\Cards\Basic\CS1.jpg">
+      <Name>CS1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\CS2.jpg">
+      <Name>CS2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\CS3.jpg">
+      <Name>CS3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\CS4.jpg">
+      <Name>CS4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\CS5.jpg">
+      <Name>CS5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\CS6.jpg">
+      <Name>CS6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\Cards\Basic\Dodge.jpg">
+      <Name>Dodge</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Resource\Cards\Basic\MagicAtk.jpg">
+      <Name>MagicAtk</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resource\Cards\Basic\HG.jpg">
+      <Name>HG</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

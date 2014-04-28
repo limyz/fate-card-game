@@ -32,6 +32,7 @@ namespace WindowsGame1
         Image[] characterImage = new Image[7];
         ImageButton okButton;
         Label roomInfoLabel;
+        Texture2D panelTexture;
         #endregion
 
         #region Synchonize Thread
@@ -332,6 +333,7 @@ namespace WindowsGame1
         {
             #region Load Resource
             bg = new Background(Content.Load<Texture2D>("Resource/graphic/BG7"), this);
+            panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
             this.Content = Content;
             #endregion
 
@@ -351,6 +353,7 @@ namespace WindowsGame1
 
             #endregion
 
+            Image infoPanel = new Image("Info Panel", panelTexture, new RectangleF(20, 460, 500, 200), 0.3f, this);
             roomInfoLabel = new Label("Room Info", Game1.arial12Bold, "Test Test Test", 50, 500, 1000, Color.White, this);
 
             #region Button
@@ -381,6 +384,8 @@ namespace WindowsGame1
                 XmlElement temp = (XmlElement)xml_master_list[i];
                 Character charTemp = new Character(
                     xml_master_list[i].InnerText,
+                    "Master",
+                    Convert.ToDouble(temp.GetAttribute("health")),
                     temp.GetAttribute("img"),
                     Character.Type.Master);
                 characterList.Add(charTemp);
@@ -391,6 +396,8 @@ namespace WindowsGame1
                 XmlElement temp = (XmlElement)xml_servant_list[i];
                 Character charTemp = new Character(
                     xml_servant_list[i].InnerText,
+                    temp.GetAttribute("class"),
+                    Convert.ToDouble(temp.GetAttribute("health")),
                     temp.GetAttribute("img"),
                     Character.Type.Servant);
                 characterList.Add(charTemp);
@@ -516,13 +523,12 @@ namespace WindowsGame1
                         room.Player_List[Player_Index].Character1 = listTemp[0];
                         room.Player_List[Player_Index].Character2 = listTemp[1];
                     }
+
                     SelectCharacter();
                     for (int i = 0; i < 7; i++)
                     {
                         if (charSelectBorder[i].Width == 2)
                         {
-                            //charSelectBorder[i].Delete();
-                            //characterImage[i].Delete();
                             charSelectBorder[i].Visible = false;
                             characterImage[i].Visible = false;
                         }
@@ -531,7 +537,6 @@ namespace WindowsGame1
                             characterImage[i].OnClick = null;
                         }
                     }
-                    //okButton.Delete();
                     okButton.Visible = false;
                 }
             }

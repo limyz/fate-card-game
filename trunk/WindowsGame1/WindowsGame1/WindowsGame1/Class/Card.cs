@@ -53,11 +53,41 @@ namespace WindowsGame1
             for (int i = 0; i < xml_card_list.Count; i++)
             {
                 XmlElement temp = (XmlElement)xml_card_list[i];
-                myReturn.Add(new Card(""
+                Suit suit = Suit.Heart;
+                Number num = Number.Ace;
+                switch (Convert.ToInt32(temp.GetAttribute("suit")))
+                {
+                    case 1: suit = Suit.Heart; break;
+                    case 2: suit = Suit.Diamond; break;
+                    case 3: suit = Suit.Club; break;
+                    case 4: suit = Suit.Spade; break;
+                    case 0: suit = Suit.None; break;
+                    default: break;
+                }
+                switch (Convert.ToInt32(temp.GetAttribute("number")))
+                {
+                    case 1: num = Number.Ace; break;
+                    case 2: num = Number.Two; break;
+                    case 3: num = Number.Three; break;
+                    case 4: num = Number.Four; break;
+                    case 5: num = Number.Five; break;
+                    case 6: num = Number.Six; break;
+                    case 7: num = Number.Seven; break;
+                    case 8: num = Number.Eight; break;
+                    case 9: num = Number.Nine; break;
+                    case 10: num = Number.Ten; break;
+                    case 11: num = Number.Jack; break;
+                    case 12: num = Number.Queen; break;
+                    case 13: num = Number.King; break;
+                    case 0: num = Number.None; break;
+                    default: break;
+                }
+                myReturn.Add(new Card(temp.GetAttribute("type")
                     , xml_card_list[i].Name
                     , temp.GetAttribute("img")
                     , xml_card_list[i].InnerText
-                    , Suit.Heart, Number.Ace));
+                    , suit
+                    , num));
             }
             return myReturn;
         }

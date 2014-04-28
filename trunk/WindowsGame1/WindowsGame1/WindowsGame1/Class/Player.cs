@@ -15,10 +15,14 @@ namespace WindowsGame1
         Character character1;
         Character character2;
         public Guid id;
+        public bool Gender;
+        public int Counter;
         //int graphicIndex;
-        public int HandLimit, HandCurrent, MaxHealth, CurrentHealth;
-        //Card equipment1, equipment2, equipment3, equipment4;
+        public int HandLimit, CurrentHealth;
+        public double MaxHealth;
         public Card[] Equipment = new Card[4];
+        public Card ExtraEquipment;
+        public List<Card> HandCard = new List<Card>();
         public List<Card> PendingCard = new List<Card>();
         public List<Card> DeathCard = new List<Card>();
         #endregion

@@ -571,6 +571,7 @@ namespace WindowsGame1
                 UpdateRoom();
             }
         }
+
         public override void End(Command command)
         {
             End_Broadcast();

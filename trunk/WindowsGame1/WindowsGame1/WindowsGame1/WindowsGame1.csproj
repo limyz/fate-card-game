@@ -16,9 +16,8 @@
     <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>bee2de05-2971-42f5-8fc9-b2e7815149df</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
-    <Thumbnail>
-    </Thumbnail>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <Thumbnail>Icon.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -153,6 +152,8 @@
     <Compile Include="Form\Textbox\TextDispatcher.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icon.ico" />
+    <Content Include="Icon.png" />
     <None Include="app.manifest" />
     <None Include="Data\Character.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
