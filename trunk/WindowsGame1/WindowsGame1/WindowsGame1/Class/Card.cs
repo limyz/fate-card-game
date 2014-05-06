@@ -83,7 +83,7 @@ namespace WindowsGame1
                     default: break;
                 }
                 myReturn.Add(new Card(temp.GetAttribute("type")
-                    , xml_card_list[i].Name
+                    , xml_card_list[i].InnerText
                     , temp.GetAttribute("img")
                     , xml_card_list[i].InnerText
                     , suit

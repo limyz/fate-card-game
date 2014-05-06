@@ -33,6 +33,10 @@ namespace WindowsGame1
             this.Rect = rec;
         }
 
+        public Rectangle getSourceRect(){
+            return (Rectangle)this.Source_Rectangle;
+        }
+
         public override void Update(GameTime theTime)
         {
         }

@@ -103,7 +103,7 @@ namespace WindowsGame1
         float cardHeight = 150;
         float handWitdh = 535;
         float padding = 5;
-        int hand_hovered_index = -1;
+        int hand_hovered_index = -1, characterHoverIndex = -1;
         int[] playerRandomChar = new int[2];
 
         public Room room;
@@ -114,7 +114,7 @@ namespace WindowsGame1
         private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
-            view_detail_button_textture, back_button_texture, foward_button_texture;
+            view_detail_button_textture, back_button_texture, foward_button_texture, panelTexture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -129,9 +129,10 @@ namespace WindowsGame1
         List<Image> otherPlayerServantImage = new List<Image>();
         //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg, Card_Detail_Image;
+        Image infoPanel;
         ImageButton drawButton, Button_HandListBackPaging, Button_HandListFowardPaging;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
-        //Label usernameLabel, ipLabel;
+        Label deckStatic, cardStatic;
         Div playerControlPanel;
         #endregion
 
@@ -192,7 +193,7 @@ namespace WindowsGame1
             }
         }
 
-        private bool isHost()
+        public bool isHost()
         {
             if (room.owner_index == Player_Index)
             {
@@ -237,22 +238,56 @@ namespace WindowsGame1
                 if (update_room)
                 {
                     Command c2 = new Command(CommandCode.Update_Room, room);
-                    byte[] data2 = c2.Serialize();
-                    for (int i = 0; i < tcpServerClient.Count; i++)
-                    {
-                        try
-                        {
-                            if (i == Player_Index) continue;
-                            if (!room.Player_List[i].Status) continue;
-                            tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
-                        }
-                        catch
-                        {
-                        }
-                    }
+                    sendData(c2);
+                    //byte[] data2 = c2.Serialize();
+                    //for (int i = 0; i < tcpServerClient.Count; i++)
+                    //{
+                    //    try
+                    //    {
+                    //        if (i == Player_Index) continue;
+                    //        if (!room.Player_List[i].Status) continue;
+                    //        tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
+                    //    }
+                    //    catch
+                    //    {
+                    //    }
+                    //}
                 }
-
                 Thread.Sleep(1000);
+            }
+        }
+
+        public void sendData(Command c2)
+        {
+            byte[] data2 = c2.Serialize();
+            for (int i = 0; i < tcpServerClient.Count; i++)
+            {
+                try
+                {
+                    if (i == Player_Index) continue;
+                    if (!room.Player_List[i].Status) continue;
+                    tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        public void sendDataToHost(Command c)
+        {
+            try
+            {
+                int Player_Index = room.findByID(Player_ID);
+                byte[] data = c.Serialize();
+                tcpClient = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+                tcpClient.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -367,6 +402,12 @@ namespace WindowsGame1
                                 }
                             }
                         }
+                        else if (c.Command_Code == CommandCode.CardList_Synchronize)
+                        {
+                            deck = (List<Card>)c.Data1;
+                            Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
+                            sendData(deckSyn);
+                        }
                     }
                     client.Close();
                 }
@@ -415,6 +456,10 @@ namespace WindowsGame1
                                 Guid id = (Guid)c.Data3;
                                 CharacterChange(character1, character2, id);
                             }
+                            else if (c.Command_Code == CommandCode.CardList_Synchronize)
+                            {
+                                deck = (List<Card>)c.Data1;
+                            }
                         }
                     }
                     catch
@@ -456,6 +501,7 @@ namespace WindowsGame1
             view_detail_button_textture = Content.Load<Texture2D>("Resource/view_detail_button");
             back_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-left-double-icon");
             foward_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-right-double-icon");
+            panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
@@ -478,14 +524,18 @@ namespace WindowsGame1
                 new RectangleF(0, 564, 168, 156), this);
 
             Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
-                , new RectangleF(800, 0, 372, 520), 0.1f, this);
+                , new RectangleF(200, 80, 298, 416), 0.1f, this);
             Card_Detail_Image.Priority = 0.6f;
             Card_Detail_Image.Visible = false;
 
-            Button_HandListBackPaging = new ImageButton("HLBP", back_button_texture
-                , new RectangleF(155, 600, 40, 40), 0.47f, this);
-            Button_HandListFowardPaging = new ImageButton("HLFP", foward_button_texture
-                , new RectangleF(720, 600, 40, 40), 0.47f, this);
+            infoPanel = new Image("Card Static Panel", panelTexture, new RectangleF(525, 200, 300, 200), 0.3f, this);
+            cardStatic = new Label("Card Static", Game1.arial12Bold, "Test Test Test", 550, 220, 300, Color.White, this);
+            infoPanel.Visible = false;
+            cardStatic.Visible = false;
+            //Button_HandListBackPaging = new ImageButton("HLBP", back_button_texture
+            //    , new RectangleF(155, 600, 40, 40), 0.47f, this);
+            //Button_HandListFowardPaging = new ImageButton("HLFP", foward_button_texture
+            //    , new RectangleF(720, 600, 40, 40), 0.47f, this);
             #endregion
 
             #region Button
@@ -519,9 +569,9 @@ namespace WindowsGame1
             chatInputTextbox.OnShift_EnterPressed += textbox_onShiftEnterPressed;
             #endregion
 
-            #region IP Test
-            //usernameLabel = new Label("label_username", Game1.font, "Username"
-            //    , 1010, 580, 1198 - 1010, Color.White, this);
+            #region Label
+            deckStatic = new Label("label_username", Game1.font, "Deck: "
+                , 890, 530, 200, Color.White, this);
 
             //ipLabel = new Label("label_IP", Game1.font, "IP Address"
             //    , 1010, 630, 1198 - 1010, Color.White, this);
@@ -587,6 +637,7 @@ namespace WindowsGame1
                     temp.GetAttribute("img")));
                 cardList[i].load_texture();
             }*/
+
             deck = Card.LoadFromXML(Content);
             //End card's data load
             deck.shuffle<Card>();
@@ -608,100 +659,105 @@ namespace WindowsGame1
                 player.HandLimit = player.CurrentHealth;
             }
 
-            //Load Deck
-
+            //Synchronize Deck
+            if (room.owner_index == Player_Index)
+            {
+                Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
+                sendData(deckSyn);
+            }
             #endregion
 
             #region Define Other Player Area
+            float width = 100, height = 150;
             switch (room.Player_List.Count)
             {
                 case 2:
-                    oppPlayerRectangle[0, 0] = new RectangleF(435, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new RectangleF(435, 105, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(435, 30, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(435, 105, width, height);
                     break;
                 case 3:
-                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, 100, 75);
-                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, width, height);
                     break;
                 case 4:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 100, 75);
-                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, 100, 75);
-                    oppPlayerRectangle[1, 0] = new RectangleF(435, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new RectangleF(435, 105, 100, 75);
-                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, 100, 75);
-                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(435, 30, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(435, 105, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, width, height);
                     break;
                 case 5:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 100, 75);
-                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, 100, 75);
-                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, 100, 75);
-                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, 100, 75);
-                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, 100, 75);
-                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, 100, 75);
-                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, 100, 75);
-                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, 100, 75);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(20, 175, width, height);
+                    oppPlayerRectangle[0, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(180, 105, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(690, 105, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(860, 175, width, height);
                     break;
                 case 6:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(435, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(485, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(690, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(740, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(860, 100, 50, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(435, 30, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(485, 30, width, height);
+                    oppPlayerRectangle[3, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[3, 1] = new RectangleF(740, 30, width, height);
+                    oppPlayerRectangle[4, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[4, 1] = new RectangleF(910, 100, width, height);
                     break;
                 case 7:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, 50, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, 50, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, 50, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, 50, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(350, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(400, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(520, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(570, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, 50, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, width, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, width, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, width, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(350, 30, width, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(400, 30, width, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(520, 30, width, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(570, 30, width, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, 150);
                     break;
                 case 8:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, 50, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, 50, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, 50, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, 50, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(435, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(485, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, 50, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, 50, 150);
-                    oppPlayerRectangle[6, 0] = new RectangleF(860, 320, 50, 150);
-                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(435, 30, width, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(485, 30, width, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, 150);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 320, width, 150);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, 150);
                     break;
                 case 9:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, 50, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, 50, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, 50, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, 50, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, 50, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, 50, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(350, 30, 50, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(400, 30, 50, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(520, 30, 50, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(570, 30, 50, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(690, 30, 50, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(740, 30, 50, 150);
-                    oppPlayerRectangle[6, 0] = new RectangleF(860, 100, 50, 150);
-                    oppPlayerRectangle[6, 1] = new RectangleF(910, 100, 50, 150);
-                    oppPlayerRectangle[7, 0] = new RectangleF(860, 320, 50, 150);
-                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, 50, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, 150);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, 150);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, 150);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, 150);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, 150);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, 150);
+                    oppPlayerRectangle[3, 0] = new RectangleF(350, 30, width, 150);
+                    oppPlayerRectangle[3, 1] = new RectangleF(400, 30, width, 150);
+                    oppPlayerRectangle[4, 0] = new RectangleF(520, 30, width, 150);
+                    oppPlayerRectangle[4, 1] = new RectangleF(570, 30, width, 150);
+                    oppPlayerRectangle[5, 0] = new RectangleF(690, 30, width, 150);
+                    oppPlayerRectangle[5, 1] = new RectangleF(740, 30, width, 150);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 100, width, 150);
+                    oppPlayerRectangle[6, 1] = new RectangleF(910, 100, width, 150);
+                    oppPlayerRectangle[7, 0] = new RectangleF(860, 320, width, 150);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, 150);
                     break;
                 default:
                     break;
@@ -726,9 +782,10 @@ namespace WindowsGame1
 
                 Image masterTemp = new Image("Opp Master Image", GetTexture(room.Player_List[i].Character1.CharAsset),
                     oppPlayerRectangle[i2, 0], 0.3f, this);
-                masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
+                masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height/2);
                 //masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
+                masterTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerMasterImage.Add(masterTemp);
 
                 Image servantTemp = new Image("Opp Servant Image", GetTexture(room.Player_List[i].Character2.CharAsset),
@@ -737,6 +794,7 @@ namespace WindowsGame1
                     characterBackTexture.Width, characterBackTexture.Height / 2);
                 //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
+                servantTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerServantImage.Add(servantTemp);
                 masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
                 servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
@@ -768,6 +826,91 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //randomCharacter();
+            updateRoom();
+            checkHoverHandCard();
+            checkHoverCharacter();
+            base.Update(theTime);
+        }
+        #endregion
+
+        #region Update's Function
+        private void resize_hand()
+        {
+            float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
+            float oversize = net_width - handWitdh;
+            if (oversize > 0)
+            {
+                padding = padding - (oversize / Hand_Image_List.Count);
+            }
+            for (int i = 1; i < Hand_Image_List.Count; i++)
+            {
+                Hand_Image_List[i].Rect = new RectangleF(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+            }
+        }
+
+        private void draw_card()
+        {
+            try
+            {
+                handList.Add(deck[0]);
+                deck.RemoveAt(0);
+                Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
+                if (isHost()) sendData(deckSyn);
+                else sendDataToHost(deckSyn);  
+                CardForm card = new CardForm(handList.Last()
+                    , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                    , 0.5f, main_game.Content, this);
+                //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+                Hand_Image_List.Add(card);
+                //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
+        }
+
+        public void randomCharacter()
+        {
+            
+        }
+
+        private void CharacterChange(Character character1, Character character2, Guid id)
+        {
+            int Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
+            int Player = room.findByID(id);
+            room.Player_List[Player].Character1 = character1;
+            room.Player_List[Player].Character2 = character2;
+
+            UpdatePlayer(Index, Player);
+        }
+
+        private void UpdatePlayer(int index, int player)
+        {
+            if (room.Player_List[player].Status)
+            {
+                otherPlayerMasterImage[index].Texture = GetTexture(room.Player_List[player].Character1.CharAsset);
+                otherPlayerServantImage[index].Texture = GetTexture(room.Player_List[player].Character2.CharAsset);
+            }
+            else
+            {
+                OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
+            }
+        }
+
+        private Texture2D GetTexture(string asset)
+        {
+            return Content.Load<Texture2D>("Resource/character/" + asset);
+        }
+
+        private void updateRoom()
+        {
+            deckStatic.Text = "Deck: " + deck.Count.ToString();
+        }
+
+        private void checkHoverHandCard()
+        {
             if (hand_hovered_index == -1)
             {
                 for (int i = Hand_Image_List.Count - 1; i >= 0; i--)
@@ -811,109 +954,55 @@ namespace WindowsGame1
                     hand_hovered_index = -1;
                 }
             }
-            base.Update(theTime);
-        }
-        #endregion
-
-        #region Update's Function
-        private void resize_hand()
-        {
-            float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
-            float oversize = net_width - handWitdh;
-            if (oversize > 0)
-            {
-                padding = padding - (oversize / Hand_Image_List.Count);
-            }
-            for (int i = 1; i < Hand_Image_List.Count; i++)
-            {
-                Hand_Image_List[i].Rect = new RectangleF(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
-                //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
-            }
-        }
-        private void draw_card()
-        {
-            try
-            {
-                handList.Add(deck[0]);
-                deck.RemoveAt(0);
-                CardForm card = new CardForm(handList.Last()
-                    , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
-                    , 0.5f, main_game.Content, this);
-                //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
-                Hand_Image_List.Add(card);
-                //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
-            }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
-            }
-        }
-        public void randomCharacter()
-        {
-            //NetworkStream networkStream2;
-            //TcpClient tcpClient2;
-            //if (!isHost())
-            //{
-            //    try
-            //    {
-            //        Command c = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
-            //        byte[] data = c.Serialize();
-            //        tcpClient2 = new TcpClient(room.Player_List[room.owner_index].Address, 51002);
-            //        networkStream2 = tcpClient2.GetStream();
-            //        networkStream2.Write(data, 0, data.Length);
-            //        tcpClient2.Close();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //    }
-            //}
-            //else
-            //{
-            //    try
-            //    {
-            //        Command c2 = new Command(CommandCode.Character_Change, room.Player_List[Player].Character1, room.Player_List[Player].Character2, Player_ID);
-            //        byte[] data2 = c2.Serialize();
-            //        for (int j = 0; j < tcpServerClient.Count; j++)
-            //        {
-
-            //            if (j == Player_Index) continue;
-            //            tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //    }
-            //}
         }
 
-        private void CharacterChange(Character character1, Character character2, Guid id)
+        private void checkHoverCharacter()
         {
-            int Index = room.findByID_ExcludeMainPlayer(id, Player_ID);
-            int Player = room.findByID(id);
-            room.Player_List[Player].Character1 = character1;
-            room.Player_List[Player].Character2 = character2;
-
-            UpdatePlayer(Index, Player);
-        }
-
-        private void UpdatePlayer(int index, int player)
-        {
-            if (room.Player_List[player].Status)
+            if (characterHoverIndex == -1)
             {
-                otherPlayerMasterImage[index].Texture = GetTexture(room.Player_List[player].Character1.CharAsset);
-                otherPlayerServantImage[index].Texture = GetTexture(room.Player_List[player].Character2.CharAsset);
+                for (int i = otherPlayerMasterImage.Count - 1; i >= 0; i--)
+                {
+                    if (main_game.mouse_hover(otherPlayerMasterImage[i].Rect))
+                    {
+                        characterHoverIndex = i;
+                        break;
+                    }
+                    characterHoverIndex = -1;
+                }
+                for (int i = otherPlayerServantImage.Count - 1; i >= 0; i--)
+                {
+                    if (main_game.mouse_hover(otherPlayerServantImage[i].Rect))
+                    {
+                        characterHoverIndex = i;
+                        break;
+                    }
+                    characterHoverIndex = -1;
+                }
             }
             else
             {
-                OtherPlayerNameLabel[index].Text = room.Player_List[player].Player_name + " - Disconnected";
+                if (!main_game.mouse_hover(otherPlayerMasterImage[characterHoverIndex].Rect) ||
+                    !main_game.mouse_hover(otherPlayerServantImage[characterHoverIndex].Rect))
+                {
+                    if (Card_Detail_Image.Visible == true)
+                    {
+                        Card_Detail_Image.Visible = false;
+                        cardStatic.Visible = true;
+                        infoPanel.Visible = true;
+                    }
+                    characterHoverIndex = -1;
+                }
             }
         }
 
-        private Texture2D GetTexture(string asset)
+        private String getStaticCard(Card card)
         {
-            return Content.Load<Texture2D>("Resource/character/" + asset);
+            String s = "Name: " + card.CardName + "\n";
+            s += "Number: " + card.CardNumber + "\n";
+            s += "Suit: " + card.CardSuit + "\n";
+            s += "Type: " + card.CardType + "\n";
+            s += "Ability: " + card.CardDescription;
+            return s;
         }
         #endregion
 
@@ -1032,11 +1121,25 @@ namespace WindowsGame1
             }
         }
 
+        private void Character_OnClick(object sender, FormEventData e)
+        {
+            if (Card_Detail_Image.Visible == false)
+            {
+                Image image = (Image)(sender);
+                Card_Detail_Image.Texture = image.Texture;
+                Card_Detail_Image.Visible = true;
+                cardStatic.Visible = true;
+                infoPanel.Visible = true;
+            }
+        }
+
         private void ClearDetailButtonAndImage()
         {
             View_Detail_Button.Delete();
             Card_Detail_Image.Visible = false;
             Card_Clicked = false;
+            cardStatic.Visible = false;
+            infoPanel.Visible = false;
         }
 
         private void ViewDetailButton_Onclick(object sender, FormEventData e)
@@ -1044,6 +1147,9 @@ namespace WindowsGame1
             CardForm image = (CardForm)((ImageButton)sender).Value;
             Card_Detail_Image.Texture = image.Texture;
             Card_Detail_Image.Visible = true;
+            cardStatic.Text = getStaticCard(image.Card);
+            cardStatic.Visible = true;
+            infoPanel.Visible = true;
         }
         #endregion
 
