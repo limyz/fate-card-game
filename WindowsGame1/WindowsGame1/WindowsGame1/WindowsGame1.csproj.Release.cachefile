@@ -109,30 +109,25 @@ Content\Resource\graphic\BG6.xnb
 Content\Resource\graphic\BG7.xnb
 Content\Resource\graphic\BG8.xnb
 Content\Resource\graphic\BG9.xnb
+Content\Resource\Music\Yui Makino - Fuwa Fuwa.xnb
 Content\Resource\graphic\BG10.xnb
 Content\Resource\graphic\BG11.xnb
 Content\Resource\graphic\base.xnb
 Content\Resource\graphic\base2.xnb
 Content\Resource\graphic\Icon.xnb
 Content\Resource\graphic\Panel.xnb
-Content\Resource\Music\Yui Makino - Fuwa Fuwa.xnb
+Content\Resource\textbox.xnb
 Content\Resource\font\Gautami_12_Regular.xnb
 Content\Resource\font\Gautami_14_Bold.xnb
-Content\Resource\textbox.xnb
 Content\Resource\Music\Memoria.xnb
 Content\Resource\graphic\Actions-arrow-left-double-icon.xnb
 Content\Resource\graphic\Actions-arrow-right-double-icon.xnb
-Content\Resource\Cards\Basic\CS2.xnb
-Content\Resource\Cards\Basic\CS3.xnb
-Content\Resource\Cards\Basic\CS4.xnb
-Content\Resource\Cards\Basic\CS5.xnb
-Content\Resource\Cards\Basic\CS6.xnb
-Content\Resource\Cards\Basic\CS1.xnb
 Content\Resource\Cards\Equip\Arondight.xnb
 Content\Resource\Cards\Equip\Avalon.xnb
 Content\Resource\Cards\Equip\Axe-sword.xnb
 Content\Resource\Cards\Equip\Azoth.xnb
 Content\Resource\Cards\Equip\Berser-Car.xnb
+Content\Resource\Cards\Equip\Berserker Armor.xnb
 Content\Resource\Cards\Equip\Caladbolg II.xnb
 Content\Resource\Cards\Equip\Caliburn.xnb
 Content\Resource\Cards\Equip\Dark Excalibur.xnb
@@ -142,14 +137,18 @@ Content\Resource\Cards\Equip\Excalibur.xnb
 Content\Resource\Cards\Equip\Gae Bolg.xnb
 Content\Resource\Cards\Equip\Gae Buidhe.xnb
 Content\Resource\Cards\Equip\Gae Dearg.xnb
+Content\Resource\Cards\Equip\Gilgamesh Armor.xnb
 Content\Resource\Cards\Equip\Gordius Wheel.xnb
 Content\Resource\Cards\Equip\Hrunting.xnb
+Content\Resource\Cards\Equip\KanshouBakuya.xnb
 Content\Resource\Cards\Equip\Monohoshizao.xnb
 Content\Resource\Cards\Equip\Pegasus.xnb
 Content\Resource\Cards\Equip\Prelati Spellbook.xnb
+Content\Resource\Cards\Equip\SaberArmour.xnb
 Content\Resource\Cards\Equip\Sword of the Kupriotes.xnb
 Content\Resource\Cards\Equip\Thompson Contender.xnb
 Content\Resource\Cards\Equip\Vimana.xnb
+Content\Resource\Cards\Equip\Yamaha VMax.xnb
 Content\Resource\Cards\Tool\Alter Burst.xnb
 Content\Resource\Cards\Tool\Alter Change.xnb
 Content\Resource\Cards\Tool\C4 bomb.xnb
@@ -184,14 +183,15 @@ Content\Resource\Cards\Tool\Soaring Spear that Strikes with Death.xnb
 Content\Resource\Cards\Tool\UBW.xnb
 Content\Resource\Cards\Tool\Verg Avesta.xnb
 Content\Resource\Cards\Basic\attack.xnb
+Content\Resource\Cards\Basic\CS1.xnb
+Content\Resource\Cards\Basic\CS2.xnb
+Content\Resource\Cards\Basic\CS3.xnb
+Content\Resource\Cards\Basic\CS4.xnb
+Content\Resource\Cards\Basic\CS5.xnb
+Content\Resource\Cards\Basic\CS6.xnb
 Content\Resource\Cards\Basic\Dodge.xnb
 Content\Resource\Cards\Basic\MagicAtk.xnb
 Content\Resource\Cards\Basic\HG.xnb
-Content\Resource\Cards\Equip\Berserker Armor.xnb
-Content\Resource\Cards\Equip\Gilgamesh Armor.xnb
-Content\Resource\Cards\Equip\KanshouBakuya.xnb
-Content\Resource\Cards\Equip\SaberArmour.xnb
-Content\Resource\Cards\Equip\Yamaha VMax.xnb
 Content\Resource\Music\Yui Makino - Fuwa Fuwa.wma
 Content\Resource\Music\Memoria.wma
 Data\Character.xml
