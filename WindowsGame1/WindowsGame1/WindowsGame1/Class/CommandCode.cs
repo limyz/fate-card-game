@@ -44,6 +44,9 @@ namespace WindowsGame1
         Character_Select = 11,
 
         //Character List as Data1, used to send Character List to client
-        Character_Distribute = 12
+        Character_Distribute = 12,
+
+        //Synchronize Deck send a List of Card as Data1, used to synchronize any ListCard
+        CardList_Synchronize = 13
     };
 }
