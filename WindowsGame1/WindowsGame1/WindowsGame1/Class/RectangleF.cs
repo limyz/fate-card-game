@@ -204,5 +204,9 @@ namespace WindowsGame1
         {
             return new Vector2(Width / texture.Width, Height / texture.Height);
         }
+        public override string ToString()
+        {
+            return "{" + X + ", " + Y + ", " + Width + ", " + Height + "}";
+        }
     }
 }

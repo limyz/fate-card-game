@@ -668,7 +668,7 @@ namespace WindowsGame1
             #endregion
 
             #region Define Other Player Area
-            float width = 100, height = 150;
+            float width = 100, height = 75;
             switch (room.Player_List.Count)
             {
                 case 2:
@@ -712,52 +712,52 @@ namespace WindowsGame1
                     oppPlayerRectangle[4, 1] = new RectangleF(910, 100, width, height);
                     break;
                 case 7:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, width, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, width, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, width, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(350, 30, width, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(400, 30, width, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(520, 30, width, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(570, 30, width, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 100, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(230, 30, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(350, 30, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(400, 30, width, height);
+                    oppPlayerRectangle[3, 0] = new RectangleF(520, 30, width, height);
+                    oppPlayerRectangle[3, 1] = new RectangleF(570, 30, width, height);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, height);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, height);
                     break;
                 case 8:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(435, 30, width, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(485, 30, width, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, 150);
-                    oppPlayerRectangle[6, 0] = new RectangleF(860, 320, width, 150);
-                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, height);
+                    oppPlayerRectangle[3, 0] = new RectangleF(435, 30, width, height);
+                    oppPlayerRectangle[3, 1] = new RectangleF(485, 30, width, height);
+                    oppPlayerRectangle[4, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[4, 1] = new RectangleF(740, 30, width, height);
+                    oppPlayerRectangle[5, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[5, 1] = new RectangleF(910, 100, width, height);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 320, width, height);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, height);
                     break;
                 case 9:
-                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, 150);
-                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, 150);
-                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, 150);
-                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, 150);
-                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, 150);
-                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, 150);
-                    oppPlayerRectangle[3, 0] = new RectangleF(350, 30, width, 150);
-                    oppPlayerRectangle[3, 1] = new RectangleF(400, 30, width, 150);
-                    oppPlayerRectangle[4, 0] = new RectangleF(520, 30, width, 150);
-                    oppPlayerRectangle[4, 1] = new RectangleF(570, 30, width, 150);
-                    oppPlayerRectangle[5, 0] = new RectangleF(690, 30, width, 150);
-                    oppPlayerRectangle[5, 1] = new RectangleF(740, 30, width, 150);
-                    oppPlayerRectangle[6, 0] = new RectangleF(860, 100, width, 150);
-                    oppPlayerRectangle[6, 1] = new RectangleF(910, 100, width, 150);
-                    oppPlayerRectangle[7, 0] = new RectangleF(860, 320, width, 150);
-                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, 150);
+                    oppPlayerRectangle[0, 0] = new RectangleF(20, 320, width, height);
+                    oppPlayerRectangle[0, 1] = new RectangleF(70, 320, width, height);
+                    oppPlayerRectangle[1, 0] = new RectangleF(20, 100, width, height);
+                    oppPlayerRectangle[1, 1] = new RectangleF(70, 100, width, height);
+                    oppPlayerRectangle[2, 0] = new RectangleF(180, 30, width, height);
+                    oppPlayerRectangle[2, 1] = new RectangleF(230, 30, width, height);
+                    oppPlayerRectangle[3, 0] = new RectangleF(350, 30, width, height);
+                    oppPlayerRectangle[3, 1] = new RectangleF(400, 30, width, height);
+                    oppPlayerRectangle[4, 0] = new RectangleF(520, 30, width, height);
+                    oppPlayerRectangle[4, 1] = new RectangleF(570, 30, width, height);
+                    oppPlayerRectangle[5, 0] = new RectangleF(690, 30, width, height);
+                    oppPlayerRectangle[5, 1] = new RectangleF(740, 30, width, height);
+                    oppPlayerRectangle[6, 0] = new RectangleF(860, 100, width, height);
+                    oppPlayerRectangle[6, 1] = new RectangleF(910, 100, width, height);
+                    oppPlayerRectangle[7, 0] = new RectangleF(860, 320, width, height);
+                    oppPlayerRectangle[7, 1] = new RectangleF(910, 320, width, height);
                     break;
                 default:
                     break;
@@ -783,15 +783,21 @@ namespace WindowsGame1
                 Image masterTemp = new Image("Opp Master Image", GetTexture(room.Player_List[i].Character1.CharAsset),
                     oppPlayerRectangle[i2, 0], 0.3f, this);
                 masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height/2);
+                masterTemp.Scale.Y = 2;
                 //masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
                 masterTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerMasterImage.Add(masterTemp);
 
+                /*Border temp = new Border("", Color.Red, 2, oppPlayerRectangle[i2, 0], this);
+                System.Console.WriteLine(masterTemp.Rect.ToString());
+                System.Console.WriteLine(masterTemp.Source_Rectangle.ToString());
+                System.Console.WriteLine(temp.Rect.ToString());*/
+
                 Image servantTemp = new Image("Opp Servant Image", GetTexture(room.Player_List[i].Character2.CharAsset),
                     oppPlayerRectangle[i2, 1], 0.3f, this);
-                servantTemp.Source_Rectangle = new Rectangle(0, 0,
-                    characterBackTexture.Width, characterBackTexture.Height / 2);
+                servantTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
+                servantTemp.Scale.Y = 2;
                 //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
                 //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 servantTemp.OnClick = new FormEventHandler(Character_OnClick);
