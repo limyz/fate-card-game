@@ -47,7 +47,7 @@ namespace WindowsGame1
             //MessageBox(new IntPtr(0), list.Count.ToString(), "", 0);
         }
 
-        public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
+        /*public static Rectangle move(this Rectangle rec, int new_x, int new_y, int speed_x, int speed_y)
         {
             if (rec.X == new_x && rec.Y == new_y)
             {
@@ -96,7 +96,7 @@ namespace WindowsGame1
                 rec.Y -= Math.Min(rec.Y - new_y, speed_y);
             }
             return;
-        }
+        }*/
 
         public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Color color)
         {
@@ -111,6 +111,10 @@ namespace WindowsGame1
         public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
             sb.Draw(texture, destinationRectangle.getXY(), sourceRectangle, color, rotation, origin, destinationRectangle.getScale(texture), effects, layerDepth);
+        }
+        public static void Draw(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+        {
+            sb.Draw(texture, destinationRectangle.getXY(), sourceRectangle, color, rotation, origin, destinationRectangle.getScale(texture)* scale, effects, layerDepth);
         }
     }
 }

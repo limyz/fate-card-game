@@ -20,6 +20,7 @@ namespace WindowsGame1
         public Color color = Color.White;//The color to tint the sprite. Use Color.White for full color with no tinting
         public Single Rotation = 0f;//Specifies the angle (in radians) to rotate the sprite about its center.
         public Vector2 Origin = new Vector2(0, 0);//The sprite origin; the default is (0,0) which represents the upper-left corner.
+        public Vector2 Scale = new Vector2(1, 1);//Scale factor.
         public SpriteEffects effects = SpriteEffects.None;//Effects to apply.
         public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
 
@@ -43,8 +44,8 @@ namespace WindowsGame1
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(texture, Rect, Source_Rectangle, color, Rotation, Origin, effects, DrawOrder);
-            //spriteBatch.Draw(texture, Location, Source_Rectangle, Color.White, Rotation, new Vector2(0, 0), Scale, effects, DrawOrder);
+            //spriteBatch.Draw(texture, Rect, Source_Rectangle, color, Rotation, Origin, effects, DrawOrder);
+            spriteBatch.Draw(texture, Rect, Source_Rectangle, color, Rotation, Origin, Scale, effects, DrawOrder);
         }
     }
 }
