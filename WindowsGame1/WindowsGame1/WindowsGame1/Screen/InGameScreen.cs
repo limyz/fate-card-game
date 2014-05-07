@@ -114,7 +114,8 @@ namespace WindowsGame1
         private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
-            view_detail_button_textture, back_button_texture, foward_button_texture, panelTexture;
+            view_detail_button_textture, back_button_texture, foward_button_texture, panelTexture, 
+            healthUnitTexture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
         Border[] playerCharacterBorder = new Border[2];
@@ -127,10 +128,11 @@ namespace WindowsGame1
         List<CardForm> Hand_Image_List = new List<CardForm>();
         List<Image> otherPlayerMasterImage = new List<Image>();
         List<Image> otherPlayerServantImage = new List<Image>();
+        Image[] playerHealth;
         //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg, Card_Detail_Image;
         Image infoPanel;
-        ImageButton drawButton, Button_HandListBackPaging, Button_HandListFowardPaging;
+        ImageButton drawButton, Button_HandListBackPaging, Button_HandListFowardPaging, discardButton, useButton, endButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         Label deckStatic, cardStatic;
         Div playerControlPanel;
@@ -502,6 +504,7 @@ namespace WindowsGame1
             back_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-left-double-icon");
             foward_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-right-double-icon");
             panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
+            healthUnitTexture = Content.Load<Texture2D>("Resource/graphic/HealthUnit");
             //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
@@ -539,9 +542,16 @@ namespace WindowsGame1
             #endregion
 
             #region Button
-            drawButton = new ImageButton("draw_button", Content.Load<Texture2D>("Resource/draw")
+            drawButton = new ImageButton("Draw Button", Content.Load<Texture2D>("Resource/button/draw")
                 , new RectangleF(740, 520, 130, 35), 0.5f, this);
             drawButton.OnClick += draw_button_clicked;
+
+            useButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/use")
+                , new RectangleF(460, 520, 130, 35), 0.5f, this);
+            discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
+                , new RectangleF(320, 520, 130, 35), 0.5f, this);
+            endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/end")
+                , new RectangleF(600, 520, 130, 35), 0.5f, this);
             #endregion
 
             #region Chat
@@ -655,8 +665,37 @@ namespace WindowsGame1
             foreach (Player player in room.Player_List)
             {
                 player.MaxHealth = player.Character1.MaxHealth + player.Character2.MaxHealth;
-                player.CurrentHealth = Convert.ToInt32(player.MaxHealth);
+                player.CurrentHealth = Convert.ToInt32(Math.Floor(player.MaxHealth));
                 player.HandLimit = player.CurrentHealth;
+            }
+
+            //Draw Main Player
+            masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
+            servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
+            playerHealth = new Image[room.Player_List[Player_Index].CurrentHealth];
+            if(room.Player_List[Player_Index].CurrentHealth==4)
+            {
+                playerHealth[0] = new Image("health1", healthUnitTexture,
+                    new RectangleF(960, 575, 28, 29), 0.3f, this);
+                playerHealth[1] = new Image("health1", healthUnitTexture,
+                    new RectangleF(960, 610, 28, 29), 0.3f, this);
+                playerHealth[2] = new Image("health1", healthUnitTexture,
+                    new RectangleF(960, 645, 28, 29), 0.3f, this);
+                playerHealth[3] = new Image("health1", healthUnitTexture,
+                    new RectangleF(960, 680, 28, 29), 0.3f, this);
+            }
+            else if (room.Player_List[Player_Index].CurrentHealth == 5)
+            {
+                playerHealth[0] = new Image("health1", healthUnitTexture,
+                    new RectangleF(965, 570, 24, 26), 0.3f, this);
+                playerHealth[1] = new Image("health1", healthUnitTexture,
+                    new RectangleF(965, 600, 24, 26), 0.3f, this);
+                playerHealth[2] = new Image("health1", healthUnitTexture,
+                    new RectangleF(965, 630, 24, 26), 0.3f, this);
+                playerHealth[3] = new Image("health1", healthUnitTexture,
+                    new RectangleF(965, 660, 24, 26), 0.3f, this);
+                playerHealth[4] = new Image("health1", healthUnitTexture,
+                    new RectangleF(965, 690, 24, 26), 0.3f, this);
             }
 
             //Synchronize Deck
@@ -784,8 +823,6 @@ namespace WindowsGame1
                     oppPlayerRectangle[i2, 0], 0.3f, this);
                 masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height/2);
                 masterTemp.Scale.Y = 2;
-                //masterTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                //masterTemp.OnMouseLeave = new FormEventHandler(unHoverMasterChar);
                 masterTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerMasterImage.Add(masterTemp);
 
@@ -798,12 +835,8 @@ namespace WindowsGame1
                     oppPlayerRectangle[i2, 1], 0.3f, this);
                 servantTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
                 servantTemp.Scale.Y = 2;
-                //servantTemp.OnMouseEnter = new FormEventHandler(hoverChar);
-                //servantTemp.OnMouseLeave = new FormEventHandler(unHoverServantChar);
                 servantTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerServantImage.Add(servantTemp);
-                masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
-                servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             }
             #endregion
         }
@@ -855,10 +888,12 @@ namespace WindowsGame1
             }
         }
 
+        float handOrder = 0.5f;
         private void draw_card()
         {
             try
             {
+                handOrder += 0.11f;
                 handList.Add(deck[0]);
                 deck.RemoveAt(0);
                 Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
@@ -866,7 +901,7 @@ namespace WindowsGame1
                 else sendDataToHost(deckSyn);  
                 CardForm card = new CardForm(handList.Last()
                     , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
-                    , 0.5f, main_game.Content, this);
+                    , handOrder, main_game.Content, this);
                 //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
                 Hand_Image_List.Add(card);
                 //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
@@ -875,11 +910,6 @@ namespace WindowsGame1
             {
                 Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
             }
-        }
-
-        public void randomCharacter()
-        {
-            
         }
 
         private void CharacterChange(Character character1, Character character2, Guid id)
@@ -1055,35 +1085,6 @@ namespace WindowsGame1
         {
             draw_card();
             resize_hand();
-        }
-
-        private void hoverChar(object sender, FormEventData e)
-        {
-            Image image = (Image)sender;
-            image.Rect.Width = 100;
-            image.DrawOrder = 0.29f;
-            image.Source_Rectangle = null;
-            if (image.Name == "Opp Servant Image")
-            {
-                image.Rect.X = image.Rect.X - 50;
-            }
-        }
-
-        private void unHoverMasterChar(object sender, FormEventData e)
-        {
-            Image image = (Image)sender;
-            image.Rect.Width = 50;
-            image.DrawOrder = 0.3f;
-            image.Source_Rectangle = new Rectangle(0, 0, image.Texture.Width / 2, image.Texture.Height);
-        }
-
-        private void unHoverServantChar(object sender, FormEventData e)
-        {
-            Image image = (Image)sender;
-            image.Rect.Width = 50;
-            image.DrawOrder = 0.3f;
-            image.Rect.X = image.Rect.X + 50;
-            image.Source_Rectangle = new Rectangle(image.Texture.Width / 2, 0, image.Texture.Width / 2, image.Texture.Height);
         }
 
         private void SendChatMessage(string message)

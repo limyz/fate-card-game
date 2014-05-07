@@ -28,21 +28,21 @@ namespace WindowsGame1
         {
             font = theContent.Load<SpriteFont>("SpriteFont1");
 
-            start_button = new ImageButton("start_button", theContent.Load<Texture2D>("Resource/start"), new RectangleF(38, 653, 173, 51), 0.9f, this);
+            start_button = new ImageButton("start_button", theContent.Load<Texture2D>("Resource/button/start"), new RectangleF(38, 653, 173, 51), 0.9f, this);
             start_button.OnClick += Menu_button_click_handler;
 
             host_button = new ImageButton("host_button"
-                , theContent.Load<Texture2D>("Resource/hostgame")
+                , theContent.Load<Texture2D>("Resource/button/hostgame")
                 , new RectangleF(246, 653, 173, 51), 0.9f, this);
             host_button.OnClick += Menu_button_click_handler;
 
             join_button = new ImageButton("join_button"
-                , theContent.Load<Texture2D>("Resource/joingame")
+                , theContent.Load<Texture2D>("Resource/button/joingame")
                 , new RectangleF(783, 653, 173, 51), 0.9f, this);
             join_button.OnClick += Menu_button_click_handler;
 
             quit_button = new ImageButton("quit_button"
-                ,theContent.Load<Texture2D>("Resource/quit")
+                , theContent.Load<Texture2D>("Resource/button/quit")
                 , new RectangleF(987, 653, 173, 51), 0.9f, this);
             quit_button.OnClick += Menu_button_click_handler;
 

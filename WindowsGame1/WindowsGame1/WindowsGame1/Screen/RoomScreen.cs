@@ -516,15 +516,15 @@ namespace WindowsGame1
             #endregion
 
             #region Button
-            cancelButtonTexture = Content.Load<Texture2D>("Resource/cancel_button");
-            readyButtonTexture = Content.Load<Texture2D>("Resource/ready");
-            startButtonTexture = Content.Load<Texture2D>("Resource/start_button");
+            cancelButtonTexture = Content.Load<Texture2D>("Resource/button/cancel_button");
+            readyButtonTexture = Content.Load<Texture2D>("Resource/button/ready");
+            startButtonTexture = Content.Load<Texture2D>("Resource/button/start_button");
 
             start_button = new ImageButton("Start", startButtonTexture
                 , new RectangleF(980, 540, 180, 70), this);
             start_button.OnClick += Start_button_clicked;
 
-            quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/quit_button")
+            quit_button = new ImageButton("Quit", Content.Load<Texture2D>("Resource/button/quit_button")
                 , new RectangleF(980, 620, 180, 70), this);
             quit_button.OnClick += Quit_button_clicked;
             #endregion
