@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Card>
   <C4_Bomb img="C4 bomb" number="7" suit="4" type="tool">C4 Bomb</C4_Bomb>
-  <Alter_Burst img="Alter Burst2" number="7" suit="4" type="tool">Alter Burst</Alter_Burst>
+  <Alter_Burst img="Alter Burst" number="7" suit="4" type="tool">Alter Burst</Alter_Burst>
   <Collaboration img="Collaboration" number="7" suit="4" type="tool">Collaboration</Collaboration>
   <Command_Spell img="Command Spell" number="7" suit="4" type="tool">Command Spell</Command_Spell>
   <Crystal_Ball img="Crystal Ball" number="7" suit="4" type="tool">Crystal Ball</Crystal_Ball>
