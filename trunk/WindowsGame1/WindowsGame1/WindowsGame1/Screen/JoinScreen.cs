@@ -270,9 +270,10 @@ namespace WindowsGame1
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Game1.MessageBox(new IntPtr(0), "Host is not responding", "Can not Join", 0);
+                Console.WriteLine(ex.Message);
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Can not Join", 0);
             }
         }
         #endregion

@@ -132,10 +132,11 @@ namespace WindowsGame1
         //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg, Card_Detail_Image;
         Image infoPanel;
-        ImageButton drawButton, Button_HandListBackPaging, Button_HandListFowardPaging, discardButton, useButton, endButton;
+        ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
-        Label deckStatic, cardStatic;
+        Label deckStatistic,handStatistic, cardStatic;
         Div playerControlPanel;
+
         #endregion
 
         #region Card class
@@ -410,6 +411,11 @@ namespace WindowsGame1
                             Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
                             sendData(deckSyn);
                         }
+                        else if (c.Command_Code == CommandCode.End_Turn)
+                        {
+                            int PlayerEndTurn = c.Value_Int;
+                            ChangeTurn(PlayerEndTurn);
+                        }
                     }
                     client.Close();
                 }
@@ -462,6 +468,13 @@ namespace WindowsGame1
                             {
                                 deck = (List<Card>)c.Data1;
                             }
+                            else if (c.Command_Code == CommandCode.Change_Turn)
+                            {
+                                int PlayerEndTurn = (int)c.Data1;
+                                int NextPlayer = (int)c.Data2;
+                                room.Player_List[PlayerEndTurn].Turn.phase = Turn.Phase.OtherPlayerTurn;
+                                room.Player_List[NextPlayer].Turn.phase = Turn.Phase.Beginning;
+                            }
                         }
                     }
                     catch
@@ -505,7 +518,6 @@ namespace WindowsGame1
             foward_button_texture = Content.Load<Texture2D>("Resource/graphic/Actions-arrow-right-double-icon");
             panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
             healthUnitTexture = Content.Load<Texture2D>("Resource/graphic/HealthUnit");
-            //player_control_texture = Content.Load<Texture2D>("Resource/controlplayer");
             #endregion
 
             #region Player Control Panel
@@ -535,10 +547,6 @@ namespace WindowsGame1
             cardStatic = new Label("Card Static", Game1.arial12Bold, "Test Test Test", 550, 220, 300, Color.White, this);
             infoPanel.Visible = false;
             cardStatic.Visible = false;
-            //Button_HandListBackPaging = new ImageButton("HLBP", back_button_texture
-            //    , new RectangleF(155, 600, 40, 40), 0.47f, this);
-            //Button_HandListFowardPaging = new ImageButton("HLFP", foward_button_texture
-            //    , new RectangleF(720, 600, 40, 40), 0.47f, this);
             #endregion
 
             #region Button
@@ -550,8 +558,15 @@ namespace WindowsGame1
                 , new RectangleF(460, 520, 130, 35), 0.5f, this);
             discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
                 , new RectangleF(320, 520, 130, 35), 0.5f, this);
+
             endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/end")
                 , new RectangleF(600, 520, 130, 35), 0.5f, this);
+            endButton.OnClick += endButton_OnClick;
+
+            handBackButton = new ImageButton("HLBP", back_button_texture
+                , new RectangleF(155, 600, 40, 40), 0.47f, this);
+            handFowardButton = new ImageButton("HLFP", foward_button_texture
+                , new RectangleF(720, 600, 40, 40), 0.47f, this);
             #endregion
 
             #region Chat
@@ -580,8 +595,10 @@ namespace WindowsGame1
             #endregion
 
             #region Label
-            deckStatic = new Label("label_username", Game1.font, "Deck: "
+            deckStatistic = new Label("DeckCount Label", Game1.font, "Deck: "
                 , 890, 530, 200, Color.White, this);
+            handStatistic = new Label("HandCount Label", Game1.font, "Hand: "
+                , 890, 510, 200, Color.White, this);
 
             //ipLabel = new Label("label_IP", Game1.font, "IP Address"
             //    , 1010, 630, 1198 - 1010, Color.White, this);
@@ -669,7 +686,7 @@ namespace WindowsGame1
                 player.HandLimit = player.CurrentHealth;
             }
 
-            //Draw Main Player
+            #region Draw Main Player
             masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
             servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             playerHealth = new Image[room.Player_List[Player_Index].CurrentHealth];
@@ -697,12 +714,19 @@ namespace WindowsGame1
                 playerHealth[4] = new Image("health1", healthUnitTexture,
                     new RectangleF(965, 690, 24, 26), 0.3f, this);
             }
+            #endregion
 
-            //Synchronize Deck
+            #region Synchronize Deck
             if (room.owner_index == Player_Index)
             {
                 Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
                 sendData(deckSyn);
+            }
+            #endregion
+
+            if (isHost())
+            {
+                room.Player_List[Player_Index].Turn.phase = Turn.Phase.Beginning;
             }
             #endregion
 
@@ -883,7 +907,7 @@ namespace WindowsGame1
             }
             for (int i = 1; i < Hand_Image_List.Count; i++)
             {
-                Hand_Image_List[i].Rect = new RectangleF(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                Hand_Image_List[i].Rect = new RectangleF(190 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
                 //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
             }
         }
@@ -898,13 +922,16 @@ namespace WindowsGame1
                 deck.RemoveAt(0);
                 Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
                 if (isHost()) sendData(deckSyn);
-                else sendDataToHost(deckSyn);  
-                CardForm card = new CardForm(handList.Last()
-                    , new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
-                    , handOrder, main_game.Content, this);
-                //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
-                Hand_Image_List.Add(card);
-                //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+                else sendDataToHost(deckSyn);
+                if (handList.Count <= 5)
+                {
+                    CardForm card = new CardForm(handList.Last()
+                        , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                        , handOrder, main_game.Content, this);
+                    //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+                    Hand_Image_List.Add(card);
+                    //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+                }
             }
             catch (Exception ex)
             {
@@ -942,7 +969,18 @@ namespace WindowsGame1
 
         private void updateRoom()
         {
-            deckStatic.Text = "Deck: " + deck.Count.ToString();
+            if (room.Player_List[Player_Index].Turn.phase == Turn.Phase.OtherPlayerTurn)
+            {
+                endButton.Visible = false;
+                drawButton.Visible = false;
+            }
+            else
+            {
+                endButton.Visible = true;
+                drawButton.Visible = true;
+            }
+            handStatistic.Text = "Hand: " + handList.Count();
+            deckStatistic.Text = "Deck: " + deck.Count.ToString();
         }
 
         private void checkHoverHandCard()
@@ -1085,6 +1123,34 @@ namespace WindowsGame1
         {
             draw_card();
             resize_hand();
+        }
+
+        private void endButton_OnClick(object sender, FormEventData e)
+        {
+            if (isHost())
+            {
+                ChangeTurn(Player_Index);
+            }
+            else
+            {
+                Command endTurn = new Command(CommandCode.End_Turn, Player_Index);
+                sendDataToHost(endTurn);
+            }
+        }
+
+        private void ChangeTurn(int playerEndTurn)
+        {
+            int NextPlayer;
+            if (room.Player_List.Last() != room.Player_List[playerEndTurn]) NextPlayer = playerEndTurn + 1;
+            else
+            {
+                NextPlayer = 0;
+                if (!room.Player_List[NextPlayer].Status) NextPlayer++;
+            }
+            room.Player_List[playerEndTurn].Turn.phase = Turn.Phase.OtherPlayerTurn;
+            room.Player_List[NextPlayer].Turn.phase = Turn.Phase.Beginning;
+            Command changeTurn = new Command(CommandCode.Change_Turn, playerEndTurn, NextPlayer);
+            sendData(changeTurn);
         }
 
         private void SendChatMessage(string message)

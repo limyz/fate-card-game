@@ -25,6 +25,7 @@ namespace WindowsGame1
         public List<Card> HandCard = new List<Card>();
         public List<Card> PendingCard = new List<Card>();
         public List<Card> DeathCard = new List<Card>();
+        public Turn Turn = new Turn();
         #endregion
 
         #region Property
