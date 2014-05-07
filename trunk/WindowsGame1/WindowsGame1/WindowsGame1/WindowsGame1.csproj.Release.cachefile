@@ -43,14 +43,8 @@ Content\Resource\card\Knight of Honor.xnb
 Content\Resource\border_card.xnb
 Content\Resource\border_render.xnb
 Content\Resource\draw.xnb
-Content\Resource\ok.xnb
 Content\Resource\Test.xnb
-Content\Resource\hostgame.xnb
-Content\Resource\joingame.xnb
 Content\Resource\menu_background.xnb
-Content\Resource\option.xnb
-Content\Resource\quit.xnb
-Content\Resource\start.xnb
 Content\Resource\menu_background_2.xnb
 Content\Resource\caret.xnb
 Content\Resource\white_textbox.xnb
@@ -60,22 +54,15 @@ Content\Resource\ScrollbarBackground.xnb
 Content\Resource\avatar_default.xnb
 Content\Resource\background.xnb
 Content\Resource\saber_trans.xnb
-Content\Resource\ok_button.xnb
-Content\Resource\back_button.xnb
 Content\Resource\dialog_menu.xnb
 Content\Resource\gamelist.xnb
 Content\Resource\SaberLily_Trans.xnb
-Content\Resource\ready.xnb
-Content\Resource\quit_button.xnb
-Content\Resource\start_button.xnb
-Content\Resource\host_button.xnb
 Content\SpriteFont1.xnb
 Content\Resource\font\Arial_12_Bold.xnb
 Content\Resource\font\TNRoman_12_Bold.xnb
 Content\Resource\font\Arial_12_Regular.xnb
 Content\Resource\font\Arial_14_Bold.xnb
 Content\Resource\font\Arial_13_Bold.xnb
-Content\Resource\cancel_button.xnb
 Content\Resource\character\Dark Sakura.xnb
 Content\Resource\character\EMIYA.xnb
 Content\Resource\character\Heracles.xnb
@@ -109,25 +96,30 @@ Content\Resource\graphic\BG6.xnb
 Content\Resource\graphic\BG7.xnb
 Content\Resource\graphic\BG8.xnb
 Content\Resource\graphic\BG9.xnb
-Content\Resource\Music\Yui Makino - Fuwa Fuwa.xnb
 Content\Resource\graphic\BG10.xnb
 Content\Resource\graphic\BG11.xnb
 Content\Resource\graphic\base.xnb
 Content\Resource\graphic\base2.xnb
 Content\Resource\graphic\Icon.xnb
 Content\Resource\graphic\Panel.xnb
-Content\Resource\textbox.xnb
+Content\Resource\Music\Yui Makino - Fuwa Fuwa.xnb
 Content\Resource\font\Gautami_12_Regular.xnb
 Content\Resource\font\Gautami_14_Bold.xnb
+Content\Resource\textbox.xnb
 Content\Resource\Music\Memoria.xnb
 Content\Resource\graphic\Actions-arrow-left-double-icon.xnb
 Content\Resource\graphic\Actions-arrow-right-double-icon.xnb
+Content\Resource\Cards\Basic\CS2.xnb
+Content\Resource\Cards\Basic\CS3.xnb
+Content\Resource\Cards\Basic\CS4.xnb
+Content\Resource\Cards\Basic\CS5.xnb
+Content\Resource\Cards\Basic\CS6.xnb
+Content\Resource\Cards\Basic\CS1.xnb
 Content\Resource\Cards\Equip\Arondight.xnb
 Content\Resource\Cards\Equip\Avalon.xnb
 Content\Resource\Cards\Equip\Axe-sword.xnb
 Content\Resource\Cards\Equip\Azoth.xnb
 Content\Resource\Cards\Equip\Berser-Car.xnb
-Content\Resource\Cards\Equip\Berserker Armor.xnb
 Content\Resource\Cards\Equip\Caladbolg II.xnb
 Content\Resource\Cards\Equip\Caliburn.xnb
 Content\Resource\Cards\Equip\Dark Excalibur.xnb
@@ -137,18 +129,14 @@ Content\Resource\Cards\Equip\Excalibur.xnb
 Content\Resource\Cards\Equip\Gae Bolg.xnb
 Content\Resource\Cards\Equip\Gae Buidhe.xnb
 Content\Resource\Cards\Equip\Gae Dearg.xnb
-Content\Resource\Cards\Equip\Gilgamesh Armor.xnb
 Content\Resource\Cards\Equip\Gordius Wheel.xnb
 Content\Resource\Cards\Equip\Hrunting.xnb
-Content\Resource\Cards\Equip\KanshouBakuya.xnb
 Content\Resource\Cards\Equip\Monohoshizao.xnb
 Content\Resource\Cards\Equip\Pegasus.xnb
 Content\Resource\Cards\Equip\Prelati Spellbook.xnb
-Content\Resource\Cards\Equip\SaberArmour.xnb
 Content\Resource\Cards\Equip\Sword of the Kupriotes.xnb
 Content\Resource\Cards\Equip\Thompson Contender.xnb
 Content\Resource\Cards\Equip\Vimana.xnb
-Content\Resource\Cards\Equip\Yamaha VMax.xnb
 Content\Resource\Cards\Tool\Alter Burst.xnb
 Content\Resource\Cards\Tool\Alter Change.xnb
 Content\Resource\Cards\Tool\C4 bomb.xnb
@@ -183,15 +171,32 @@ Content\Resource\Cards\Tool\Soaring Spear that Strikes with Death.xnb
 Content\Resource\Cards\Tool\UBW.xnb
 Content\Resource\Cards\Tool\Verg Avesta.xnb
 Content\Resource\Cards\Basic\attack.xnb
-Content\Resource\Cards\Basic\CS1.xnb
-Content\Resource\Cards\Basic\CS2.xnb
-Content\Resource\Cards\Basic\CS3.xnb
-Content\Resource\Cards\Basic\CS4.xnb
-Content\Resource\Cards\Basic\CS5.xnb
-Content\Resource\Cards\Basic\CS6.xnb
 Content\Resource\Cards\Basic\Dodge.xnb
 Content\Resource\Cards\Basic\MagicAtk.xnb
 Content\Resource\Cards\Basic\HG.xnb
+Content\Resource\Cards\Equip\Berserker Armor.xnb
+Content\Resource\Cards\Equip\Gilgamesh Armor.xnb
+Content\Resource\Cards\Equip\KanshouBakuya.xnb
+Content\Resource\Cards\Equip\SaberArmour.xnb
+Content\Resource\Cards\Equip\Yamaha VMax.xnb
+Content\Resource\graphic\HealthUnit.xnb
+Content\Resource\button\draw.xnb
+Content\Resource\button\use.xnb
+Content\Resource\button\discard.xnb
+Content\Resource\button\end.xnb
+Content\Resource\button\back_button.xnb
+Content\Resource\button\cancel_button.xnb
+Content\Resource\button\hostgame.xnb
+Content\Resource\button\host_button.xnb
+Content\Resource\button\joingame.xnb
+Content\Resource\button\ok.xnb
+Content\Resource\button\ok_button.xnb
+Content\Resource\button\option.xnb
+Content\Resource\button\quit.xnb
+Content\Resource\button\quit_button.xnb
+Content\Resource\button\ready.xnb
+Content\Resource\button\start.xnb
+Content\Resource\button\start_button.xnb
 Content\Resource\Music\Yui Makino - Fuwa Fuwa.wma
 Content\Resource\Music\Memoria.wma
 Data\Character.xml

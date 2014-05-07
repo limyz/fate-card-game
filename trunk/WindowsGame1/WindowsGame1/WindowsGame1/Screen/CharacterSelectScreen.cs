@@ -357,7 +357,7 @@ namespace WindowsGame1
             roomInfoLabel = new Label("Room Info", Game1.arial12Bold, "Test Test Test", 50, 500, 1000, Color.White, this);
 
             #region Button
-            okButton = new ImageButton("OK Button", Content.Load<Texture2D>("Resource/ok_button"),
+            okButton = new ImageButton("OK Button", Content.Load<Texture2D>("Resource/button/ok_button"),
                 new RectangleF(500, 300, 180, 70), this);
             //okButton = new ImageButton("Cancel Button", Content.Load<Texture2D>("Resource/ok_button"),
             //    new Rectangle(500, 450, 180, 70), this);
@@ -523,7 +523,10 @@ namespace WindowsGame1
                         room.Player_List[Player_Index].Character1 = listTemp[0];
                         room.Player_List[Player_Index].Character2 = listTemp[1];
                     }
-
+                    //Console.WriteLine(room.Player_List[Player_Index].Character1.CharName 
+                    //    + " " + room.Player_List[Player_Index].Character1.MaxHealth);
+                    //Console.WriteLine(room.Player_List[Player_Index].Character2.CharName 
+                    //    + " " + room.Player_List[Player_Index].Character2.MaxHealth);
                     SelectCharacter();
                     for (int i = 0; i < 7; i++)
                     {
@@ -682,6 +685,11 @@ namespace WindowsGame1
                         break;
                     }
                 }
+                //for (int k = 0; k < listTemp.Count; k++)
+                //{
+                //    Console.WriteLine(listTemp[k].CharName + " " + characterList[0].MaxHealth);
+                //}
+                
                 try
                 {
                     Command c = new Command(CommandCode.Character_Distribute, listTemp);

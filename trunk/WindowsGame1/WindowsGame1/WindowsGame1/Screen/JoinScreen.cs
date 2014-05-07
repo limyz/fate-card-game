@@ -135,16 +135,16 @@ namespace WindowsGame1
 
             #region Button
             ok_button = new ImageButton("Ok"
-                , Content.Load<Texture2D>("Resource/ok_button")
+                , Content.Load<Texture2D>("Resource/button/ok_button")
                 , new RectangleF(170, 650, 120, 42), this);
 
             host_button = new ImageButton("Host"
-                , Content.Load<Texture2D>("Resource/host_button")
+                , Content.Load<Texture2D>("Resource/button/host_button")
                 , new RectangleF(320, 650, 120, 42), this);
             host_button.OnClick += HostClicked;
 
             back_button = new ImageButton("Back"
-                , Content.Load<Texture2D>("Resource/back_button")
+                , Content.Load<Texture2D>("Resource/button/back_button")
                 , new RectangleF(470, 650, 120, 42), this);
             back_button.OnClick += BackClicked;
             #endregion

@@ -74,12 +74,12 @@ namespace WindowsGame1
             Number_of_player_textbox.Text = "3";
 
             OK_button = new ImageButton("OK_button"
-                , Content.Load<Texture2D>("Resource/ok_button")
+                , Content.Load<Texture2D>("Resource/button/ok_button")
                 , new RectangleF(480, 300, 120, 42), this);
             OK_button.OnClick += Ok_button_clicked;
 
             Canel_button = new ImageButton("Cancel_button"
-                , Content.Load<Texture2D>("Resource/back_button")
+                , Content.Load<Texture2D>("Resource/button/back_button")
                 , new RectangleF(600, 300, 120, 42), this);
             Canel_button.OnClick += Cancel_button_clicked;
             #endregion

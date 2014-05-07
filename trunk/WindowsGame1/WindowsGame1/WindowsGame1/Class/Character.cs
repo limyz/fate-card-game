@@ -38,6 +38,8 @@ namespace WindowsGame1
             this.CharName = charName;
             this.CharAsset = charAsset;
             this.CharType = type;
+            this.CharClass = charClass;
+            this.MaxHealth = maxHealth;
         }
 
         public Character(string charName, string charClass, int maxHealth,
