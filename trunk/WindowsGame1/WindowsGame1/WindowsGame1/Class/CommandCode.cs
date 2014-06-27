@@ -52,6 +52,8 @@ namespace WindowsGame1
         //Player as Data1
         Change_Turn = 14,
 
-        End_Turn = 15
+        End_Turn = 15,
+
+        Check_Connect
     };
 }

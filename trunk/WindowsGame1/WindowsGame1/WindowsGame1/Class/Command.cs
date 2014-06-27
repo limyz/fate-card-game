@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Net.Sockets;
 
 namespace WindowsGame1
 {
@@ -118,6 +119,25 @@ namespace WindowsGame1
             this.Value_Int = temp.Value_Int;
             this.Value_Float = temp.Value_Float;
             this.Value_Datetime = temp.Value_Datetime;
+        }
+
+        public void SendData(String ip, int port)
+        {
+            NetworkStream networkStream;
+            TcpClient tcpClient;
+            try
+            {
+                byte[] data = this.Serialize();
+                tcpClient = new TcpClient(ip, port);
+                networkStream = tcpClient.GetStream();
+                networkStream.Write(data, 0, data.Length);
+                tcpClient.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //MessageBox.Show(ex.Message, "Can not send info");
+            }
         }
     }
 }

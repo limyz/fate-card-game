@@ -306,10 +306,18 @@ namespace WindowsGame1
                         Game1.MessageBox(new IntPtr(0), "Connection Error!", "Connection Error!", 0);
                     }
                 }
-                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
+                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 5))
                 {
-                    ScreenEvent.Invoke(this, new SivEventArgs(0));
-                    Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
+                    try
+                    {
+                        Command c = new Command(CommandCode.Check_Connect);
+                        c.SendData(room.Player_List[room.owner_index].Address, 51002);
+                    }
+                    catch
+                    {
+                        Game1.MessageBox(new IntPtr(0), "Disconected from host", "Disconnected", 0);
+                        ScreenEvent.Invoke(this, new SivEventArgs(0));
+                    }
                 }
             }
         }
