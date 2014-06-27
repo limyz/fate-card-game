@@ -58,6 +58,17 @@ namespace WindowsGame1
             }
         }
 
+        public void Start_Broadcast()
+        {
+            sendingClient = new UdpClient();
+            sendingClient.EnableBroadcast = true;
+
+            ThreadStart ts = new ThreadStart(Broadcaster);
+            broadcastingThread = new Thread(ts);
+            broadcastingThread.IsBackground = true;
+            broadcastingThread.Start();
+        }
+
         private void Broadcaster()
         {
             while (true)
@@ -74,17 +85,6 @@ namespace WindowsGame1
 
                 Thread.Sleep(1000);
             }
-        }
-
-        public void Start_Broadcast()
-        {
-            sendingClient = new UdpClient();
-            sendingClient.EnableBroadcast = true;
-
-            ThreadStart ts = new ThreadStart(Broadcaster);
-            broadcastingThread = new Thread(ts);
-            broadcastingThread.IsBackground = true;
-            broadcastingThread.Start();
         }
 
         public void End_Broadcast()
@@ -132,8 +132,6 @@ namespace WindowsGame1
             }
 
         }
-
-        
 
         private void ServerRespond()
         {
@@ -271,6 +269,10 @@ namespace WindowsGame1
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         Command c = new Command(bytes);
+                        if (c.Command_Code == CommandCode.Standby)
+                        {
+                            //do nothing
+                        }
                         if (c.Command_Code == CommandCode.Can_I_Join)
                         {
                             Command temp_c;
@@ -437,10 +439,18 @@ namespace WindowsGame1
                         }
                     }
                 }
-                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 3))
+                else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 5))
                 {
-                    Game1.MessageBox(new IntPtr(0), "Host has left the game", "Host has left the game", 0);
-                    ScreenEvent.Invoke(this, new SivEventArgs(0));
+                    try
+                    {
+                        Command c = new Command(CommandCode.Check_Connect);
+                        c.SendData(room.Player_List[room.owner_index].Address, 51002);
+                    }
+                    catch
+                    {
+                        Game1.MessageBox(new IntPtr(0), "Disconected from host", "Disconnected", 0);
+                        ScreenEvent.Invoke(this, new SivEventArgs(0));
+                    }
                 }
             }
         }
@@ -554,6 +564,9 @@ namespace WindowsGame1
             #endregion
         }
 
+        #endregion
+
+        #region Start-Stop
         public override void Start(Command command)
         {
             chatDisplay.Text = "";
