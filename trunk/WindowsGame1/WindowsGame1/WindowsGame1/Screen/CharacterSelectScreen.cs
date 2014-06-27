@@ -96,8 +96,9 @@ namespace WindowsGame1
                     }
                     //couldn't send message because the client has disconnected
                     //so we remove that tcp client and player from the list
-                    catch
+                    catch (Exception e)
                     {
+                        Console.WriteLine(e.Message);
                         string s = room.Player_List[i].Player_name + " had left the room!" + "\n";
                         this.tcpServerClient.RemoveAt(i);
                         this.room.Player_List.RemoveAt(i);
