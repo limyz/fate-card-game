@@ -24,19 +24,34 @@ namespace WindowsGame1
         Seven = 7, Eight = 8, Nine = 9, Ten = 10,
         Jack = 11, Queen = 12, King = 13
     }
+    public enum CardType
+    {
+        Tool = 0,
+        Weapon = 1,
+        PlusVehicle = 2,
+        MinusVehicle = 3,
+        Armour = 4,
+        Basic = 5,
+    }
     [Serializable]
     public class Card
     {
-        public string CardType;
+        //public string CardType;
         public string CardName;
         public string CardAsset;
         public string CardDescription;
         public Suit CardSuit;
         public Number CardNumber;
+        public CardType CardType;
         public Card(string type, string name, string asset, string description,
             Suit suit, Number number)
         {
-            this.CardType = type;
+            if (type.ToLower() == "basic") this.CardType = CardType.Basic;
+            else if (type.ToLower() == "tool") this.CardType = CardType.Tool;
+            else if (type.ToLower() == "armour") this.CardType = CardType.Armour;
+            else if (type.ToLower() == "plus-vehicle") this.CardType = CardType.PlusVehicle;
+            else if (type.ToLower() == "minus-vehicle") this.CardType = CardType.MinusVehicle;
+            else if (type.ToLower() == "weapon") this.CardType = CardType.Weapon;
             this.CardName = name;
             this.CardAsset = asset;
             this.CardDescription = description;
@@ -44,9 +59,9 @@ namespace WindowsGame1
             this.CardNumber = number;
         }
 
-        public static List<Card> LoadFromXML(ContentManager content)
+        public static List<CardDeck> LoadDeckFromXML(ContentManager content)
         {
-            List<Card> myReturn = new List<Card>();
+            List<CardDeck> myReturn = new List<CardDeck>();
             XmlDocument xml = new XmlDocument();
             xml.Load("Data/Card.xml");
             XmlNodeList xml_card_list = xml.GetElementsByTagName("Card")[0].ChildNodes;
@@ -82,12 +97,14 @@ namespace WindowsGame1
                     case 0: num = Number.None; break;
                     default: break;
                 }
-                myReturn.Add(new Card(temp.GetAttribute("type")
+                Card c = new Card(temp.GetAttribute("type")
                     , xml_card_list[i].InnerText
                     , temp.GetAttribute("img")
                     , xml_card_list[i].InnerText
                     , suit
-                    , num));
+                    , num);
+                CardDeck cd = new CardDeck(c);
+                myReturn.Add(cd);
             }
             return myReturn;
         }

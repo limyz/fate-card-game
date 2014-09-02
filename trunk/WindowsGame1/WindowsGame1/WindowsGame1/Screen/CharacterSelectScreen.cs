@@ -639,6 +639,7 @@ namespace WindowsGame1
         {
             foreach (var p in room.Player_List)
             {
+                Console.WriteLine(p.Player_name + " " + p.Status);
                 if (!p.Status) return;
             }
             try

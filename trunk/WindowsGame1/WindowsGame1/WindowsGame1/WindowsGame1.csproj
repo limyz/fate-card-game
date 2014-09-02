@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Card.cs" />
+    <Compile Include="Class\CardDeck.cs" />
     <Compile Include="Class\Character.cs" />
     <Compile Include="Class\CommandCode.cs" />
     <Compile Include="Class\Command.cs" />
