@@ -54,6 +54,48 @@ namespace WindowsGame1
 
         End_Turn = 15,
 
-        Check_Connect
+        Check_Connect = 16,
+
+        //Attack Card ID as data1, Source Player ID as data2, target Player as data3
+        Attack = 17,
+
+        //Synchronize All Player Data, room player list as data1
+        Synchronize_All_Player = 18,
+
+        //Draw any card, player id as data1, amount as data2
+        Draw_Card = 19,
+
+        //Host send draw result to client
+        Draw_Card_Result = 20,
+
+        Dodge,
+        Deal_Physical_Damage,
+        Deal_Magic_Damage,
+        Heal,
+        Loss_of_Health,
+        Use_Tool_Card,
+        Use_Time_Delay_Card,
+        Equip_Equipment_Card,
+        Unequip_Equipment_Card,
+        Check_Team,
+        Change_Team,
+        Prevent_Damage,
+        
+        Give_Card,
+        Discard,
+        Add_Card,
+        Reveal_Top,
+        Judgment,
+        Flip_Top,
+        Role_Dice,
+        Shuffle_Deck,
+        To_Top_Deck,
+        To_Bottom_Deck,
+        Brink_of_Death,
+        Revival,
+        Negate,
+        Ability_Lock,
+        Duel,
+        Point_Duel,
     };
 }

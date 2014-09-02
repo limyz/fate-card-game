@@ -20,11 +20,11 @@ namespace WindowsGame1
         //int graphicIndex;
         public int HandLimit, CurrentHealth;
         public double MaxHealth;
-        public Card[] Equipment = new Card[4];
-        public Card ExtraEquipment;
-        public List<Card> HandCard = new List<Card>();
-        public List<Card> PendingCard = new List<Card>();
-        public List<Card> DeathCard = new List<Card>();
+        public CardDeck[] Equipment = new CardDeck[4];
+        public CardDeck ExtraEquipment;
+        public List<CardDeck> HandCard = new List<CardDeck>();
+        public List<CardDeck> PendingCard = new List<CardDeck>();
+        public List<CardDeck> DeathCard = new List<CardDeck>();
         public Turn Turn = new Turn();
         #endregion
 

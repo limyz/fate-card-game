@@ -101,9 +101,10 @@ namespace WindowsGame1
         #region Variable Decleration
         float cardWidth = 105;
         float cardHeight = 150;
-        float handWitdh = 535;
+        float handWitdh = 530;
         float padding = 5;
-        int hand_hovered_index = -1, characterHoverIndex = -1;
+        float handOrder = 0.5f;
+        int hand_hovered_index = -1, characterHoverIndex = -1, selected_card_index = -1;
         int[] playerRandomChar = new int[2];
 
         public Room room;
@@ -114,7 +115,7 @@ namespace WindowsGame1
         private ContentManager Content;
         Random rand = new Random();
         Texture2D borderTexture, characterBackTexture, shirou, masterTexture, servantTexture,
-            view_detail_button_textture, back_button_texture, foward_button_texture, panelTexture, 
+            view_detail_button_textture, back_button_texture, foward_button_texture, panelTexture,
             healthUnitTexture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
@@ -123,8 +124,8 @@ namespace WindowsGame1
         Color borderColor = Color.MediumAquamarine;
         XmlDocument xml = new XmlDocument();
         Character[] masterList, servantList;
-        List<Card> deck = new List<Card>();
-        List<Card> handList = new List<Card>();
+        List<CardDeck> deck = new List<CardDeck>();
+        List<CardDeck> handList = new List<CardDeck>();
         List<CardForm> Hand_Image_List = new List<CardForm>();
         List<Image> otherPlayerMasterImage = new List<Image>();
         List<Image> otherPlayerServantImage = new List<Image>();
@@ -134,7 +135,7 @@ namespace WindowsGame1
         Image infoPanel;
         ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
-        Label deckStatistic,handStatistic, cardStatic;
+        Label deckStatistic, handStatistic, cardStatic;
         Div playerControlPanel;
 
         #endregion
@@ -242,14 +243,14 @@ namespace WindowsGame1
                 if (update_room)
                 {
                     Command c2 = new Command(CommandCode.Update_Room, room);
-                    sendData(c2);
-                   
+                    sendDataToClient(c2);
+
                 }
                 Thread.Sleep(1000);
             }
         }
 
-        public void sendData(Command c2)
+        public void sendDataToClient(Command c2)
         {
             byte[] data2 = c2.Serialize();
             for (int i = 0; i < tcpServerClient.Count; i++)
@@ -356,54 +357,75 @@ namespace WindowsGame1
                     while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                     {
                         Command c = new Command(bytes);
-                        if (c.Command_Code == CommandCode.Chat_Message)
+                        switch (c.Command_Code)
                         {
-                            SendChatMessage(c.Message);
-                        }
-                        else if (c.Command_Code == CommandCode.Character_Change)
-                        {
-                            Character character1 = (Character)c.Data1;
-                            Character character2 = (Character)c.Data2;
-                            Guid id = (Guid)c.Data3;
-                            Thread.Sleep(200);
-                            CharacterChange(character1, character2, id);
-                            Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
-                            byte[] data2 = c2.Serialize();
-                            for (int j = 0; j < tcpServerClient.Count; j++)
-                            {
+                            case CommandCode.Chat_Message:
+                                SendChatMessage(c.Message);
+                                break;
+                            case CommandCode.Update_Room:
+                                Room r = (Room)c.Data1;
+                                int PlayerIndex = r.findByID(Player_ID);
+                                for (i = 0; i < r.Player_List.Count; i++)
+                                {
+                                    if (i == PlayerIndex) continue;
+                                    if (!r.Player_List[i].Status)
+                                    {
+                                        UpdatePlayer(r.findByID_ExcludeMainPlayer(r.Player_List[i].id, Player_ID), Player_Index);
+                                    }
+                                }
+                                break;
+                            case CommandCode.Character_Change:
+                                Character character1 = (Character)c.Data1;
+                                Character character2 = (Character)c.Data2;
+                                Guid id = (Guid)c.Data3;
+                                Thread.Sleep(200);
+                                CharacterChange(character1, character2, id);
+                                Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
+                                byte[] data2 = c2.Serialize();
+                                for (int j = 0; j < tcpServerClient.Count; j++)
+                                {
+                                    try
+                                    {
+                                        if (j == Player_Index) continue;
+                                        if (!room.Player_List[j].Status) continue;
+                                        if (room.Player_List[j].id == id) continue;
+                                        tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+                                    }
+                                    catch { }
+                                }
+                                break;
+                            case CommandCode.CardList_Synchronize:
+                                deck = (List<CardDeck>)c.Data1;
+                                Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
+                                sendDataToClient(deckSyn);
+                                break;
+                            case CommandCode.End_Turn:
+                                int PlayerEndTurn = c.Value_Int;
+                                ChangeTurn(PlayerEndTurn);
+                                break;
+                            case CommandCode.Draw_Card:
                                 try
                                 {
-                                    if (j == Player_Index) continue;
-                                    if (!room.Player_List[j].Status) continue;
-                                    if (room.Player_List[j].id == id) continue;
-                                    tcpServerClient[j].GetStream().Write(data2, 0, data2.Length);
+                                    Guid PlayerDrawdCardId = (Guid)c.Data1;
+                                    Player player = room.findPlayerByID(PlayerDrawdCardId);
+                                    int numberOfCardDraw = (int)c.Data2;
+
+                                    Command draw = new Command(CommandCode.Draw_Card, PlayerDrawdCardId, numberOfCardDraw);
+                                    sendDataToClient(draw);
+
+                                    room.findPlayerByID(PlayerDrawdCardId).HandCard.Add(deck[0]);
+                                    deck.RemoveAt(0);
+                                    //Some effect
+                                    chatDisplayTextbox.Text += room.findPlayerByID(PlayerDrawdCardId).Player_name 
+                                        + " has drawn one card";
                                 }
-                                catch { }
-                            }
-                        }
-                        else if (c.Command_Code == CommandCode.Update_Room)
-                        {
-                            Room room = (Room)c.Data1;
-                            int Player_Index = room.findByID(Player_ID);
-                            for (i = 0; i < room.Player_List.Count; i++)
-                            {
-                                if (i == Player_Index) continue;
-                                if (!room.Player_List[i].Status)
+                                catch (Exception e)
                                 {
-                                    UpdatePlayer(room.findByID_ExcludeMainPlayer(room.Player_List[i].id, Player_ID), Player_Index);
+                                    Console.WriteLine(e.Message);
                                 }
-                            }
-                        }
-                        else if (c.Command_Code == CommandCode.CardList_Synchronize)
-                        {
-                            deck = (List<Card>)c.Data1;
-                            Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
-                            sendData(deckSyn);
-                        }
-                        else if (c.Command_Code == CommandCode.End_Turn)
-                        {
-                            int PlayerEndTurn = c.Value_Int;
-                            ChangeTurn(PlayerEndTurn);
+                                break;
+                            default:
+                                break;
                         }
                     }
                     client.Close();
@@ -455,7 +477,32 @@ namespace WindowsGame1
                             }
                             else if (c.Command_Code == CommandCode.CardList_Synchronize)
                             {
-                                deck = (List<Card>)c.Data1;
+                                deck = (List<CardDeck>)c.Data1;
+                            }
+                            else if (c.Command_Code == CommandCode.Synchronize_All_Player)
+                            {
+                                this.room.Player_List = (List<Player>)c.Data1;
+                            }
+                            else if (c.Command_Code == CommandCode.Draw_Card)
+                            {
+                                //Determine who draws a card and the number of drawn card
+                                Guid id = (Guid)c.Data1;
+                                Player player = room.findPlayerByID(id);
+                                int numberOfCardDraw = (int)c.Data2;
+
+                                if (id == Player_ID)
+                                {
+                                    DrawCard();
+                                    resizeHand();
+                                }
+                                else
+                                {
+                                    room.findPlayerByID(id).HandCard.Add(deck[0]);
+                                    deck.RemoveAt(0);
+                                    //Some effect
+                                    chatDisplayTextbox.Text += room.findPlayerByID(id).Player_name 
+                                        + " has drawn one card";
+                                }
                             }
                             else if (c.Command_Code == CommandCode.Change_Turn)
                             {
@@ -548,22 +595,25 @@ namespace WindowsGame1
 
             #region Button
             drawButton = new ImageButton("Draw Button", Content.Load<Texture2D>("Resource/button/draw")
-                , new RectangleF(740, 520, 130, 35), 0.5f, this);
+                , new RectangleF(600, 520, 130, 35), 0.5f, this);
             drawButton.OnClick += draw_button_clicked;
 
             useButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/use")
                 , new RectangleF(460, 520, 130, 35), 0.5f, this);
+            useButton.Visible = false;
+            useButton.OnClick += UseCardClick;
             discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
                 , new RectangleF(320, 520, 130, 35), 0.5f, this);
+            discardButton.Visible = false;
 
             endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/end")
-                , new RectangleF(600, 520, 130, 35), 0.5f, this);
+                , new RectangleF(740, 520, 130, 35), 0.5f, this);
             endButton.OnClick += endButton_OnClick;
 
-            handBackButton = new ImageButton("HLBP", back_button_texture
-                , new RectangleF(155, 600, 40, 40), 0.47f, this);
-            handFowardButton = new ImageButton("HLFP", foward_button_texture
-                , new RectangleF(720, 600, 40, 40), 0.47f, this);
+            //handBackButton = new ImageButton("HLBP", back_button_texture
+            //    , new RectangleF(155, 600, 40, 40), 0.47f, this);
+            //handFowardButton = new ImageButton("HLFP", foward_button_texture
+            //    , new RectangleF(720, 600, 40, 40), 0.47f, this);
             #endregion
 
             #region Chat
@@ -648,26 +698,11 @@ namespace WindowsGame1
             playerRandomChar[0] = rand.Next(masterList.Length);
             playerRandomChar[1] = rand.Next(servantList.Length);
 
-            //Card's data load            
-            /*xml.Load("Data/Card.xml");
-            XmlNodeList xml_card_list = xml.GetElementsByTagName("Card")[0].ChildNodes;
-            //card_list = new Card[xml_card_list.Count];
-            for (int i = 0; i < xml_card_list.Count; i++)
-            {
-                XmlElement temp = (XmlElement)xml_card_list[i];
-                cardList.Add(new Card(Content,
-                    xml_card_list[i].Name,
-                    xml_card_list[i].InnerText,
-                    temp.GetAttribute("img")));
-                cardList[i].load_texture();
-            }*/
-
-            deck = Card.LoadFromXML(Content);
-            //End card's data load
-            deck.shuffle<Card>();
+            
             #endregion
         }
 
+        
         public override void Start(Command command)
         {
             Player_Index = room.findByID(Player_ID);
@@ -687,7 +722,7 @@ namespace WindowsGame1
             masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
             servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             playerHealth = new Image[room.Player_List[Player_Index].CurrentHealth];
-            if(room.Player_List[Player_Index].CurrentHealth==4)
+            if (room.Player_List[Player_Index].CurrentHealth == 4)
             {
                 playerHealth[0] = new Image("health1", healthUnitTexture,
                     new RectangleF(960, 575, 28, 29), 0.3f, this);
@@ -716,8 +751,12 @@ namespace WindowsGame1
             #region Synchronize Deck
             if (room.owner_index == Player_Index)
             {
+                //Load Deck
+                deck = Card.LoadDeckFromXML(Content);
+                //End card's data load
+                deck.shuffle<CardDeck>();
                 Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
-                sendData(deckSyn);
+                sendDataToClient(deckSyn);
             }
             #endregion
 
@@ -842,9 +881,10 @@ namespace WindowsGame1
 
                 Image masterTemp = new Image("Opp Master Image", GetTexture(room.Player_List[i].Character1.CharAsset),
                     oppPlayerRectangle[i2, 0], 0.3f, this);
-                masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height/2);
+                masterTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
                 masterTemp.Scale.Y = 2;
-                masterTemp.OnClick = new FormEventHandler(Character_OnClick);
+                masterTemp.playerOwner = room.Player_List[i];
+                //masterTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerMasterImage.Add(masterTemp);
 
                 /*Border temp = new Border("", Color.Red, 2, oppPlayerRectangle[i2, 0], this);
@@ -856,7 +896,8 @@ namespace WindowsGame1
                     oppPlayerRectangle[i2, 1], 0.3f, this);
                 servantTemp.Source_Rectangle = new Rectangle(0, 0, characterBackTexture.Width, characterBackTexture.Height / 2);
                 servantTemp.Scale.Y = 2;
-                servantTemp.OnClick = new FormEventHandler(Character_OnClick);
+                servantTemp.playerOwner = room.Player_List[i];
+                //servantTemp.OnClick = new FormEventHandler(Character_OnClick);
                 otherPlayerServantImage.Add(servantTemp);
             }
             #endregion
@@ -886,6 +927,7 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //randomCharacter();
+            resizeHand();
             updateRoom();
             checkHoverHandCard();
             checkHoverCharacter();
@@ -894,45 +936,42 @@ namespace WindowsGame1
         #endregion
 
         #region Update's Function
-        private void resize_hand()
+        private void resizeHand()
         {
-            float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
-            float oversize = net_width - handWitdh;
-            if (oversize > 0)
+            if (Hand_Image_List.Count > 0)
             {
-                padding = padding - (oversize / Hand_Image_List.Count);
-            }
-            for (int i = 1; i < Hand_Image_List.Count; i++)
-            {
-                Hand_Image_List[i].Rect = new RectangleF(190 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
-                //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
-            }
-        }
-
-        float handOrder = 0.5f;
-        private void draw_card()
-        {
-            try
-            {
-                handOrder += 0.11f;
-                handList.Add(deck[0]);
-                deck.RemoveAt(0);
-                Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
-                if (isHost()) sendData(deckSyn);
-                else sendDataToHost(deckSyn);
-                if (handList.Count <= 5)
+                //float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
+                float net_width = cardWidth * Hand_Image_List.Count;
+                float oversize = net_width - handWitdh;
+                float handOrder = 0.5f;
+                if (oversize > 0)
                 {
-                    CardForm card = new CardForm(handList.Last()
-                        , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
-                        , handOrder, main_game.Content, this);
-                    //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
-                    Hand_Image_List.Add(card);
-                    //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+                    //padding = padding - (oversize / Hand_Image_List.Count);
+                    padding = (oversize / (Hand_Image_List.Count-1));
+                    Hand_Image_List[0].Rect = new RectangleF(190, 567, cardWidth, cardHeight);
+                    for (int i = 1; i < Hand_Image_List.Count; i++)
+                    {
+                        handOrder += 0.01f;
+                        Hand_Image_List[i].Rect = new RectangleF
+                            ((190 + (cardWidth * i)) - padding * i, 567, cardWidth, cardHeight);
+                        if (i == hand_hovered_index) break;
+                        Hand_Image_List[i].DrawOrder = handOrder;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+                else
+                {
+                    padding = 5;
+                    Hand_Image_List[0].Rect = new RectangleF(190, 567, cardWidth, cardHeight);
+                    for (int i = 1; i < Hand_Image_List.Count; i++)
+                    {
+                        handOrder += 0.01f;
+                        Hand_Image_List[i].Rect = new RectangleF
+                            (190 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                        if (i == hand_hovered_index) break;
+                        Hand_Image_List[i].DrawOrder = handOrder;
+                        //hand_area_list[i] = new Rectangle(175 + (cardWidth + padding) * i, 567, cardWidth, cardHeight);
+                    }
+                }
             }
         }
 
@@ -976,7 +1015,7 @@ namespace WindowsGame1
                 endButton.Visible = true;
                 drawButton.Visible = true;
             }
-            handStatistic.Text = "Hand: " + handList.Count();
+            handStatistic.Text = "Hand: " + room.findPlayerByID(Player_ID).HandCard.Count();
             deckStatistic.Text = "Deck: " + deck.Count.ToString();
         }
 
@@ -1007,8 +1046,8 @@ namespace WindowsGame1
                         {
                             Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
                             Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
-                            if (View_Detail_Button != null)
-                                ClearDetailButtonAndImage();
+                            //if (View_Detail_Button != null)
+                            //    ClearDetailButtonAndImage();
 
                             hand_hovered_index = i;
 
@@ -1019,8 +1058,8 @@ namespace WindowsGame1
                     }
                     Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
                     Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
-                    if (View_Detail_Button != null)
-                        ClearDetailButtonAndImage();
+                    //if (View_Detail_Button != null)
+                    //    ClearDetailButtonAndImage();
 
                     hand_hovered_index = -1;
                 }
@@ -1075,6 +1114,47 @@ namespace WindowsGame1
             s += "Ability: " + card.CardDescription;
             return s;
         }
+
+        Guid usingCardId, targetPlayerId;
+        private void UseBasicCard(CardForm cardForm)
+        {
+            if (cardForm.CardDeck.Card.CardName == "ATTACK")
+            {
+                usingCardId = cardForm.CardDeck.CardId;
+                foreach (Image item in otherPlayerMasterImage)
+                {
+                    item.OnClick += TargetPlayer_OnClick;
+                }
+                foreach (Image item in otherPlayerServantImage)
+                {
+                    item.OnClick += TargetPlayer_OnClick;
+                }
+            }
+            //cardForm.MoveBySpeed(400, 200, 700);
+        }
+
+        private void DrawCard()
+        {
+            Player me = room.findPlayerByID(Player_ID);
+            handOrder += 0.01f;
+            //handList.Add(deck[0]);
+            me.HandCard.Add(deck[0]);
+            deck.RemoveAt(0);
+            //Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
+            //if (isHost()) sendDataToClient(deckSyn);
+            //else sendDataToHost(deckSyn);
+
+            //if (handList.Count <= 5)
+            //{
+            CardForm card = new CardForm(me.HandCard.Last()
+                    , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                    , handOrder, main_game.Content, this);
+            //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
+
+            Hand_Image_List.Add(card);
+            //hand_area_list.Add(new Rectangle(175 + (cardWidth + padding) * hand_area_list.Count, 567, cardWidth, cardHeight));
+            //}
+        }
         #endregion
 
         #region HANDLER
@@ -1118,8 +1198,28 @@ namespace WindowsGame1
 
         private void draw_button_clicked(object sender, FormEventData e)
         {
-            draw_card();
-            resize_hand();
+            try
+            {
+                if (isHost())
+                {
+                    //Send command draw card to all clients
+                    Command draw = new Command(CommandCode.Draw_Card, Player_ID, 1);
+                    sendDataToClient(draw);
+
+                    DrawCard();
+                    resizeHand();
+                }
+                else
+                {
+                    //Send request draw card to host
+                    Command draw = new Command(CommandCode.Draw_Card, Player_ID, 1);
+                    sendDataToHost(draw);
+                }
+            }
+            catch (Exception ex)
+            {
+                Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+            }
         }
 
         private void endButton_OnClick(object sender, FormEventData e)
@@ -1135,6 +1235,86 @@ namespace WindowsGame1
             }
         }
 
+        private void UseCardClick(object sender, FormEventData e)
+        {
+            foreach (CardForm c in Hand_Image_List)
+            {
+                if (c.Border)
+                {
+                    c.Border = false;
+                    //Hand_Image_List.Remove(c);
+                    switch (c.CardDeck.Card.CardType)
+                    {
+                        case CardType.Tool:
+                            //c.MoveBySpeed(400, 200, 700);
+                            break;
+                        case CardType.Weapon:
+                            //c.MoveBySpeed(10, 567, 700);
+                            break;
+                        case CardType.PlusVehicle:
+                            //c.MoveBySpeed(10, 567, 700);
+                            break;
+                        case CardType.MinusVehicle:
+                            //c.MoveBySpeed(10, 567, 700);
+                            break;
+                        case CardType.Armour:
+                            //c.MoveBySpeed(10, 567, 700);
+                            break;
+                        case CardType.Basic:
+                            UseBasicCard(c);
+                            break;
+                        default:
+                            break;
+                    }
+                    selected_card_index = -1;
+                    ClearDetailButtonAndImage();
+                    break;
+                }
+            }
+            //CardForm card = Hand_Image_List[selected_card_index];
+            //card.MoveBySpeed(0, 0, 300);
+            //card.MoveBySecond(0, 0, 3);
+            //Hand_Image_List.RemoveAt(selected_card_index);
+        }
+
+        private void TargetPlayer_OnClick(object sender, FormEventData e)
+        {
+            Image image = (Image)sender;
+            Player player = image.playerOwner;
+            targetPlayerId = player.id;
+            if (!isHost())
+            {
+                Command c = new Command(CommandCode.Attack, usingCardId, Player_ID, targetPlayerId);
+                sendDataToHost(c);
+            }
+            else
+            {
+                Command c = new Command(CommandCode.Attack, usingCardId, Player_ID, targetPlayerId);
+                sendDataToClient(c);
+                foreach (CardForm cf in Hand_Image_List)
+                {
+                    if (cf.CardDeck.CardId == usingCardId)
+                    {
+                        cf.MoveBySpeed(400, 200, 700);
+                        Hand_Image_List.Remove(cf);
+                        break;
+                    }
+                }
+                foreach (CardDeck cd in room.findPlayerByID(Player_ID).HandCard)
+                {
+                    if (cd.CardId == usingCardId)
+                    {
+                        room.findPlayerByID(Player_ID).HandCard.Remove(cd);
+                    }
+                }
+                chatDisplayTextbox.Text += room.findPlayerByID(Player_ID).Player_name
+                    + " has attacked " + room.findPlayerByID(targetPlayerId).Player_name;
+                //Command c2 = new Command(CommandCode.Update_Room, room);
+                //sendDataToClient(c2);
+            }
+            
+        }
+
         private void ChangeTurn(int playerEndTurn)
         {
             int NextPlayer;
@@ -1147,7 +1327,7 @@ namespace WindowsGame1
             room.Player_List[playerEndTurn].Turn.phase = Turn.Phase.OtherPlayerTurn;
             room.Player_List[NextPlayer].Turn.phase = Turn.Phase.Beginning;
             Command changeTurn = new Command(CommandCode.Change_Turn, playerEndTurn, NextPlayer);
-            sendData(changeTurn);
+            sendDataToClient(changeTurn);
         }
 
         private void SendChatMessage(string message)
@@ -1175,18 +1355,24 @@ namespace WindowsGame1
             if (!Card_Clicked)
             {
                 CardForm image = (CardForm)sender;
-                View_Detail_Button = new ImageButton("view_detail_button"
-                    , view_detail_button_textture
-                    , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
-                View_Detail_Button.DrawOrder = 0.48f;
-                View_Detail_Button.Value = image;
-                View_Detail_Button.OnClick += ViewDetailButton_Onclick;
+                selected_card_index = hand_hovered_index;
+                //View_Detail_Button = new ImageButton("view_detail_button"
+                //    , view_detail_button_textture
+                //    , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
+                //View_Detail_Button.DrawOrder = 0.48f;
+                //View_Detail_Button.Value = image;
+                //View_Detail_Button.OnClick += ViewDetailButton_Onclick;
+                image.Border = true;
+                useButton.Visible = true;
+                discardButton.Visible = true;
                 Card_Clicked = true;
             }
             else
             {
                 MouseState ms = (MouseState)e.args;
-                if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
+                CardForm image = (CardForm)sender;
+                //if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
+                //if (image.Rect.Contains(new Point(ms.X, ms.Y))) return;
                 ClearDetailButtonAndImage();
             }
         }
@@ -1205,11 +1391,15 @@ namespace WindowsGame1
 
         private void ClearDetailButtonAndImage()
         {
-            View_Detail_Button.Delete();
-            Card_Detail_Image.Visible = false;
+            //View_Detail_Button.Delete();
+            //Card_Detail_Image.Visible = false;
+            //cardStatic.Visible = false;
+            //infoPanel.Visible = false;
+            if (selected_card_index>-1) Hand_Image_List[selected_card_index].Border = false;
+            selected_card_index = -1;
             Card_Clicked = false;
-            cardStatic.Visible = false;
-            infoPanel.Visible = false;
+            discardButton.Visible = false;
+            useButton.Visible = false;
         }
 
         private void ViewDetailButton_Onclick(object sender, FormEventData e)
@@ -1217,7 +1407,7 @@ namespace WindowsGame1
             CardForm image = (CardForm)((ImageButton)sender).Value;
             Card_Detail_Image.Texture = image.Texture;
             Card_Detail_Image.Visible = true;
-            cardStatic.Text = getStaticCard(image.Card);
+            cardStatic.Text = getStaticCard(image.CardDeck.Card);
             cardStatic.Visible = true;
             infoPanel.Visible = true;
         }

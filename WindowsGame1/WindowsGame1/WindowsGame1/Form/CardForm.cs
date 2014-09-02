@@ -10,8 +10,8 @@ namespace WindowsGame1
 {
     class CardForm : SivForm
     {
-        private Card card;
-        public Card Card
+        private CardDeck card;
+        public CardDeck CardDeck
         {
             get { return card; }
             set
@@ -31,73 +31,98 @@ namespace WindowsGame1
         public Vector2 Scale = new Vector2(1, 1);//Scale factor.
         public SpriteEffects effects = SpriteEffects.None;//Effects to apply.
         public float DrawOrder = 0.5f;//The depth of a layer. By default, 0 represents the front layer and 1 represents a back layer. Use SpriteSortMode if you want sprites to be sorted during drawing.
+        public Boolean Border = false;
+        public float BorderWidth = 3;
+        public Color BorderColor = Color.Blue;
 
-        public CardForm(Card card, RectangleF rec, float draw_order, ContentManager content, Screen parent)
-            : base(card.CardName, parent, typeof(CardForm), rec)
+        public CardForm(CardDeck card, RectangleF rec, float draw_order, ContentManager content, Screen parent)
+            : base(card.Card.CardName, parent, typeof(CardForm), rec)
         {
-            Card = card;
+            CardDeck = card;
+            DrawOrder = draw_order;
             this.LoadTexture(content);
         }
 
         public void LoadTexture(ContentManager content)
         {
-            string type;
-            if (card.CardType == "basic") type = "Basic";
-            else if (card.CardType == "tool") type = "Tool";
-            else type = "Equip";
-            this.texture = content.Load<Texture2D>("Resource/Cards/"+ type + "/" + card.CardAsset);
+            string type = "";
+            if (card.Card.CardType == CardType.Basic) type = "Basic";
+            else if (card.Card.CardType == CardType.Tool) type = "Tool";
+            else if (card.Card.CardType == CardType.Weapon) type = "Equip";
+            else if (card.Card.CardType == CardType.Armour) type = "Equip";
+            else if (card.Card.CardType == CardType.PlusVehicle) type = "Equip";
+            else if (card.Card.CardType == CardType.MinusVehicle) type = "Equip";
+            this.texture = content.Load<Texture2D>("Resource/Cards/" + type + "/" + card.Card.CardAsset);
         }
 
         public override void Update(GameTime gameTime)
         {
         }
 
+        #region Draw's function
+        private void Draw_Horizontal_Line(SpriteBatch sb, float y)
+        {
+            sb.Draw(Game1.whiteTexture, new RectangleF(Rect.X - BorderWidth, y, Rect.Width + BorderWidth * 2, BorderWidth), Source_Rectangle, BorderColor, Rotation, Origin, effects, DrawOrder);
+        }
+        private void Draw_Vertical_Line(SpriteBatch sb, float x)
+        {
+            sb.Draw(Game1.whiteTexture, new RectangleF(x, Rect.Y - BorderWidth, BorderWidth, Rect.Height + BorderWidth * 2), Source_Rectangle, BorderColor, Rotation, Origin, effects, DrawOrder);
+        }
+        #endregion
+
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(texture, Rect, Source_Rectangle, color, Rotation, Origin, Scale, effects, DrawOrder);
-            string suit = "";
-            Color suit_color = Color.Red;
-            if (card.CardSuit == Suit.Heart)
+            if (this.Border)
             {
-                suit = "♥";
+                Draw_Horizontal_Line(spriteBatch, Rect.Y - BorderWidth);
+                Draw_Horizontal_Line(spriteBatch, Rect.Y + Rect.Height);
+                Draw_Vertical_Line(spriteBatch, Rect.X - BorderWidth);
+                Draw_Vertical_Line(spriteBatch, Rect.X + Rect.Width);
             }
-            else if (card.CardSuit == Suit.Diamond)
-            {
-                suit = "♦";
-            }
-            else if (card.CardSuit == Suit.Club)
-            {
-                suit = "♣";
-                suit_color = Color.Black;
-            }
-            else if (card.CardSuit == Suit.Spade)
-            {
-                suit = "♠";
-                suit_color = Color.Black;
-            }
-            spriteBatch.DrawString(Game1.arial14Bold, suit, Rect.getXY() + new Vector2(5), suit_color, Rotation, Origin, new Vector2(1.0f), effects, DrawOrder /*- 0.001f*/);
-            string number = "";
-            if((int)(card.CardNumber) >= 2 && (int)(card.CardNumber) <= 10)
-            {
-                number = ((int)(card.CardNumber)).ToString();
-            }
-            else if (card.CardNumber == Number.Jack)
-            {
-                number = "J";
-            }
-            else if (card.CardNumber == Number.Queen)
-            {
-                number = "Q";
-            }
-            else if (card.CardNumber == Number.King)
-            {
-                number = "K";
-            }
-            else if (card.CardNumber == Number.Ace)
-            {
-                number = "A";
-            }
-            spriteBatch.DrawString(Game1.arial14Bold, number, Rect.getXY() + new Vector2(20,5), Color.Black, Rotation, Origin, new Vector2(1.5f), effects, DrawOrder /*- 0.001f*/);
+            //string suit = "";
+            //Color suit_color = Color.Red;
+            //if (card.CardSuit == Suit.Heart)
+            //{
+            //    suit = "♥";
+            //}
+            //else if (card.CardSuit == Suit.Diamond)
+            //{
+            //    suit = "♦";
+            //}
+            //else if (card.CardSuit == Suit.Club)
+            //{
+            //    suit = "♣";
+            //    suit_color = Color.Black;
+            //}
+            //else if (card.CardSuit == Suit.Spade)
+            //{
+            //    suit = "♠";
+            //    suit_color = Color.Black;
+            //}
+            //spriteBatch.DrawString(Game1.arial14Bold, suit, Rect.getXY() + new Vector2(5), suit_color, Rotation, Origin, new Vector2(1.0f), effects, DrawOrder /*- 0.001f*/);
+            //string number = "";
+            //if((int)(card.CardNumber) >= 2 && (int)(card.CardNumber) <= 10)
+            //{
+            //    number = ((int)(card.CardNumber)).ToString();
+            //}
+            //else if (card.CardNumber == Number.Jack)
+            //{
+            //    number = "J";
+            //}
+            //else if (card.CardNumber == Number.Queen)
+            //{
+            //    number = "Q";
+            //}
+            //else if (card.CardNumber == Number.King)
+            //{
+            //    number = "K";
+            //}
+            //else if (card.CardNumber == Number.Ace)
+            //{
+            //    number = "A";
+            //}
+            //spriteBatch.DrawString(Game1.arial14Bold, number, Rect.getXY() + new Vector2(20,5), Color.Black, Rotation, Origin, new Vector2(1.5f), effects, DrawOrder /*- 0.001f*/);
         }
     }
 }
