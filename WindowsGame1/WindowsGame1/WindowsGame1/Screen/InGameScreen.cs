@@ -257,8 +257,8 @@ namespace WindowsGame1
             {
                 try
                 {
-                    if (i == Player_Index) continue;
-                    if (!room.Player_List[i].Status) continue;
+                    if (room.Player_List[i].id == Player_ID) continue;
+                    //if (!room.Player_List[i].Status) continue;
                     tcpServerClient[i].GetStream().Write(data2, 0, data2.Length);
                 }
                 catch
@@ -410,13 +410,14 @@ namespace WindowsGame1
                                     Player player = room.findPlayerByID(PlayerDrawdCardId);
                                     int numberOfCardDraw = (int)c.Data2;
 
-                                    Command draw = new Command(CommandCode.Draw_Card, PlayerDrawdCardId, numberOfCardDraw);
+                                    CardDeck drawCard = deck.Last();
+                                    Command draw = new Command(CommandCode.Draw_Card_Result, PlayerDrawdCardId, drawCard);
                                     sendDataToClient(draw);
 
-                                    room.findPlayerByID(PlayerDrawdCardId).HandCard.Add(deck[0]);
-                                    deck.RemoveAt(0);
+                                    room.findPlayerByID(PlayerDrawdCardId).HandCard.Add(drawCard);
+                                    deck.RemoveAt(deck.Count - 1);
                                     //Some effect
-                                    chatDisplayTextbox.Text += room.findPlayerByID(PlayerDrawdCardId).Player_name 
+                                    chatDisplayTextbox.Text += room.findPlayerByID(PlayerDrawdCardId).Player_name
                                         + " has drawn one card";
                                 }
                                 catch (Exception e)
@@ -435,7 +436,7 @@ namespace WindowsGame1
 
         private void ClientReceiver()
         {
-            Byte[] bytes = new Byte[1024 * 16];
+            
             while (receiverRun)
             {
                 if (StoppedTcp)
@@ -450,6 +451,7 @@ namespace WindowsGame1
                         TcpClient client = receiveTcp.AcceptTcpClient();
                         NetworkStream stream = client.GetStream();
                         int i;
+                        Byte[] bytes = new Byte[1024 * 16];
                         while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             if (!connect_to_host)
@@ -483,25 +485,33 @@ namespace WindowsGame1
                             {
                                 this.room.Player_List = (List<Player>)c.Data1;
                             }
-                            else if (c.Command_Code == CommandCode.Draw_Card)
+                            else if (c.Command_Code == CommandCode.Draw_Card_Result)
                             {
                                 //Determine who draws a card and the number of drawn card
                                 Guid id = (Guid)c.Data1;
                                 Player player = room.findPlayerByID(id);
-                                int numberOfCardDraw = (int)c.Data2;
+                                CardDeck drawCard = (CardDeck)c.Data2;
+                                //int numberOfCardDraw = (int)c.Data2;
 
                                 if (id == Player_ID)
                                 {
-                                    DrawCard();
+                                    //DrawCard();
+                                    player.HandCard.Add(drawCard);
+                                    deck.RemoveAt(deck.Count - 1);
+                                    CardForm card = new CardForm(player.HandCard.Last()
+                                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                                     , handOrder, main_game.Content, this);
+
+                                    Hand_Image_List.Add(card);
                                     resizeHand();
                                 }
                                 else
                                 {
-                                    room.findPlayerByID(id).HandCard.Add(deck[0]);
-                                    deck.RemoveAt(0);
+                                    room.findPlayerByID(id).HandCard.Add(drawCard);
+                                    deck.RemoveAt(deck.Count - 1);
                                     //Some effect
-                                    chatDisplayTextbox.Text += room.findPlayerByID(id).Player_name 
-                                        + " has drawn one card";
+                                    chatDisplayTextbox.Text += room.findPlayerByID(id).Player_name
+                                        + " has drawn one card.\n";
                                 }
                             }
                             else if (c.Command_Code == CommandCode.Change_Turn)
@@ -510,6 +520,80 @@ namespace WindowsGame1
                                 int NextPlayer = (int)c.Data2;
                                 room.Player_List[PlayerEndTurn].Turn.phase = Turn.Phase.OtherPlayerTurn;
                                 room.Player_List[NextPlayer].Turn.phase = Turn.Phase.Beginning;
+                            }
+                            else if (c.Command_Code == CommandCode.Attack)
+                            {
+                                Guid usingCard = (Guid)c.Data1;
+                                Guid sourcePlayer = (Guid)c.Data2;
+                                Guid targetPlayer = (Guid)c.Data3;
+                                //chatDisplayTextbox.Text += "You has been attacked by " + room.findPlayerByID(targetPlayer).Player_name + "\n";
+                                if (sourcePlayer == Player_ID)
+                                {
+                                    foreach (CardForm cf in Hand_Image_List)
+                                    {
+                                        if (cf.CardDeck.CardId == usingCardId)
+                                        {
+                                            cf.MoveBySpeed(400, 200, 700);
+                                            Hand_Image_List.Remove(cf);
+                                            break;
+                                        }
+                                    }
+                                    CardDeck carduse = null;
+                                    foreach (CardDeck cd in room.findPlayerByID(Player_ID).HandCard)
+                                    {
+                                        if (cd.CardId == usingCard)
+                                        {
+                                            carduse = cd;
+                                            break;
+                                        }
+                                    }
+                                    room.findPlayerByID(Player_ID).HandCard.Remove(carduse);
+                                    chatDisplayTextbox.Text += "You has attacked " + room.findPlayerByID(targetPlayerId).Player_name + "\n";
+                                }
+                                else if (targetPlayer == Player_ID)
+                                {
+                                    
+                                    int index = room.findByID(sourcePlayer);
+                                    CardDeck carduse = null;
+                                    for (int j = 0; j < room.Player_List[index].HandCard.Count; j++)
+                                    {
+                                        if (room.Player_List[index].HandCard[j].CardId == usingCard)
+                                        {
+                                            carduse = room.Player_List[index].HandCard[j];
+                                            room.Player_List[index].HandCard.RemoveAt(j);
+                                            break;
+                                        }
+                                    }
+                                    if (carduse != null)
+                                    {
+                                        chatDisplayTextbox.Text += "You has been attacked by " + room.findPlayerByID(sourcePlayer).Player_name + "\n";
+                                        CardForm dummy = new CardForm(carduse, new RectangleF(oppPlayerRectangle[index, 0].X, oppPlayerRectangle[index, 0].Y, cardWidth, cardHeight), 0.3f, main_game.Content, this);
+                                        dummy.MoveBySpeed(400, 200, 700);
+                                    }
+
+                                    //Asking for Dodge later
+                                }
+                                else
+                                {
+                                    int index = room.findByID(sourcePlayer);
+                                    CardDeck carduse = null;
+                                    for (int j = 0; j < room.Player_List[index].HandCard.Count; j++)
+                                    {
+                                        if (room.Player_List[index].HandCard[j].CardId == usingCard)
+                                        {
+                                            carduse = room.Player_List[index].HandCard[j];
+                                            room.Player_List[index].HandCard.RemoveAt(j);
+                                            break;
+                                        }
+                                    }
+                                    if (carduse != null)
+                                    {
+                                        CardForm dummy = new CardForm(carduse, new RectangleF(oppPlayerRectangle[index, 0].X, oppPlayerRectangle[index, 0].Y, cardWidth, cardHeight), 0.3f, main_game.Content, this);
+                                        dummy.MoveBySpeed(400, 200, 700);
+                                        chatDisplayTextbox.Text += room.findPlayerByID(Player_ID).Player_name
+                                            + " has attacked " + room.findPlayerByID(targetPlayerId).Player_name + "\n";
+                                    }
+                                }
                             }
                         }
                     }
@@ -698,11 +782,11 @@ namespace WindowsGame1
             playerRandomChar[0] = rand.Next(masterList.Length);
             playerRandomChar[1] = rand.Next(servantList.Length);
 
-            
+
             #endregion
         }
 
-        
+
         public override void Start(Command command)
         {
             Player_Index = room.findByID(Player_ID);
@@ -877,6 +961,7 @@ namespace WindowsGame1
                     , oppPlayerRectangle[i2, 1].Width
                     , Color.White, this);
                 labelTemp.CenterAlign = true;
+                labelTemp.Value = room.Player_List[i].id;
                 OtherPlayerNameLabel.Add(labelTemp);
 
                 Image masterTemp = new Image("Opp Master Image", GetTexture(room.Player_List[i].Character1.CharAsset),
@@ -927,6 +1012,11 @@ namespace WindowsGame1
         public override void Update(GameTime theTime)
         {
             //randomCharacter();
+            for (int i = 0; i < OtherPlayerNameLabel.Count; i++)
+            {
+                Guid id = (Guid)OtherPlayerNameLabel[i].Value;
+                OtherPlayerNameLabel[i].Text = room.Player_List[i].Player_name + " - " + room.findPlayerByID(id).HandCard.Count ;
+            }
             resizeHand();
             updateRoom();
             checkHoverHandCard();
@@ -947,7 +1037,7 @@ namespace WindowsGame1
                 if (oversize > 0)
                 {
                     //padding = padding - (oversize / Hand_Image_List.Count);
-                    padding = (oversize / (Hand_Image_List.Count-1));
+                    padding = (oversize / (Hand_Image_List.Count - 1));
                     Hand_Image_List[0].Rect = new RectangleF(190, 567, cardWidth, cardHeight);
                     for (int i = 1; i < Hand_Image_List.Count; i++)
                     {
@@ -1138,11 +1228,11 @@ namespace WindowsGame1
             Player me = room.findPlayerByID(Player_ID);
             handOrder += 0.01f;
             //handList.Add(deck[0]);
-            me.HandCard.Add(deck[0]);
-            deck.RemoveAt(0);
-            //Command deckSyn = new Command(CommandCode.CardList_Synchronize, deck);
-            //if (isHost()) sendDataToClient(deckSyn);
-            //else sendDataToHost(deckSyn);
+            CardDeck cardDraw = deck.Last();
+            Command draw = new Command(CommandCode.Draw_Card_Result, Player_ID, cardDraw);
+            sendDataToClient(draw);
+            me.HandCard.Add(cardDraw);
+            deck.RemoveAt(deck.Count - 1);
 
             //if (handList.Count <= 5)
             //{
@@ -1203,9 +1293,6 @@ namespace WindowsGame1
                 if (isHost())
                 {
                     //Send command draw card to all clients
-                    Command draw = new Command(CommandCode.Draw_Card, Player_ID, 1);
-                    sendDataToClient(draw);
-
                     DrawCard();
                     resizeHand();
                 }
@@ -1300,19 +1387,21 @@ namespace WindowsGame1
                         break;
                     }
                 }
-                foreach (CardDeck cd in room.findPlayerByID(Player_ID).HandCard)
+                //foreach (CardDeck cd in room.findPlayerByID(Player_ID).HandCard)
+                 for (int i = 0; i < room.findPlayerByID(Player_ID).HandCard.Count; i++)
                 {
-                    if (cd.CardId == usingCardId)
+                    if (room.findPlayerByID(Player_ID).HandCard[i].CardId == usingCardId)
                     {
-                        room.findPlayerByID(Player_ID).HandCard.Remove(cd);
+                        room.findPlayerByID(Player_ID).HandCard.RemoveAt(i);
+                        break;
                     }
                 }
                 chatDisplayTextbox.Text += room.findPlayerByID(Player_ID).Player_name
-                    + " has attacked " + room.findPlayerByID(targetPlayerId).Player_name;
+                    + " has attacked " + room.findPlayerByID(targetPlayerId).Player_name + "\n";
                 //Command c2 = new Command(CommandCode.Update_Room, room);
                 //sendDataToClient(c2);
             }
-            
+
         }
 
         private void ChangeTurn(int playerEndTurn)
@@ -1395,7 +1484,7 @@ namespace WindowsGame1
             //Card_Detail_Image.Visible = false;
             //cardStatic.Visible = false;
             //infoPanel.Visible = false;
-            if (selected_card_index>-1) Hand_Image_List[selected_card_index].Border = false;
+            if (selected_card_index > -1) Hand_Image_List[selected_card_index].Border = false;
             selected_card_index = -1;
             Card_Clicked = false;
             discardButton.Visible = false;
