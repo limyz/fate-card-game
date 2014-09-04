@@ -22,14 +22,15 @@ namespace WindowsGame1
         Texture2D _scrollbarTexture;
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
-        Color color = Color.Black;
 
+        Color color = Color.Black;
         public Color Color
         {
             get { return color; }
             set { color = value; }
         }
-        Color Textbox_Color = Color.White;
+        public Color Textbox_Color = Color.White;
+
 
         float hscrollbar_width;
         float hscrollbar_offset = 0;
@@ -47,6 +48,43 @@ namespace WindowsGame1
         public int select_count = 0;
         public bool hscrollable = false;
         public bool vscrollable = false;
+        
+        private string buffer = "";
+        public List<string> lines = new List<string>();
+
+        private int posx = 0;
+        private int PosX
+        {
+            get
+            {
+                return posx;
+            }
+            set
+            {
+                posx = value;
+
+                if (posx < 0) posx = 0;
+                if (posx > lines[PosY].Length) posx = lines[PosY].Length;
+            }
+        }
+        private int posy = 0;
+        private int PosY
+        {
+            get
+            {
+                return posy;
+            }
+            set
+            {
+                posy = value;
+
+                if (posy < 0) posy = 0;
+                if (posy > lines.Count - 1) posy = lines.Count - 1;
+
+                PosX = PosX;
+            }
+        }
+
         public String Text
         {
             get
@@ -401,6 +439,30 @@ namespace WindowsGame1
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
+        }
+
+        private List<string> SplitLines(string text)
+        {
+            if (buffer != text)
+            {
+                buffer = text;
+                List<string> list = new List<string>();
+                string[] s = text.Split('\n');
+                list.Clear();
+
+                //Before adding the lines back in, we will want to first, measure the lines, and split words if needed...
+
+                list.AddRange(s);
+
+                if (posy < 0) posy = 0;
+                if (posy > list.Count - 1) posy = list.Count - 1;
+
+                if (posx < 0) posx = 0;
+                if (posx > list[PosY].Length) posx = list[PosY].Length;
+
+                return list;
+            }
+            else return lines;
         }
 
         public void RecieveTextInput(char inputChar)
