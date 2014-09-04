@@ -297,7 +297,7 @@ namespace WindowsGame1
             RectangleF _textbox_rec = new RectangleF(Rect.X, Rect.Y, Rect.Width - (vscrollable ? _font.LineSpacing : 0), Rect.Height - (hscrollable ? _font.LineSpacing : 0));
 
             spriteBatch.End();//end current screen's spriteBatch.Begin
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Textbox_Color, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
             //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
