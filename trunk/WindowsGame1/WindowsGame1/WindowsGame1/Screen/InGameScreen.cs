@@ -138,6 +138,8 @@ namespace WindowsGame1
         Label deckStatistic, handStatistic, cardStatic;
         Div playerControlPanel;
 
+        RasterizerState rz = new RasterizerState();   
+
         #endregion
 
         #region Card class
@@ -636,6 +638,8 @@ namespace WindowsGame1
         public InGameScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theScreenEvent, Game1 parent)
             : base("InGameScreen", theScreenEvent, parent)
         {
+            rz.ScissorTestEnable = true;
+
             #region Load Resource
             this.Content = Content;
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
@@ -1505,7 +1509,8 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, rz);
+            //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
             /*if (hand_hovered_index == -1)
             {

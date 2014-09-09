@@ -156,6 +156,7 @@ namespace WindowsGame1
                     if (caret_position > _text.Length || caret_position < 0)
                         caret_position = _text.Length;
                 }
+                lines = SplitLines(_text);
             }
         }
         bool _readonly = false;
@@ -296,8 +297,8 @@ namespace WindowsGame1
             }
             RectangleF _textbox_rec = new RectangleF(Rect.X, Rect.Y, Rect.Width - (vscrollable ? _font.LineSpacing : 0), Rect.Height - (hscrollable ? _font.LineSpacing : 0));
 
-            spriteBatch.End();//end current screen's spriteBatch.Begin
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            //spriteBatch.End();//end current screen's spriteBatch.Begin
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(_textBoxTexture, _textbox_rec, null, Textbox_Color, 0f, new Vector2(0, 0), SpriteEffects.None, 0.41f);
             //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
@@ -312,9 +313,9 @@ namespace WindowsGame1
                 spriteBatch.Draw(_scrollbarBackground, vscroll_region_rec, Color.White);
                 spriteBatch.Draw(_scrollbarTexture, vscrollbar_rec, Color.White);
             }
-            spriteBatch.End();
+            //spriteBatch.End();
             
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, _rasterizerState);
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, _rasterizerState);
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec.toRectangle();
             
@@ -435,10 +436,11 @@ namespace WindowsGame1
             //shadow first, then the actual text            
             //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
+            
 
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
         }
 
         private List<string> SplitLines(string text)
