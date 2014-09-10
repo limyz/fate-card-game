@@ -136,10 +136,7 @@ namespace WindowsGame1
         ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         Label deckStatistic, handStatistic, cardStatic;
-        Div playerControlPanel;
-
-        RasterizerState rz = new RasterizerState();   
-
+        Div playerControlPanel;       
         #endregion
 
         #region Card class
@@ -637,9 +634,7 @@ namespace WindowsGame1
         #region Load Content
         public InGameScreen(GraphicsDeviceManager graphics, ContentManager Content, SivEventHandler theScreenEvent, Game1 parent)
             : base("InGameScreen", theScreenEvent, parent)
-        {
-            rz.ScissorTestEnable = true;
-
+        {            
             #region Load Resource
             this.Content = Content;
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
@@ -1037,7 +1032,7 @@ namespace WindowsGame1
                 //float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
                 float net_width = cardWidth * Hand_Image_List.Count;
                 float oversize = net_width - handWitdh;
-                float handOrder = 0.5f;
+                float handOrder = 0.4f;
                 if (oversize > 0)
                 {
                     //padding = padding - (oversize / Hand_Image_List.Count);
@@ -1243,6 +1238,7 @@ namespace WindowsGame1
             CardForm card = new CardForm(me.HandCard.Last()
                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
                     , handOrder, main_game.Content, this);
+            card.Priority = 0.05f;
             //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
 
             Hand_Image_List.Add(card);
@@ -1509,7 +1505,7 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, rz);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, main_game.rz);
             //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
             /*if (hand_hovered_index == -1)
