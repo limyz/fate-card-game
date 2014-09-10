@@ -202,6 +202,8 @@ namespace WindowsGame1
 
         public EventRaiserDelegate Event_Raiser_Delegate;
         public KeyboardTextDispatcher keyboard_text_dispatcher;
+
+        public RasterizerState rz = new RasterizerState();         
         #endregion
 
         #region Event raiser function
@@ -459,6 +461,8 @@ namespace WindowsGame1
             double d = 1d / 120;
             long l = (long)(10000000L * d);
             this.TargetElapsedTime = new TimeSpan(l);
+
+            rz.ScissorTestEnable = true;
 
             keyboard_text_dispatcher = new KeyboardTextDispatcher(this.Window);
 

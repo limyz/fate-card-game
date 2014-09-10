@@ -779,9 +779,14 @@ namespace WindowsGame1
                 {
                     playerName[i].Color = Color.Aquamarine;
                 }
+                
                 Image borderAvatar = new Image(playerNameStr + "border", imageBorderTexture, div_char[i], 0.4f, this);
+                borderAvatar.Priority = 0.41f;
+                
                 Image newAvatar = new Image(playerNameStr, avatarDefault,
                     new RectangleF(div_char[i].X + 18, div_char[i].Y + 16, div_char[i].Width - 38, div_char[i].Height - 38), 0.41f, this);
+                newAvatar.Priority = 0.4f;
+
                 avatar_img.Add(newAvatar);
                 borderAvatarList.Add(borderAvatar);
             }
@@ -824,7 +829,8 @@ namespace WindowsGame1
         #region Draw
         public override void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, main_game.rz);
+            //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }
