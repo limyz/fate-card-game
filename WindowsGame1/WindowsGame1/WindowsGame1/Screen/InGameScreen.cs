@@ -341,7 +341,7 @@ namespace WindowsGame1
 
         private void ServerReceiver()
         {
-            Byte[] bytes = new Byte[1024 * 16];
+            
             while (receiverRun)
             {
                 if (StoppedTcp)
@@ -350,6 +350,7 @@ namespace WindowsGame1
                 }
                 else if (receiveTcp.Pending())
                 {
+                    Byte[] bytes = new Byte[1024 * 1024];
                     TcpClient client = receiveTcp.AcceptTcpClient();
                     NetworkStream stream = client.GetStream();
                     int i;
@@ -435,7 +436,6 @@ namespace WindowsGame1
 
         private void ClientReceiver()
         {
-            
             while (receiverRun)
             {
                 if (StoppedTcp)
@@ -450,7 +450,7 @@ namespace WindowsGame1
                         TcpClient client = receiveTcp.AcceptTcpClient();
                         NetworkStream stream = client.GetStream();
                         int i;
-                        Byte[] bytes = new Byte[1024 * 16];
+                        Byte[] bytes = new Byte[1024 * 1024];
                         while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                         {
                             if (!connect_to_host)
@@ -495,14 +495,15 @@ namespace WindowsGame1
                                 if (id == Player_ID)
                                 {
                                     //DrawCard();
-                                    player.HandCard.Add(drawCard);
-                                    deck.RemoveAt(deck.Count - 1);
-                                    CardForm card = new CardForm(player.HandCard.Last()
-                                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
+                                    //player.HandCard.Add(drawCard);
+                                    //deck.RemoveAt(deck.Count - 1);
+                                    CardForm card = new CardForm(deck.Last()
+                                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count
+                                     , 567, cardWidth, cardHeight)
                                      , handOrder, main_game.Content, this);
 
-                                    Hand_Image_List.Add(card);
-                                    resizeHand();
+                                    //Hand_Image_List.Add(card);
+                                    //resizeHand();
                                 }
                                 else
                                 {
@@ -596,10 +597,12 @@ namespace WindowsGame1
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Game1.MessageBox(new IntPtr(0), "Connection Error!", "Connection Error!", 0);
-                        ScreenEvent.Invoke(this, new SivEventArgs(0));
+                        //Game1.MessageBox(new IntPtr(0), "Connection Error!", "Connection Error!", 0);
+                        //ScreenEvent.Invoke(this, new SivEventArgs(0));
+                        Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+                        throw ex;
                     }
                 }
                 else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 5))
@@ -609,10 +612,11 @@ namespace WindowsGame1
                         Command c = new Command(CommandCode.Check_Connect);
                         c.SendData(room.Player_List[room.owner_index].Address, 51002);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        Game1.MessageBox(new IntPtr(0), "Disconected from host", "Disconnected", 0);
-                        ScreenEvent.Invoke(this, new SivEventArgs(0));
+                        //Game1.MessageBox(new IntPtr(0), "Disconected from host", "Disconnected", 0);
+                        Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
+                        //ScreenEvent.Invoke(this, new SivEventArgs(0));
                     }
                 }
             }
@@ -1238,7 +1242,7 @@ namespace WindowsGame1
             CardForm card = new CardForm(me.HandCard.Last()
                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
                     , handOrder, main_game.Content, this);
-            card.Priority = 0.05f;
+            card.Priority = handOrder;
             //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
 
             Hand_Image_List.Add(card);
