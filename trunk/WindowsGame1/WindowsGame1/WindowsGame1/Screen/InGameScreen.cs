@@ -136,7 +136,9 @@ namespace WindowsGame1
         ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         Label deckStatistic, handStatistic, cardStatic;
-        Div playerControlPanel;       
+        Div playerControlPanel;
+
+        CardForm card_test;
         #endregion
 
         #region Card class
@@ -378,7 +380,7 @@ namespace WindowsGame1
                                 Character character1 = (Character)c.Data1;
                                 Character character2 = (Character)c.Data2;
                                 Guid id = (Guid)c.Data3;
-                                Thread.Sleep(200);
+                                Thread.Sleep(200);//what is this for
                                 CharacterChange(character1, character2, id);
                                 Command c2 = new Command(CommandCode.Character_Change, character1, character2, id);
                                 byte[] data2 = c2.Serialize();
@@ -497,11 +499,10 @@ namespace WindowsGame1
                                     //DrawCard();
                                     //player.HandCard.Add(drawCard);
                                     //deck.RemoveAt(deck.Count - 1);
-                                    CardForm card = new CardForm(deck.Last()
+                                    card_test = new CardForm(drawCard
                                      , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count
                                      , 567, cardWidth, cardHeight)
                                      , handOrder, main_game.Content, this);
-
                                     //Hand_Image_List.Add(card);
                                     //resizeHand();
                                 }

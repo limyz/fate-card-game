@@ -23,6 +23,10 @@ namespace WindowsGame1
         public Texture2D Texture
         {
             get { return texture; }
+            set
+            {
+                texture = value;
+            }
         }
         public Nullable<Rectangle> Source_Rectangle = null;//A rectangle that specifies (in texels) the source texels from a texture. Use null to draw the entire texture.
         public Color color = Color.White;//The color to tint the sprite. Use Color.White for full color with no tinting
@@ -38,7 +42,7 @@ namespace WindowsGame1
         public CardForm(CardDeck card, RectangleF rec, float draw_order, ContentManager content, Screen parent)
             : base(card.Card.CardName, parent, typeof(CardForm), rec)
         {
-            CardDeck = card;
+            this.card = card;
             DrawOrder = draw_order;
             this.LoadTexture(content);
         }
@@ -72,6 +76,8 @@ namespace WindowsGame1
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            //Console.WriteLine((this.texture == null ? "null - " : "not null - ") + DateTime.Now.Millisecond.ToString());
+            if (this.texture != null) 
             spriteBatch.Draw(texture, Rect, Source_Rectangle, color, Rotation, Origin, Scale, effects, DrawOrder);
             if (this.Border)
             {
