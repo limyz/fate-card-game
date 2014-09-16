@@ -137,6 +137,7 @@ namespace WindowsGame1
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(bg_texture, bg_rec,null,Color.White,0f,new Vector2(0,0),SpriteEffects.None,1f);
+            
             base.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
         }

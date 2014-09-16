@@ -34,7 +34,7 @@ namespace WindowsGame1
         Color borderColor = Color.MediumAquamarine;
         TextBox chat, chatDisplay;
         Div roomInfoDiv;
-        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture, panelTexture, imageBorderTexture;
+        Texture2D avatarDefault, cancelButtonTexture, readyButtonTexture, startButtonTexture, imageBorderTexture;
 
         #endregion
 
@@ -476,7 +476,6 @@ namespace WindowsGame1
             #region Load Resource
             avatarDefault = Content.Load<Texture2D>("Resource/avatar_default");
             backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
-            panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
             imageBorderTexture = Content.Load<Texture2D>("Resource/graphic/base2");
             #endregion
 
@@ -492,14 +491,16 @@ namespace WindowsGame1
 
             //div_border = new Border("player_border", borderColor, 2
             //   , new RectangleF(20, 20, 900, 480), this);
-            Image playerPanel = new Image("Player Panel", panelTexture, new RectangleF(10, 10, 920, 500), 0.3f, this);
+            //Image playerPanel = new Image("Player Panel", panelTexture, new RectangleF(10, 10, 920, 500), 0.3f, this);
+            Panel playerPanel = new Panel(new RectangleF(10, 10, 920, 500), this);
             #endregion
 
             #region Room Information
             //div_info_border = new Border("div_info", borderColor, 2
             //    , new RectangleF(930, 20, 250, 480), this);
             //roomInfoDiv =Image info_pane new Div("Room Info", new RectangleF(932, 22, 246, 476), Color.DarkRed, this);
-            Image infoPanel = new Image("Info Panel", panelTexture, new RectangleF(932, 22, 246, 476), 0.3f, this);
+            //Image infoPanel = new Image("Info Panel", Game1.panelTexture, new RectangleF(932, 22, 246, 476), 0.3f, this);
+            Panel infoPanel = new Panel(new RectangleF(932, 22, 246, 476), this);
             roomInfoContent = new Label("Room Info", Game1.gautami12Regular, "", 960, 80, 300, Color.White, this);
             roomInfoTitle = new Label("Info Label", Game1.gautami14Bold, "Room Information", 970, 50, 300, Color.White, this);
             #endregion
@@ -780,11 +781,11 @@ namespace WindowsGame1
                     playerName[i].Color = Color.Aquamarine;
                 }
                 
-                Image borderAvatar = new Image(playerNameStr + "border", imageBorderTexture, div_char[i], 0.4f, this);
-                borderAvatar.Priority = 0.41f;
+                Image borderAvatar = new Image(playerNameStr + "border", imageBorderTexture, div_char[i], 0.5f, this);
+                borderAvatar.Priority = 0.5f;
                 
                 Image newAvatar = new Image(playerNameStr, avatarDefault,
-                    new RectangleF(div_char[i].X + 18, div_char[i].Y + 16, div_char[i].Width - 38, div_char[i].Height - 38), 0.41f, this);
+                    new RectangleF(div_char[i].X + 18, div_char[i].Y + 16, div_char[i].Width - 38, div_char[i].Height - 38), 0.4f, this);
                 newAvatar.Priority = 0.4f;
 
                 avatar_img.Add(newAvatar);

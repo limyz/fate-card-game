@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WindowsGame1
 {
-    class Border : SivForm
+    public class Border : SivForm
     {
         public Texture2D texture;
         public Nullable<Rectangle> Source_Rectangle = null;//A rectangle that specifies (in texels) the source texels from a texture. Use null to draw the entire texture.
