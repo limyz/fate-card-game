@@ -116,6 +116,53 @@ namespace WindowsGame1
         {
             sb.Draw(texture, destinationRectangle.getXY(), sourceRectangle, color, rotation, origin, destinationRectangle.getScale(texture)* scale, effects, layerDepth);
         }
+        public static void DrawLayer(this SpriteBatch sb, Texture2D texture, RectangleF destinationRectangle, Color color)
+        {
+            Rectangle source = texture.Bounds;//|
+            Rectangle topLeft = new Rectangle(0, 0, source.Width / 4, source.Height / 4);
+            Rectangle middleLeft = new Rectangle(0, topLeft.Y + topLeft.Height, (source.Width / 4), (source.Height / 4) * 2);
+            Rectangle bottomLeft = new Rectangle(0, middleLeft.Y + middleLeft.Height, source.Width / 4, source.Height / 4);
+            Rectangle topCenter = new Rectangle(topLeft.X + topLeft.Width, 0, (source.Width / 4) * 2, (source.Height / 4));
+            Rectangle middleCenter = new Rectangle(middleLeft.X + middleLeft.Width, topCenter.Y + topCenter.Height, (source.Width / 4) * 2, (source.Height / 4) * 2);
+            Rectangle bottomCenter = new Rectangle(bottomLeft.X + bottomLeft.Width, middleCenter.Y + middleCenter.Height, (source.Width / 4) * 2, (source.Height / 4));
+            Rectangle topRight = new Rectangle(topCenter.X + topCenter.Width, 0, source.Width / 4, source.Height / 4);
+            Rectangle middleRight = new Rectangle(middleCenter.X + middleCenter.Width, topRight.Y + topRight.Height, (source.Width / 4), (source.Height / 4) * 2);
+            Rectangle bottomRight = new Rectangle(bottomCenter.X + bottomCenter.Width, middleRight.Y + middleRight.Height, source.Width / 4, source.Height / 4);
+
+            RectangleF destinationTopLeft = new RectangleF(destinationRectangle.X, destinationRectangle.Y, source.Width / 4, source.Height / 4);
+            RectangleF destinationBottomLeft = new RectangleF(destinationRectangle.X,
+                (destinationRectangle.Y + destinationRectangle.Height) - (source.Height / 4), source.Width / 4, source.Height / 4);
+            RectangleF destinationTopRight = new RectangleF((destinationRectangle.X + destinationRectangle.Width) - (source.Width / 4),
+                destinationRectangle.Y, source.Width / 4, source.Height / 4);
+            RectangleF destinationBottomRight = new RectangleF((destinationRectangle.X + destinationRectangle.Width) - (source.Width / 4),
+                (destinationRectangle.Y + destinationRectangle.Height) - (source.Height / 4), source.Width / 4, source.Height / 4);
+
+            RectangleF destinationMiddleLeft = new RectangleF(destinationRectangle.X, destinationRectangle.Y + destinationTopLeft.Height,
+                destinationTopLeft.Width, destinationRectangle.Height - (destinationTopLeft.Height + destinationBottomLeft.Height));
+            RectangleF destinationTopCenter = new RectangleF(destinationRectangle.X + destinationTopLeft.Width, destinationRectangle.Y,
+                destinationRectangle.Width - (destinationTopLeft.Width + destinationTopRight.Width), destinationTopLeft.Height);
+            RectangleF destinationMiddleRight = new RectangleF((destinationRectangle.X + destinationRectangle.Width) - destinationTopRight.Width,
+                destinationRectangle.Y + destinationTopRight.Height, destinationTopRight.Width, destinationRectangle.Height - (destinationTopRight.Height + destinationBottomRight.Height));
+            RectangleF destinationBottomCenter = new RectangleF(destinationRectangle.X + destinationBottomLeft.Width,
+                (destinationRectangle.Y + destinationRectangle.Height) - destinationBottomLeft.Height, destinationRectangle.Width - (destinationBottomLeft.Width + destinationBottomRight.Width),
+                destinationBottomLeft.Height);
+            RectangleF destinationMiddleCenter = new RectangleF(destinationRectangle.X + destinationMiddleLeft.Width, destinationRectangle.Y + destinationTopCenter.Height,
+               destinationRectangle.Width - (destinationMiddleLeft.Width + destinationMiddleRight.Width), destinationRectangle.Height - (destinationTopCenter.Height + destinationBottomCenter.Height));
+
+            Vector2 v1 = destinationMiddleLeft.getScale(texture);
+            Vector2 v2 = destinationTopCenter.getScale(texture);
+            Vector2 v3 = destinationMiddleRight.getScale(texture);
+            Vector2 v4 = destinationBottomCenter.getScale(texture);
+            sb.Draw(texture, destinationTopLeft.getXY(), topLeft, color, 0f, new Vector2(0), destinationTopLeft.getScale(texture)*4, SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationBottomLeft.getXY(), bottomLeft, color, 0f, new Vector2(0), destinationBottomLeft.getScale(texture)*4, SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationTopRight.getXY(), topRight, color, 0f, new Vector2(0), destinationTopRight.getScale(texture)*4, SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationBottomRight.getXY(), bottomRight, color, 0f, new Vector2(0), destinationBottomRight.getScale(texture)*4, SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationMiddleLeft.getXY(), middleLeft, color, 0f, new Vector2(0), new Vector2(v1.X * 4, v1.Y * 2), SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationTopCenter.getXY(), topCenter, color, 0f, new Vector2(0), new Vector2(v2.X * 2, v2.Y * 4), SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationMiddleRight.getXY(), middleRight, color, 0f, new Vector2(0), new Vector2(v3.X * 4, v3.Y * 2), SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationBottomCenter.getXY(), bottomCenter, color, 0f, new Vector2(0), new Vector2(v4.X * 2, v4.Y * 4), SpriteEffects.None, 0.5f);
+            sb.Draw(texture, destinationMiddleCenter.getXY(), middleCenter, color, 0f, new Vector2(0), destinationMiddleCenter.getScale(texture)*2, SpriteEffects.None, 0.5f);
+        }
     }
 }
 #endregion
@@ -183,8 +230,9 @@ namespace WindowsGame1
         //static variable
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hWnd, String text, String caption, uint type);
-        public static Texture2D whiteTexture, zeroTexture, transparentTextBox;
-        public static Texture2D whiteTextbox, highlightedTextbox, caret, scrollbarBackground, scrollbar;
+        public static Texture2D whiteTexture, zeroTexture, transparentTextBox, textboxBackground;
+        public static Texture2D whiteTextbox, highlightedTextbox, caret, scrollbarBackground, scrollbarBackground_vert, scrollbar, scrollbar_horz, scrollbar_vert;
+        public static Texture2D panelTexture, scrollbarHover_Horz, scrollbarHover_Vert;
         public static SpriteFont font, arial14Bold, arial12Bold, arial13Bold, gautami12Regular, gautami14Bold;   
         //end static variable
 
@@ -502,11 +550,19 @@ namespace WindowsGame1
             zeroTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             zeroTexture.SetData(new[] { Color.Transparent });
             whiteTextbox = Content.Load<Texture2D>("Resource/white_textbox");
+            textboxBackground = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            textboxBackground.SetData(new[] { new Color(0,0,0,150) });
             transparentTextBox = Content.Load<Texture2D>("Resource/textbox");
             highlightedTextbox = Content.Load<Texture2D>("Resource/Highlighted_textbox");
             caret = Content.Load<Texture2D>("Resource/caret");
-            scrollbarBackground = Content.Load<Texture2D>("Resource/ScrollbarBackground");
-            scrollbar = Content.Load<Texture2D>("Resource/Scrollbar");
+            scrollbarBackground = Content.Load<Texture2D>("Resource/graphic/ScrollBarRailHorz");
+            scrollbarBackground_vert = Content.Load<Texture2D>("Resource/graphic/ScrollBarRailVert");
+            scrollbar = Content.Load<Texture2D>("Resource/graphic/ScrollBarButtonHorz");
+            scrollbar_horz = Content.Load<Texture2D>("Resource/graphic/ScrollBarButtonHorz");
+            scrollbar_vert = Content.Load<Texture2D>("Resource/graphic/ScrollBarButtonVert");
+            scrollbarHover_Horz = Content.Load<Texture2D>("Resource/graphic/ScrollBarHoverHorz");
+            scrollbarHover_Vert = Content.Load<Texture2D>("Resource/graphic/ScrollBarHoverVert");
+            panelTexture = Content.Load<Texture2D>("Resource/graphic/Panel");
 
             Background_Music = Content.Load<Song>("Resource/Music/Memoria");
             MediaPlayer.IsRepeating = true;

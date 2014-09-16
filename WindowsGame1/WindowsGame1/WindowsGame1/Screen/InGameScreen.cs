@@ -103,7 +103,7 @@ namespace WindowsGame1
         float cardHeight = 150;
         float handWitdh = 530;
         float padding = 5;
-        float handOrder = 0.5f;
+        float handOrder = 0.3f;
         int hand_hovered_index = -1, characterHoverIndex = -1, selected_card_index = -1;
         int[] playerRandomChar = new int[2];
 
@@ -119,7 +119,6 @@ namespace WindowsGame1
             healthUnitTexture;
         RectangleF[,] oppPlayerRectangle;
         Border chatInputBorder, chatDisplayBorder, handZoneBorder, equipZoneBorder;
-        Border[] playerCharacterBorder = new Border[2];
         List<Label> OtherPlayerNameLabel = new List<Label>();
         Color borderColor = Color.MediumAquamarine;
         XmlDocument xml = new XmlDocument();
@@ -133,12 +132,11 @@ namespace WindowsGame1
         //List<Rectangle> hand_area_list = new List<Rectangle>();
         Image masterImg, servantImg, Card_Detail_Image;
         Image infoPanel;
-        ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton;
+        ImageButton drawButton, handBackButton, handFowardButton, discardButton, useButton, endButton, dodgeButton, passButton;
         TextBox chatInputTextbox, chatDisplayTextbox, usernameTextbox, ipTextbox;
         Label deckStatistic, handStatistic, cardStatic;
         Div playerControlPanel;
-
-        CardForm card_test;
+        bool askDodge = false;
         #endregion
 
         #region Card class
@@ -420,11 +418,26 @@ namespace WindowsGame1
                                     deck.RemoveAt(deck.Count - 1);
                                     //Some effect
                                     chatDisplayTextbox.Text += room.findPlayerByID(PlayerDrawdCardId).Player_name
-                                        + " has drawn one card";
+                                        + " has drawn one card.\n";
                                 }
                                 catch (Exception e)
                                 {
                                     Console.WriteLine(e.Message);
+                                }
+                                break;
+                            case CommandCode.Dodge:
+                                CardDeck dodgeCard = (CardDeck)c.Data1;
+                                Guid Dodge_Player_ID = (Guid)c.Data2;
+                                Player Dodge_Player = room.findPlayerByID(Dodge_Player_ID);
+
+                                if (dodgeCard != null)
+                                {
+                                    Command dodge = new Command(CommandCode.Dodge, dodgeCard, Dodge_Player_ID);
+                                    sendDataToClient(dodge);
+                                }
+                                else
+                                {
+
                                 }
                                 break;
                             default:
@@ -497,14 +510,14 @@ namespace WindowsGame1
                                 if (id == Player_ID)
                                 {
                                     //DrawCard();
-                                    //player.HandCard.Add(drawCard);
-                                    //deck.RemoveAt(deck.Count - 1);
-                                    card_test = new CardForm(drawCard
+                                    player.HandCard.Add(drawCard);
+                                    deck.RemoveAt(deck.Count - 1);
+                                    CardForm card = new CardForm(drawCard
                                      , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count
                                      , 567, cardWidth, cardHeight)
                                      , handOrder, main_game.Content, this);
-                                    //Hand_Image_List.Add(card);
-                                    //resizeHand();
+                                    Hand_Image_List.Add(card);
+                                    resizeHand();
                                 }
                                 else
                                 {
@@ -527,9 +540,10 @@ namespace WindowsGame1
                                 Guid usingCard = (Guid)c.Data1;
                                 Guid sourcePlayer = (Guid)c.Data2;
                                 Guid targetPlayer = (Guid)c.Data3;
-                                //chatDisplayTextbox.Text += "You has been attacked by " + room.findPlayerByID(targetPlayer).Player_name + "\n";
+                                
                                 if (sourcePlayer == Player_ID)
                                 {
+                                    #region If Source of Attack is You
                                     foreach (CardForm cf in Hand_Image_List)
                                     {
                                         if (cf.CardDeck.CardId == usingCardId)
@@ -550,10 +564,11 @@ namespace WindowsGame1
                                     }
                                     room.findPlayerByID(Player_ID).HandCard.Remove(carduse);
                                     chatDisplayTextbox.Text += "You has attacked " + room.findPlayerByID(targetPlayerId).Player_name + "\n";
+                                    #endregion
                                 }
                                 else if (targetPlayer == Player_ID)
                                 {
-                                    
+                                    #region If Target of an Attack is You
                                     int index = room.findByID(sourcePlayer);
                                     CardDeck carduse = null;
                                     for (int j = 0; j < room.Player_List[index].HandCard.Count; j++)
@@ -572,10 +587,23 @@ namespace WindowsGame1
                                         dummy.MoveBySpeed(400, 200, 700);
                                     }
 
-                                    //Asking for Dodge later
+                                    //Asking for Dodge
+                                    foreach (CardForm card in Hand_Image_List)
+                                    {
+                                        if (card.CardDeck.Card.CardName == "DODGE")
+                                        {
+                                            card.Rect.Y = card.Rect.Y - 20;
+                                            card.OnClick += Dodge_Click;
+                                            askDodge = true;
+                                            passButton.Interactable = true;
+                                            break;
+                                        }
+                                    }
+                                    #endregion
                                 }
                                 else
                                 {
+                                    #region If source and target of an attack is two other players
                                     int index = room.findByID(sourcePlayer);
                                     CardDeck carduse = null;
                                     for (int j = 0; j < room.Player_List[index].HandCard.Count; j++)
@@ -594,6 +622,7 @@ namespace WindowsGame1
                                         chatDisplayTextbox.Text += room.findPlayerByID(Player_ID).Player_name
                                             + " has attacked " + room.findPlayerByID(targetPlayerId).Player_name + "\n";
                                     }
+                                    #endregion
                                 }
                             }
                         }
@@ -603,7 +632,7 @@ namespace WindowsGame1
                         //Game1.MessageBox(new IntPtr(0), "Connection Error!", "Connection Error!", 0);
                         //ScreenEvent.Invoke(this, new SivEventArgs(0));
                         Game1.MessageBox(new IntPtr(0), ex.Message, "Exception", 0);
-                        throw ex;
+                        //throw ex;
                     }
                 }
                 else if ((DateTime.Now - LastReceiveTimeFromHost) > new TimeSpan(0, 0, 5))
@@ -622,6 +651,8 @@ namespace WindowsGame1
                 }
             }
         }
+
+        
 
         public void End_Receive()
         {
@@ -642,6 +673,7 @@ namespace WindowsGame1
         {            
             #region Load Resource
             this.Content = Content;
+            Background backGround = new Background(Content.Load<Texture2D>("Resource/background"), this);
             borderTexture = Content.Load<Texture2D>("Resource/Untitled-1");
             characterBackTexture = Content.Load<Texture2D>("Resource/character_back");
             shirou = Content.Load<Texture2D>("Resource/character1");
@@ -653,22 +685,38 @@ namespace WindowsGame1
             #endregion
 
             #region Player Control Panel
-            playerCharacterBorder[0] = new Border("Character Border 1", Color.Red,
-                2, new RectangleF(731, 564, 111, 156), this);
-            playerCharacterBorder[1] = new Border("Character Border 2", Color.Red,
-                2, new RectangleF(842, 564, 111, 156), this);
+            //playerControlPanel = new Div("PlayerControlPanel",
+            //    new RectangleF(0, 534, 1000, 186), Color.White, this);
+            //playerControlPanel.Priority = 0.5f;
+            Texture2D playerPanelTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            playerPanelTexture.SetData(new[] { new Color(100, 100, 100, 200) });
+            Image playerPanel = new Image("Player Panel", playerPanelTexture,
+                new RectangleF(0, 534, 1000, 186), 0.6f, this);
+            playerPanel.HasBorder = true;
+            playerPanel.BorderImage.color = Color.Black;
+            playerPanel.BorderImage.Width = 2;
+            //playerPanel.color = new Color(250, 250, 250, 150);
 
-            playerControlPanel = new Div("PlayerControlPanel",
-                new RectangleF(0, 564, 1000, 156), Color.White, this);
             masterImg = new Image("Player Master Image", characterBackTexture,
-                new RectangleF(734, 567, 105, 150), 0.48f, this);
-            servantImg = new Image("Player Servant Image", characterBackTexture,
-                new RectangleF(845, 567, 105, 150), 0.48f, this);
+                new RectangleF(739, 557, 105, 150), 0.48f, this);
+            masterImg.Priority = 0.51f;
+            masterImg.HasBorder = true;
+            masterImg.BorderImage.color = Color.Black;
+            masterImg.BorderImage.Width = 2;
 
-            handZoneBorder = new Border("Hand Zone", Color.Red, 2,
-                new RectangleF(170, 564, 565, 156), this);
-            equipZoneBorder = new Border("Equip Zone", Color.Red, 2,
-                new RectangleF(0, 564, 168, 156), this);
+            servantImg = new Image("Player Servant Image", characterBackTexture,
+                new RectangleF(852, 557, 105, 150), 0.48f, this);
+            servantImg.Priority = 0.51f;
+            servantImg.HasBorder = true;
+            servantImg.BorderImage.color = Color.Black;
+            servantImg.BorderImage.Width = 2;
+
+            //handZoneBorder = new Border("Hand Zone", Color.Black, 2,
+            //    new RectangleF(170, 534, 565, 186), this);
+            //handZoneBorder.Priority = 0.6f;
+            //equipZoneBorder = new Border("Equip Zone", Color.Black, 2,
+            //    new RectangleF(0, 534, 168, 186), this);
+            //equipZoneBorder.Priority = 0.6f;
 
             Card_Detail_Image = new Image("Card_Detail_Image", Game1.whiteTexture
                 , new RectangleF(200, 80, 298, 416), 0.1f, this);
@@ -683,20 +731,31 @@ namespace WindowsGame1
 
             #region Button
             drawButton = new ImageButton("Draw Button", Content.Load<Texture2D>("Resource/button/draw")
-                , new RectangleF(600, 520, 130, 35), 0.5f, this);
+                , new RectangleF(320, 490, 130, 35), 0.45f, this);
             drawButton.OnClick += draw_button_clicked;
 
             useButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/use")
-                , new RectangleF(460, 520, 130, 35), 0.5f, this);
-            useButton.Visible = false;
+                , new RectangleF(460, 490, 130, 35), 0.45f, this);
+            useButton.Interactable = false;
             useButton.OnClick += UseCardClick;
-            discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
-                , new RectangleF(320, 520, 130, 35), 0.5f, this);
-            discardButton.Visible = false;
+
+            //discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
+            //    , new RectangleF(320, 520, 130, 35), 0.45f, this);
+            //discardButton.Visible = false;
+            //discardButton.OnClick += DisardClick;
 
             endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/end")
-                , new RectangleF(740, 520, 130, 35), 0.5f, this);
+                , new RectangleF(740, 490, 130, 35), 0.45f, this);
             endButton.OnClick += endButton_OnClick;
+
+            passButton = new ImageButton("Pass Button", Content.Load<Texture2D>("Resource/button/pass")
+                , new RectangleF(600, 490, 130, 35), 0.45f, this);
+            passButton.Interactable = false;
+            passButton.OnClick += passButton_OnClick;
+
+            //dodgeButton = new ImageButton("Dodge Button", Content.Load<Texture2D>("Resource/button/use")
+            //    , new RectangleF(460, 520, 130, 35), 0.45f, this);
+            //dodgeButton.OnClick += dodgeButton_OnClick;
 
             //handBackButton = new ImageButton("HLBP", back_button_texture
             //    , new RectangleF(155, 600, 40, 40), 0.47f, this);
@@ -705,35 +764,35 @@ namespace WindowsGame1
             #endregion
 
             #region Chat
-            chatDisplayBorder = new Border("chatDisplayBorder", borderColor, 2
-                , new RectangleF(1008, 10, 190, 404), this);
-
             chatDisplayTextbox = new TextBox("chatDisplayTextbox"
-                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.textboxBackground, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
                 , new RectangleF(1010, 12, 186, 400), this);
+            chatDisplayTextbox.Color = Color.White;
             chatDisplayTextbox.hscrollable = true;
             chatDisplayTextbox.vscrollable = true;
             chatDisplayTextbox.ReadOnly = true;
-
-            chatInputBorder = new Border("chatInputBorder", borderColor, 2
-               , new RectangleF(1008, 438, 190, 104), this);
+            chatDisplayBorder = new Border("chatDisplayBorder", Color.Black, 2
+                , chatDisplayTextbox.Rect, this); 
 
             chatInputTextbox = new TextBox("chatInputTextbox"
-                , Game1.whiteTextbox, Game1.highlightedTextbox, Game1.caret
+                , Game1.textboxBackground, Game1.highlightedTextbox, Game1.caret
                 , Game1.scrollbarBackground, Game1.scrollbar, Game1.font
                 , new RectangleF(1010, 440, 186, 100), this);
             chatInputTextbox.hscrollable = true;
             chatInputTextbox.vscrollable = true;
+            chatInputTextbox.Color = Color.White;
             chatInputTextbox.OnEnterPressed += chat_textbox_onEnterPressed;
             chatInputTextbox.OnShift_EnterPressed += textbox_onShiftEnterPressed;
+            chatInputBorder = new Border("chatInputBorder", Color.Black, 2
+              , chatInputTextbox.Rect, this);
             #endregion
 
             #region Label
             deckStatistic = new Label("DeckCount Label", Game1.font, "Deck: "
-                , 890, 530, 200, Color.White, this);
+                , 890, 500, 200, Color.Black, this);
             handStatistic = new Label("HandCount Label", Game1.font, "Hand: "
-                , 890, 510, 200, Color.White, this);
+                , 890, 480, 200, Color.Black, this);
 
             //ipLabel = new Label("label_IP", Game1.font, "IP Address"
             //    , 1010, 630, 1198 - 1010, Color.White, this);
@@ -790,7 +849,7 @@ namespace WindowsGame1
             #endregion
         }
 
-
+        
         public override void Start(Command command)
         {
             Player_Index = room.findByID(Player_ID);
@@ -810,29 +869,31 @@ namespace WindowsGame1
             masterImg.Texture = GetTexture(room.Player_List[Player_Index].Character1.CharAsset);
             servantImg.Texture = GetTexture(room.Player_List[Player_Index].Character2.CharAsset);
             playerHealth = new Image[room.Player_List[Player_Index].CurrentHealth];
+
+            //load health unit content
             if (room.Player_List[Player_Index].CurrentHealth == 4)
             {
                 playerHealth[0] = new Image("health1", healthUnitTexture,
-                    new RectangleF(960, 575, 28, 29), 0.3f, this);
+                    new RectangleF(967, 560, 28, 29), 0.3f, this);
                 playerHealth[1] = new Image("health1", healthUnitTexture,
-                    new RectangleF(960, 610, 28, 29), 0.3f, this);
+                    new RectangleF(967, 595, 28, 29), 0.3f, this);
                 playerHealth[2] = new Image("health1", healthUnitTexture,
-                    new RectangleF(960, 645, 28, 29), 0.3f, this);
+                    new RectangleF(967, 630, 28, 29), 0.3f, this);
                 playerHealth[3] = new Image("health1", healthUnitTexture,
-                    new RectangleF(960, 680, 28, 29), 0.3f, this);
+                    new RectangleF(967, 665, 28, 29), 0.3f, this);
             }
             else if (room.Player_List[Player_Index].CurrentHealth == 5)
             {
                 playerHealth[0] = new Image("health1", healthUnitTexture,
-                    new RectangleF(965, 570, 24, 26), 0.3f, this);
+                    new RectangleF(968, 555, 24, 26), 0.3f, this);
                 playerHealth[1] = new Image("health1", healthUnitTexture,
-                    new RectangleF(965, 600, 24, 26), 0.3f, this);
+                    new RectangleF(968, 585, 24, 26), 0.3f, this);
                 playerHealth[2] = new Image("health1", healthUnitTexture,
-                    new RectangleF(965, 630, 24, 26), 0.3f, this);
+                    new RectangleF(968, 615, 24, 26), 0.3f, this);
                 playerHealth[3] = new Image("health1", healthUnitTexture,
-                    new RectangleF(965, 660, 24, 26), 0.3f, this);
+                    new RectangleF(968, 645, 24, 26), 0.3f, this);
                 playerHealth[4] = new Image("health1", healthUnitTexture,
-                    new RectangleF(965, 690, 24, 26), 0.3f, this);
+                    new RectangleF(968, 675, 24, 26), 0.3f, this);
             }
             #endregion
 
@@ -1037,7 +1098,7 @@ namespace WindowsGame1
                 //float net_width = (Hand_Image_List.Last().Rect.X2 - Hand_Image_List[0].Rect.X);
                 float net_width = cardWidth * Hand_Image_List.Count;
                 float oversize = net_width - handWitdh;
-                float handOrder = 0.4f;
+                float handOrder = 0.3f;
                 if (oversize > 0)
                 {
                     //padding = padding - (oversize / Hand_Image_List.Count);
@@ -1101,13 +1162,17 @@ namespace WindowsGame1
         {
             if (room.Player_List[Player_Index].Turn.phase == Turn.Phase.OtherPlayerTurn)
             {
-                endButton.Visible = false;
-                drawButton.Visible = false;
+                endButton.Interactable = false;
+                drawButton.Interactable = false;
+                //endButton.Visible = false;
+                //drawButton.Visible = false;
             }
             else
             {
-                endButton.Visible = true;
-                drawButton.Visible = true;
+                endButton.Interactable = true;
+                drawButton.Interactable = true;
+                //endButton.Visible = true;
+                //drawButton.Visible = true;
             }
             handStatistic.Text = "Hand: " + room.findPlayerByID(Player_ID).HandCard.Count();
             deckStatistic.Text = "Deck: " + deck.Count.ToString();
@@ -1123,7 +1188,7 @@ namespace WindowsGame1
                     {
                         hand_hovered_index = i;
 
-                        Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
+                        Hand_Image_List[hand_hovered_index].DrawOrder = 0.1f;
                         Hand_Image_List[hand_hovered_index].OnClick += CardImage_Onlick;
                         break;
                     }
@@ -1138,19 +1203,19 @@ namespace WindowsGame1
                     {
                         if (main_game.mouse_hover(Hand_Image_List[i].Rect))
                         {
-                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
+                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.3f;
                             Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
                             //if (View_Detail_Button != null)
                             //    ClearDetailButtonAndImage();
 
                             hand_hovered_index = i;
 
-                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.49f;
+                            Hand_Image_List[hand_hovered_index].DrawOrder = 0.1f;
                             Hand_Image_List[hand_hovered_index].OnClick += CardImage_Onlick;
                             break;
                         }
                     }
-                    Hand_Image_List[hand_hovered_index].DrawOrder = 0.5f;
+                    Hand_Image_List[hand_hovered_index].DrawOrder = 0.3f;
                     Hand_Image_List[hand_hovered_index].OnClick -= CardImage_Onlick;
                     //if (View_Detail_Button != null)
                     //    ClearDetailButtonAndImage();
@@ -1224,13 +1289,26 @@ namespace WindowsGame1
                     item.OnClick += TargetPlayer_OnClick;
                 }
             }
+            //if (cardForm.CardDeck.Card.CardName == "DODGE")
+            //{
+            //    if (askDodge)
+            //    {
+            //        usingCardId = cardForm.CardDeck.CardId;
+            //        if (!isHost())
+            //        {
+            //            Command c = new Command(CommandCode.Dodge, usingCardId, Player_ID);
+            //            sendDataToHost(c);
+            //            askDodge = false;
+            //        }
+            //    }
+            //}
             //cardForm.MoveBySpeed(400, 200, 700);
         }
 
         private void DrawCard()
         {
             Player me = room.findPlayerByID(Player_ID);
-            handOrder += 0.01f;
+            float h = handOrder - 0.1f * Hand_Image_List.Count;
             //handList.Add(deck[0]);
             CardDeck cardDraw = deck.Last();
             Command draw = new Command(CommandCode.Draw_Card_Result, Player_ID, cardDraw);
@@ -1242,8 +1320,8 @@ namespace WindowsGame1
             //{
             CardForm card = new CardForm(me.HandCard.Last()
                     , new RectangleF(190 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight)
-                    , handOrder, main_game.Content, this);
-            card.Priority = handOrder;
+                    , h, main_game.Content, this);
+            //card.Priority = handOrder;
             //Image temp_image = new Image("", handList.Last().texture, new RectangleF(175 + (cardWidth + padding) * Hand_Image_List.Count, 567, cardWidth, cardHeight), 0.5f, this);
 
             Hand_Image_List.Add(card);
@@ -1325,6 +1403,27 @@ namespace WindowsGame1
                 Command endTurn = new Command(CommandCode.End_Turn, Player_Index);
                 sendDataToHost(endTurn);
             }
+        }
+
+        private void DisardClick(object sender, FormEventData e)
+        {
+            //foreach (CardForm c in Hand_Image_List)
+            //{
+            //    if (c.Border)
+            //    {
+            //        c.Border = false;
+            //        c.MoveBySpeed(400, 200, 700);
+            //        selected_card_index = -1;
+            //        ClearDetailButtonAndImage();
+                    
+            //    }
+            //}
+            CardForm card = Hand_Image_List[selected_card_index];
+            card.Border = false;
+            card.MoveBySpeed(400, 200, 700);
+            Hand_Image_List.RemoveAt(selected_card_index);
+            selected_card_index = -1;
+            ClearDetailButtonAndImage();
         }
 
         private void UseCardClick(object sender, FormEventData e)
@@ -1409,6 +1508,44 @@ namespace WindowsGame1
 
         }
 
+        private void Dodge_Click(object sender, FormEventData e)
+        {
+            if (askDodge)
+            {
+                CardForm image = (CardForm)sender;
+                CardDeck card = image.CardDeck;
+                if (!isHost())
+                {
+                    Command c = new Command(CommandCode.Dodge, card, Player_ID);
+                    sendDataToHost(c);
+                    askDodge = false;
+                }
+                else
+                {
+                    //Host Dodge
+                    askDodge = false;
+                }
+            }
+        }
+
+        private void passButton_OnClick(object sender, FormEventData e)
+        {
+            if (askDodge)
+            {
+                if (!isHost())
+                {
+                    Command c = new Command(CommandCode.Dodge, null, Player_ID);
+                    sendDataToHost(c);
+                    askDodge = false;
+                }
+                else
+                {
+                    //Host Dodge
+                    askDodge = false;
+                }
+            }
+        }
+
         private void ChangeTurn(int playerEndTurn)
         {
             int NextPlayer;
@@ -1446,29 +1583,36 @@ namespace WindowsGame1
         ImageButton View_Detail_Button;
         private void CardImage_Onlick(object sender, FormEventData e)
         {
-            if (!Card_Clicked)
-            {
-                CardForm image = (CardForm)sender;
-                selected_card_index = hand_hovered_index;
-                //View_Detail_Button = new ImageButton("view_detail_button"
-                //    , view_detail_button_textture
-                //    , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
-                //View_Detail_Button.DrawOrder = 0.48f;
-                //View_Detail_Button.Value = image;
-                //View_Detail_Button.OnClick += ViewDetailButton_Onclick;
-                image.Border = true;
-                useButton.Visible = true;
-                discardButton.Visible = true;
-                Card_Clicked = true;
-            }
-            else
-            {
-                MouseState ms = (MouseState)e.args;
-                CardForm image = (CardForm)sender;
-                //if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
-                //if (image.Rect.Contains(new Point(ms.X, ms.Y))) return;
-                ClearDetailButtonAndImage();
-            }
+                if (!Card_Clicked)
+                {
+                    CardForm image = (CardForm)sender;
+                    selected_card_index = hand_hovered_index;
+                    //View_Detail_Button = new ImageButton("view_detail_button"
+                    //    , view_detail_button_textture
+                    //    , new RectangleF(image.Rect.X, image.Rect.Y, 87, 20), this);
+                    //View_Detail_Button.DrawOrder = 0.48f;
+                    //View_Detail_Button.Value = image;
+                    //View_Detail_Button.OnClick += ViewDetailButton_Onclick;
+                    image.Border = true;
+                    if (room.findPlayerByID(Player_ID).Turn.phase == Turn.Phase.Action)
+                    {
+                        useButton.Interactable = true;
+                    }
+                    //if (room.findPlayerByID(Player_ID).Turn.phase == Turn.Phase.Discard)
+                    //{
+                    //    discardButton.Interactable = true;
+                    //}
+                    Card_Clicked = true;
+                }
+                else
+                {
+                    MouseState ms = (MouseState)e.args;
+                    CardForm image = (CardForm)sender;
+                    //if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
+                    //if (image.Rect.Contains(new Point(ms.X, ms.Y))) return;
+                    ClearDetailButtonAndImage();
+                }
+            
         }
 
         private void Character_OnClick(object sender, FormEventData e)
@@ -1492,8 +1636,8 @@ namespace WindowsGame1
             if (selected_card_index > -1) Hand_Image_List[selected_card_index].Border = false;
             selected_card_index = -1;
             Card_Clicked = false;
-            discardButton.Visible = false;
-            useButton.Visible = false;
+            //discardButton.Visible = false;
+            //useButton.Visible = false;
         }
 
         private void ViewDetailButton_Onclick(object sender, FormEventData e)
@@ -1533,6 +1677,7 @@ namespace WindowsGame1
                         spriteBatch.Draw(handList[i].texture, hand_area_list[i], null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f - i * 0.001f);
                 }
             }*/
+            
             base.Draw(graphics, spriteBatch, gameTime);
             //spriteBatch.Draw(card_list[0].texture, player_card_area, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.0f);
             spriteBatch.End();

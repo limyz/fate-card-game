@@ -60,14 +60,21 @@ namespace WindowsGame1
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            if (IsHovered)
+            if (Interactable)
             {
-                spriteBatch.Draw(texture/*main_game.white_texture*/, Rect, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder - 0.0001f);
-                spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
+                if (IsHovered)
+                {
+                    spriteBatch.Draw(texture/*main_game.white_texture*/, Rect, null, new Color(0xFF, 0xFF, 0xFF, 0xCC), 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder - 0.0001f);
+                    spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
+                }
+                else
+                {
+                    spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
+                }
             }
             else
             {
-                spriteBatch.Draw(texture, Rect, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
+                spriteBatch.Draw(texture, Rect, null, Color.Gray, 0f, new Vector2(0, 0), SpriteEffects.None, DrawOrder);
             }
         }
     }

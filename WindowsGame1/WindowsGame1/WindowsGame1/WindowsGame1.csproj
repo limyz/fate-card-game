@@ -128,6 +128,7 @@
     <Compile Include="Form\CardForm.cs" />
     <Compile Include="Form\Image.cs" />
     <Compile Include="Form\Menu.cs" />
+    <Compile Include="Form\Panel.cs" />
     <Compile Include="Form\Textbox\EventTextInput.cs" />
     <Compile Include="Debug.cs">
       <SubType>Form</SubType>

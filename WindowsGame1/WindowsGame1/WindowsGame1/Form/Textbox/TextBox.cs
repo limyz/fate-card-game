@@ -18,8 +18,10 @@ namespace WindowsGame1
         Texture2D _textBoxTexture;
         Texture2D _HighlightedTexture;
         Texture2D _caretTexture;
-        Texture2D _scrollbarBackground;
-        Texture2D _scrollbarTexture;
+        Texture2D _scrollbarBackground_Horz;
+        Texture2D _scrollbarBackground_Vert;
+        Texture2D _scrollbarTexture_Horz;
+        Texture2D _scrollbarTexture_Vert;
         RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         SpriteFont _font;
 
@@ -176,6 +178,30 @@ namespace WindowsGame1
             }
         }
 
+        public TextBox(RectangleF rec, Screen parent)
+            : base("Text Box", parent, typeof(TextBox), rec, 0.5f, 0.5f)
+        {
+            _textBoxTexture = Game1.textboxBackground;
+            _HighlightedTexture = Game1.highlightedTextbox;
+            _caretTexture = Game1.caret;
+            _scrollbarBackground_Horz = Game1.scrollbarBackground;
+            _scrollbarBackground_Vert = Game1.scrollbarBackground_vert;
+            _scrollbarTexture_Horz = Game1.scrollbar_horz;
+            _scrollbarTexture_Vert = Game1.scrollbar_vert;
+            _font = Game1.font;
+            hscrollbar_width = rec.Width;
+            vscrollbar_height = rec.Height;
+            this.Activable = true;
+            //Form event register
+            OnClick += new FormEventHandler(textbox_clicked);
+            OnActive += new FormEventHandler(Textbox_OnActive);
+            OnDeactive += new FormEventHandler(textbox_OnDeActive);
+            OnMouseEnter += new FormEventHandler(textbox_OnMouseEnter);
+            OnMouseLeave += new FormEventHandler(textbox_OnMouseLeave);
+            OnMouseScroll += new FormEventHandler(textbox_OnMouseScroll);
+            OnKeyDown += new FormEventHandler(textbox_OnKeyDown);
+        }
+
         public TextBox(string name, Texture2D textBoxTexture, Texture2D highlightedTexture
             , Texture2D caretTexture, Texture2D scrollbarBackground
             , Texture2D scrollbarTexture, SpriteFont font, RectangleF rec
@@ -185,8 +211,10 @@ namespace WindowsGame1
             _textBoxTexture = textBoxTexture;
             _HighlightedTexture = highlightedTexture;
             _caretTexture = caretTexture;
-            _scrollbarBackground = scrollbarBackground;
-            _scrollbarTexture = scrollbarTexture;
+            _scrollbarBackground_Horz = Game1.scrollbarBackground;
+            _scrollbarBackground_Vert = Game1.scrollbarBackground_vert;
+            _scrollbarTexture_Horz = Game1.scrollbar_horz;
+            _scrollbarTexture_Vert = Game1.scrollbar_vert;
             _font = font;           
             hscrollbar_width = rec.Width;
             vscrollbar_height = rec.Height;
@@ -226,6 +254,7 @@ namespace WindowsGame1
             {
                 if (on_hscrollbar_drag)
                 {
+                    _scrollbarTexture_Horz = Game1.scrollbarHover_Horz;
                     int move = Parent.main_game.mouse_state.X - Parent.main_game.last_mouse_state.X;
                     float percentage = 0;
                     if (move != 0)
@@ -236,16 +265,20 @@ namespace WindowsGame1
                     hscrollbar_offset = Math.Max(Math.Min(hscrollbar_offset + percentage, maxoffset), 0);
 
                     if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                    {
                         on_hscrollbar_drag = false;
+                        _scrollbarTexture_Horz = Game1.scrollbar_horz;
+                    }
                 }
                 float offset = hscrollbar_offset * Rect.Width;
-                hscrollbar_rec = new RectangleF(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width, _font.LineSpacing);
+                hscrollbar_rec = new RectangleF(Rect.X + offset, Rect.Y + Rect.Height - _font.LineSpacing, hscrollbar_width - _font.LineSpacing, _font.LineSpacing);
             }
 
             if (vscrollable)
             {
                 if (on_vscrollbar_drag)
                 {
+                    _scrollbarTexture_Vert = Game1.scrollbarHover_Vert;
                     int move = Parent.main_game.mouse_state.Y - Parent.main_game.last_mouse_state.Y;
                     float percentage = 0;
                     if (move != 0)
@@ -256,10 +289,13 @@ namespace WindowsGame1
                     vscrollbar_offset = Math.Max(Math.Min(vscrollbar_offset + percentage, maxoffset), 0);
 
                     if (Parent.main_game.mouse_state.LeftButton == ButtonState.Released)
+                    {
                         on_vscrollbar_drag = false;
+                        _scrollbarTexture_Vert = Game1.scrollbar_vert;
+                    }
                 }
                 float offset = vscrollbar_offset * Rect.Height;
-                vscrollbar_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height);
+                vscrollbar_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y + offset, _font.LineSpacing, vscrollbar_height - _font.LineSpacing);
             }
 
             if (on_select_drag)
@@ -303,15 +339,17 @@ namespace WindowsGame1
             //spriteBatch.Draw(Highlighted ? _HighlightedTexture : _textBoxTexture, _textbox_rec, null, Color.White, 0f, new Vector2(0, 0), SpriteEffects.None, 0.4f);
             if (hscrollable)
             {
-                RectangleF hscroll_region_rec = new RectangleF(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width, _font.LineSpacing);
-                spriteBatch.Draw(_scrollbarBackground, hscroll_region_rec, Color.White);
-                spriteBatch.Draw(_scrollbarTexture, hscrollbar_rec, Color.White);
+                RectangleF hscroll_region_rec = new RectangleF(Rect.X, Rect.Y + Rect.Height - _font.LineSpacing, Rect.Width - _font.LineSpacing, _font.LineSpacing);
+                spriteBatch.DrawLayer(_scrollbarBackground_Horz, hscroll_region_rec, Color.White);
+                spriteBatch.DrawLayer(_scrollbarTexture_Horz, hscrollbar_rec, Color.White);
+                //spriteBatch.Draw(_scrollbarTexture_Horz, hscrollbar_rec, Color.White);
             }
             if (vscrollable)
             {
-                RectangleF vscroll_region_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y, _font.LineSpacing, Rect.Height);
-                spriteBatch.Draw(_scrollbarBackground, vscroll_region_rec, Color.White);
-                spriteBatch.Draw(_scrollbarTexture, vscrollbar_rec, Color.White);
+                RectangleF vscroll_region_rec = new RectangleF(Rect.X + Rect.Width - _font.LineSpacing, Rect.Y, _font.LineSpacing, Rect.Height - _font.LineSpacing);
+                spriteBatch.DrawLayer(_scrollbarBackground_Vert, vscroll_region_rec, Color.White);
+                spriteBatch.DrawLayer(_scrollbarTexture_Vert, vscrollbar_rec, Color.White);
+                //spriteBatch.Draw(_scrollbarTexture_Vert, vscrollbar_rec, Color.White);
             }
             //spriteBatch.End();
             
