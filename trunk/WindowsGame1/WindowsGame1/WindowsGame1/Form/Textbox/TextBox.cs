@@ -117,9 +117,9 @@ namespace WindowsGame1
 
                     if (hscrollable)
                     {
-                        if (Rect.Width <= _font.MeasureString(filtered).X)
+                        if ((Rect.Width - _font.LineSpacing) <= _font.MeasureString(filtered).X)
                         {
-                            hscrollbar_width = Rect.Width * (Rect.Width / _font.MeasureString(filtered).X);
+                            hscrollbar_width = Rect.Width * ((Rect.Width - _font.LineSpacing) / _font.MeasureString(filtered).X);
                             float maxoffset = 1 - (float)hscrollbar_width / (float)Rect.Width;
                             float newoffset = maxoffset;
                             if (_font.MeasureString(_text).X != 0)
@@ -354,6 +354,7 @@ namespace WindowsGame1
             //spriteBatch.End();
             
             //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, _rasterizerState);
+
             Rectangle currentRect = spriteBatch.GraphicsDevice.ScissorRectangle;
             spriteBatch.GraphicsDevice.ScissorRectangle = _textbox_rec.toRectangle();
             
@@ -474,9 +475,10 @@ namespace WindowsGame1
             //shadow first, then the actual text            
             //spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset) + Vector2.One, Color.Black, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.21f);
             spriteBatch.DrawString(_font, toDraw, new Vector2(Rect.X + hoffset, Rect.Y + voffset), color, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 0.2f);
-            
+
 
             spriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
+
             //spriteBatch.End();
             //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
         }
