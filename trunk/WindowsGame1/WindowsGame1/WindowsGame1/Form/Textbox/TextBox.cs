@@ -320,7 +320,7 @@ namespace WindowsGame1
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             bool caretVisible = true;
-            if ((gameTime.TotalGameTime.TotalMilliseconds % 1000) < 500)
+            if ((gameTime.TotalGameTime.Milliseconds % 1000) < 500)
                 caretVisible = false;
             else
                 caretVisible = true;

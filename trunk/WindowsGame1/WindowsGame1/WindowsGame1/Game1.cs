@@ -753,20 +753,35 @@ namespace WindowsGame1
             }
         }
 
+        int ingametime_update_1stimer = 1000;
+        string ingametime_string;
         protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.Black);
+        {           
             if (this.IsActive)
             {
+                GraphicsDevice.Clear(Color.Black);
+
                 frameCounter++;
 
                 mCurrentScreen.Draw(graphics, spriteBatch, gameTime);
+
                 base.Draw(gameTime);
+
+                ingametime_update_1stimer += gameTime.ElapsedGameTime.Milliseconds;
+
                 spriteBatch.Begin();
-                String s = "Mouse Position: " + mouse_pos.ToString();
-                s += " | " + "In Game Time: " + gameTime.TotalGameTime.ToString();
-                s += " | " + "FPS : " + frameRate.ToString();
-                spriteBatch.DrawString(arial12Bold, s, new Vector2(10, 0), Color.White);
+
+                if (ingametime_update_1stimer > 1000)
+                {
+                    ingametime_string = "In Game Time: " + gameTime.TotalGameTime.ToString();
+                    ingametime_update_1stimer -= 1000;
+                }
+                spriteBatch.DrawString(arial12Bold, ingametime_string, new Vector2(5, 0), Color.White);
+                string fps_string = "FPS: " + frameRate.ToString();
+                spriteBatch.DrawString(arial12Bold, fps_string, new Vector2(5, 17), Color.White);
+                string mouseposition_string = "Mouse Position: " + mouse_pos.X + ":" + mouse_pos.Y;
+                spriteBatch.DrawString(arial12Bold, mouseposition_string, new Vector2(5, 34), Color.White);
+                
                 spriteBatch.End();
             }
         }
