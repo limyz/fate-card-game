@@ -68,9 +68,14 @@ namespace WindowsGame1
         //Host send draw result to client
         Draw_Card_Result = 20,
 
-        Dodge,
-        Deal_Physical_Damage,
-        Deal_Magic_Damage,
+        //Host send damage calculation result to all cilent
+        Damage_Calculation_Result = 21,
+
+        Deal_Physical_Damage = 22,
+        Deal_Magic_Damage = 23,
+        Dodge = 24,
+        
+        
         Heal,
         Loss_of_Health,
         Use_Tool_Card,

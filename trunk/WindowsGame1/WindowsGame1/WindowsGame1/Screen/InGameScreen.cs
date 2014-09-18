@@ -137,6 +137,8 @@ namespace WindowsGame1
         Label deckStatistic, handStatistic, cardStatic;
         Div playerControlPanel;
         bool askDodge = false;
+        Command Take_Damage = null;
+        int damageBonus = 0;
         #endregion
 
         #region Card class
@@ -426,18 +428,23 @@ namespace WindowsGame1
                                 }
                                 break;
                             case CommandCode.Dodge:
-                                CardDeck dodgeCard = (CardDeck)c.Data1;
+                                Guid dodgeCard = (Guid)c.Data1;
                                 Guid Dodge_Player_ID = (Guid)c.Data2;
                                 Player Dodge_Player = room.findPlayerByID(Dodge_Player_ID);
 
                                 if (dodgeCard != null)
                                 {
+                                    Take_Damage = null;
                                     Command dodge = new Command(CommandCode.Dodge, dodgeCard, Dodge_Player_ID);
                                     sendDataToClient(dodge);
                                 }
                                 else
                                 {
-
+                                    //Calculate Damage
+                                    if (Take_Damage != null)
+                                    {
+                                        sendDataToClient(Take_Damage);
+                                    }
                                 }
                                 break;
                             default:
@@ -625,6 +632,70 @@ namespace WindowsGame1
                                     #endregion
                                 }
                             }
+                            else if (c.Command_Code == CommandCode.Dodge)
+                            {
+                                Guid dodgeCard_ID = (Guid)c.Data1;
+                                Guid Dodge_Player_ID = (Guid)c.Data2;
+                                Player Dodge_Player = room.findPlayerByID(Dodge_Player_ID);
+
+                                if (Dodge_Player_ID == Player_ID)
+                                {
+                                    #region If you are the player whos using dodge
+                                    CardDeck carduse = null;
+                                    foreach (CardForm cf in Hand_Image_List)
+                                    {
+                                        if (cf.CardDeck.CardId == dodgeCard_ID)
+                                        {
+                                            //Playing card animation
+                                            cf.MoveBySpeed(400, 200, 700);
+                                            Hand_Image_List.Remove(cf);
+                                            break;
+                                        }
+                                    }
+                                    foreach (CardDeck cd in room.findPlayerByID(Player_ID).HandCard)
+                                    {
+                                        if (cd.CardId == dodgeCard_ID)
+                                        {
+                                            carduse = cd;
+                                            break;
+                                        }
+                                    }
+                                    room.findPlayerByID(Player_ID).HandCard.Remove(carduse);
+                                    chatDisplayTextbox.Text += "You has used DODGE card.\n";
+                                    #endregion
+                                }
+                                else
+                                {
+                                    #region If you are not the player whos using dodge
+                                    int index = room.findByID(Dodge_Player_ID);
+                                    CardDeck carduse = null;
+                                    for (int j = 0; j < room.Player_List[index].HandCard.Count; j++)
+                                    {
+                                        if (room.Player_List[index].HandCard[j].CardId == dodgeCard_ID)
+                                        {
+                                            carduse = room.Player_List[index].HandCard[j];
+                                            room.Player_List[index].HandCard.RemoveAt(j);
+                                            break;
+                                        }
+                                    }
+                                    if (carduse != null)
+                                    {
+                                        CardForm dummy = new CardForm(carduse, new RectangleF(oppPlayerRectangle[index, 0].X, oppPlayerRectangle[index, 0].Y, cardWidth, cardHeight), 0.3f, main_game.Content, this);
+                                        dummy.MoveBySpeed(400, 200, 700);
+                                        chatDisplayTextbox.Text += room.findPlayerByID(Dodge_Player_ID).Player_name
+                                            + " has used the DODGE card.\n";
+                                    }
+                                    #endregion
+                                }
+                            }
+                            else if (c.Command_Code == CommandCode.Deal_Physical_Damage)
+                            {
+                                //Resolve any ability or effect when player is received physical damage
+                            }
+                            else if (c.Command_Code == CommandCode.Deal_Magic_Damage)
+                            {
+                                //Resolve any ability or effect when player is received magic damage
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -730,28 +801,28 @@ namespace WindowsGame1
             #endregion
 
             #region Button
-            drawButton = new ImageButton("Draw Button", Content.Load<Texture2D>("Resource/button/draw")
-                , new RectangleF(320, 490, 130, 35), 0.45f, this);
+            drawButton = new ImageButton("Draw Button", Content.Load<Texture2D>("Resource/button/DrawButton")
+                , new RectangleF(350, 480, 126, 43), 0.45f, this);
             drawButton.OnClick += draw_button_clicked;
 
-            useButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/use")
-                , new RectangleF(460, 490, 130, 35), 0.45f, this);
+            useButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/UseButton")
+                , new RectangleF(480, 480, 126, 43), 0.45f, this);
             useButton.Interactable = false;
             useButton.OnClick += UseCardClick;
+
+            endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/EndButton")
+                , new RectangleF(740, 480, 126, 43), 0.45f, this);
+            endButton.OnClick += endButton_OnClick;
+
+            passButton = new ImageButton("Pass Button", Content.Load<Texture2D>("Resource/button/PassButton")
+                , new RectangleF(610, 480, 126, 43), 0.45f, this);
+            passButton.Interactable = false;
+            passButton.OnClick += passButton_OnClick;
 
             //discardButton = new ImageButton("Discard Button", Content.Load<Texture2D>("Resource/button/discard")
             //    , new RectangleF(320, 520, 130, 35), 0.45f, this);
             //discardButton.Visible = false;
             //discardButton.OnClick += DisardClick;
-
-            endButton = new ImageButton("Use Button", Content.Load<Texture2D>("Resource/button/end")
-                , new RectangleF(740, 490, 130, 35), 0.45f, this);
-            endButton.OnClick += endButton_OnClick;
-
-            passButton = new ImageButton("Pass Button", Content.Load<Texture2D>("Resource/button/pass")
-                , new RectangleF(600, 490, 130, 35), 0.45f, this);
-            passButton.Interactable = false;
-            passButton.OnClick += passButton_OnClick;
 
             //dodgeButton = new ImageButton("Dodge Button", Content.Load<Texture2D>("Resource/button/use")
             //    , new RectangleF(460, 520, 130, 35), 0.45f, this);
@@ -1481,6 +1552,9 @@ namespace WindowsGame1
             else
             {
                 Command c = new Command(CommandCode.Attack, usingCardId, Player_ID, targetPlayerId);
+                //Set damage deal command
+                Take_Damage = new Command(CommandCode.Deal_Physical_Damage, Player_ID, targetPlayerId, 1 + damageBonus);
+                //Send attack command to all client
                 sendDataToClient(c);
                 foreach (CardForm cf in Hand_Image_List)
                 {
@@ -1516,7 +1590,7 @@ namespace WindowsGame1
                 CardDeck card = image.CardDeck;
                 if (!isHost())
                 {
-                    Command c = new Command(CommandCode.Dodge, card, Player_ID);
+                    Command c = new Command(CommandCode.Dodge, card.CardId, Player_ID);
                     sendDataToHost(c);
                     askDodge = false;
                 }
@@ -1594,7 +1668,7 @@ namespace WindowsGame1
                     //View_Detail_Button.Value = image;
                     //View_Detail_Button.OnClick += ViewDetailButton_Onclick;
                     image.Border = true;
-                    if (room.findPlayerByID(Player_ID).Turn.phase == Turn.Phase.Action)
+                    //if (room.findPlayerByID(Player_ID).Turn.phase == Turn.Phase.Action)
                     {
                         useButton.Interactable = true;
                     }
@@ -1611,6 +1685,7 @@ namespace WindowsGame1
                     //if (View_Detail_Button.Rect.Contains(new Point(ms.X, ms.Y))) return;
                     //if (image.Rect.Contains(new Point(ms.X, ms.Y))) return;
                     ClearDetailButtonAndImage();
+                    useButton.Interactable = false;
                 }
             
         }
