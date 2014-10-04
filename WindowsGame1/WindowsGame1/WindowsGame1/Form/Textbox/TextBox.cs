@@ -51,11 +51,11 @@ namespace WindowsGame1
         public bool hscrollable = false;
         public bool vscrollable = false;
         
-        private string buffer = "";
-        public List<string> lines = new List<string>();
+        //private string buffer = "";
+        //public List<string> lines = new List<string>();
 
-        private int posx = 0;
-        private int PosX
+        //private int posx = 0;
+        /*private int PosX
         {
             get
             {
@@ -68,8 +68,8 @@ namespace WindowsGame1
                 if (posx < 0) posx = 0;
                 if (posx > lines[PosY].Length) posx = lines[PosY].Length;
             }
-        }
-        private int posy = 0;
+        }*/
+        /*private int posy = 0;
         private int PosY
         {
             get
@@ -85,7 +85,7 @@ namespace WindowsGame1
 
                 PosX = PosX;
             }
-        }
+        }*/
 
         public String Text
         {
@@ -158,7 +158,7 @@ namespace WindowsGame1
                     if (caret_position > _text.Length || caret_position < 0)
                         caret_position = _text.Length;
                 }
-                lines = SplitLines(_text);
+                //lines = SplitLines(_text);
             }
         }
         bool _readonly = false;
@@ -483,7 +483,7 @@ namespace WindowsGame1
             //spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);//Begin a new one(just to be ended immediatly) 
         }
 
-        private List<string> SplitLines(string text)
+        /*private List<string> SplitLines(string text)
         {
             if (buffer != text)
             {
@@ -505,7 +505,7 @@ namespace WindowsGame1
                 return list;
             }
             else return lines;
-        }
+        }*/
 
         public void RecieveTextInput(char inputChar)
         {

@@ -71,6 +71,37 @@ with.
         <Start>&#9824;</Start>
         <End>&#9831;</End>
       </CharacterRegion>
+      
+      <!-- Japanese-style punctuation ( 3000 - 303f) -->
+      <CharacterRegion>
+        <Start>&#12288;</Start>
+        <End>&#12351;</End>
+      </CharacterRegion>
+      
+      <!-- Hiragana ( 3040 - 309f) -->
+      <CharacterRegion>
+        <Start>&#12352;</Start>
+        <End>&#12447;</End>
+      </CharacterRegion>
+      
+      <!-- Katakana ( 12448 - 30ff) -->
+      <CharacterRegion>
+        <Start>&#12352;</Start>
+        <End>&#12543;</End>
+      </CharacterRegion>
+      
+      <!-- Full-width roman characters and half-width katakana ( ff00 - ffef) -->
+      <CharacterRegion>
+        <Start>&#65280;</Start>
+        <End>&#65519;</End>
+      </CharacterRegion>
+
+      <!-- CJK unifed ideographs - Common and uncommon kanji ( 4e00 - 9faf) -->
+      <CharacterRegion>
+        <Start>&#19968;</Start>
+        <End>&#40879;</End>
+      </CharacterRegion>
+
     </CharacterRegions>
   </Asset>
 </XnaContent>
