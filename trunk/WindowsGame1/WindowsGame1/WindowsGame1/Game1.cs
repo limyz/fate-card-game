@@ -771,7 +771,7 @@ namespace WindowsGame1
 
                 spriteBatch.Begin();
 
-                if (ingametime_update_1stimer > 1000)
+                if (ingametime_update_1stimer >= 1000)
                 {
                     ingametime_string = "In Game Time: " + gameTime.TotalGameTime.ToString();
                     ingametime_update_1stimer -= 1000;
